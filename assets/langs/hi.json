@@ -1,0 +1,19 @@
+{
+ "hi": "Hindi",
+ "en": "English",
+ "language" : "भाषा",
+ "categories":"श्रेणियाँ",
+ "feeds" :"फ़ीड",
+ "messanger" :"चैट",
+ "profile" : "प्रोफ़ाइल",
+ "home" : "हौम्स",
+ "selectDocuments":"निम्न दस्तावेजों में से किसी एक का चयन करें",
+ "GSTCertificate" : "जीएसटी प्रमाण पत्र",
+ "ShopEstaLicense":"दुकान और स्थापना लाइसेंस",
+ "UdhyogAadhar":"उद्योग आधार",
+ "Trade" : "ट्रेड सर्टिफिकेट / लाइसेंस",
+ "FSSAI" : "FSSAI पंजीकरण",
+ "DrugLicense" : "ड्रग लाइसेंस",
+ "CAcheque" : "चालू खाता चेक"
+ 
+   }

@@ -1,0 +1,18 @@
+{
+"en": "English",
+"language" : "Language",
+"hi": "Hindi",
+"categories":"Categories",
+"feeds" : "Feeds",
+ "messanger" :"Messanger",
+ "profile" : "profile",
+ "home" : "Home",
+ "selectDocuments" :"Select any ONE of the following documents",
+ "GSTCertificate" :"GST Certificate",
+ "ShopEstaLicense":"Shop & Establishment License",
+ "UdhyogAadhar":"Udhyog Aadhar",
+  "Trade" : "Trade Certificate/License",
+  "FSSAI" : "FSSAI Registration",
+  "DrugLicense" : "Drug License",
+  "CAcheque" : "Current Account Cheque"
+}
