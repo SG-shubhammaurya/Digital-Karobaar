@@ -82,7 +82,7 @@ class _ManageState extends State<Manage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
                 child: Center(
-                  child: Text("Please Provide the given details for joining the seller team for better business growth"),
+                  child: Text("Please provide the given details for adding a member to your Business team!-----"),
                 ),
               ),
               SizedBox(height: 50),
@@ -93,7 +93,7 @@ class _ManageState extends State<Manage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0,right: 10.0),
                 child: Center(
-                  child: Text("Enter the Seller number.To whom you want to join and ask for One Time Password for Verification"),
+                  child: Text("Please provide the Contact details of the main Admin for the Seller profile, which will the main head of the Business and hence would receive OTP for verification."),
                 ),
               ),
               SizedBox(height: 20,),

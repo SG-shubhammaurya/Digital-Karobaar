@@ -1,9 +1,12 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 class SellLogin extends StatefulWidget {
   @override
@@ -22,7 +25,10 @@ class _SellLoginState extends State<SellLogin> {
       height: 80,
       child: TextFormField(
           textInputAction: TextInputAction.next,
-          decoration: inputDecoration(hint: "Mobile No"),
+          decoration: inputDecoration(
+            hint:
+             LanguageKeys.mobileNo.translate(context),
+             ),
           keyboardType: TextInputType.number,
           validator: (String value) {
             if (value.isEmpty) {
@@ -41,7 +47,10 @@ class _SellLoginState extends State<SellLogin> {
       height: 80,
       child: TextFormField(
           textInputAction: TextInputAction.next,
-          decoration: inputDecoration(hint: "Password",isPasswordField: true),
+          decoration: inputDecoration(
+            hint:
+             LanguageKeys.pssword.translate(context),
+             isPasswordField: true),
           keyboardType: TextInputType.text,
           validator: (String value) {
             if (value.isEmpty) {
@@ -60,7 +69,8 @@ class _SellLoginState extends State<SellLogin> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Login",
+          LanguageKeys.login.translate(context),
+          //"Login",
           style: TextStyle(color: Colors.white),
         ),
         leading: Builder(
@@ -81,7 +91,8 @@ class _SellLoginState extends State<SellLogin> {
           SizedBox(height: 70),
           Center(
             child: Text(
-              "Seller Login",
+              LanguageKeys.sellerLogin.translate(context),
+              //"Seller Login",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
@@ -102,7 +113,7 @@ class _SellLoginState extends State<SellLogin> {
                         },
                         child: Container(
                           child: Text(
-                            "Forgot Password ?",
+                            LanguageKeys.forgotPassword.translate(context),
                             style: TextStyle(fontSize: 12),
                           ),
                         ),
@@ -110,7 +121,7 @@ class _SellLoginState extends State<SellLogin> {
                     ]),
                     SizedBox(height: 20),
                     CommonButton(
-                      title: "Login",
+                      title: LanguageKeys.login.translate(context),
                       buttonColor: AppColors.primaryColor,
                       onTap: () {
                      //   Navigator.pushNamed(context, RouterName.sellerDetails);

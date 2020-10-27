@@ -8,7 +8,7 @@ import 'package:digitalkarobaar/src/core/widget/bottom_nav.dart';
 import 'package:digitalkarobaar/src/models/seller_story.dart';
 import 'package:digitalkarobaar/src/payment/products_payment.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
-import 'package:digitalkarobaar/src/splash_screen.dart';
+
 import 'package:digitalkarobaar/src/ui/SellerReturn/Approved_Return.dart';
 import 'package:digitalkarobaar/src/ui/SellerReturn/Pending_Return.dart';
 import 'package:digitalkarobaar/src/ui/SellerReturn/Seller_Return.dart';
@@ -69,7 +69,6 @@ import 'package:digitalkarobaar/src/ui/home/sell_dk/sellerprofile/Seller_Setting
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellondigitapKarobaar.dart';
 import 'package:digitalkarobaar/src/ui/home/support/Order_Form.dart';
 import 'package:digitalkarobaar/src/ui/home/support/Support.dart';
-// import 'package:digitalkarobaar/src/ui/home/notification.dart';
 import 'package:digitalkarobaar/src/ui/home/term_use/Term_of_use.dart';
 import 'package:digitalkarobaar/src/ui/home/yourOrder/your_seller_order.dart';
 import 'package:digitalkarobaar/src/ui/messenger/chat.dart';
@@ -80,7 +79,6 @@ import 'package:digitalkarobaar/src/ui/profile/update_profile.dart';
 import 'package:digitalkarobaar/src/ui/shopkyc/shop_kyc.dart';
 import 'package:digitalkarobaar/src/ui/supplier/supplier.dart';
 import 'package:flutter/material.dart';
-
 
 class AppRouter {
   static Route<dynamic> getGeneratedRouute(RouteSettings settings) {
@@ -176,9 +174,9 @@ class AppRouter {
       case RouterName.subCategoriesDetails:
         return MaterialPageRoute(builder: (_) => SubCategoriesDetails(args));
         break;
-      case RouterName.splashScreen:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
-        break;
+      // case RouterName.splashScreen:
+      //   return MaterialPageRoute(builder: (_) => SplashScreen());
+      //   break;
       case RouterName.messanger:
         return MaterialPageRoute(builder: (_) => Messenger());
         break;
@@ -301,13 +299,15 @@ class AppRouter {
       //  case RouterName.sellerSetting:
       // return MaterialPageRoute(builder: (_) => SellerAccount());
       //   break;
+      case RouterName.sellerSetting:
+     return MaterialPageRoute(builder: (_) => SellerDetails(isFormUpdate: true,));
+        break;
       case RouterName.businessProfile:
         return MaterialPageRoute(builder: (_) => BusinessProfile());
         break;
       case RouterName.productUpload:
         return MaterialPageRoute(builder: (_) => ProductUpload());
         break;
-
       case RouterName.businessProfileSetting:
         return MaterialPageRoute(builder: (_) => SellerSetting());
         break;
@@ -320,7 +320,6 @@ class AppRouter {
          case RouterName.getUserreturn:
         return MaterialPageRoute(builder: (_) => GetUserReturn());
          break;
-
         
          case RouterName.sellerReturn:
          return MaterialPageRoute(builder: (_) => SellerReturns());
@@ -330,12 +329,6 @@ class AppRouter {
           break;
          case RouterName.sellerApprovedReturn:
          return MaterialPageRoute(builder: (_) => SellerApprovedReturn());
-         break;
-        //  case RouterName.notificationPart:
-        //  return MaterialPageRoute(builder: (_) => AppNotification());
-        //  case RouterName.notificationPart:
-        //  return MaterialPageRoute(builder: (_) => Notification());
-         
       default:
         return MaterialPageRoute(
             builder: (context) => UndefinedView(

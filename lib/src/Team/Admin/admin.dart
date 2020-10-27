@@ -1,6 +1,4 @@
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
-import 'package:digitalkarobaar/src/models/seller_profile.dart';
-import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
@@ -10,25 +8,6 @@ class Admin extends StatefulWidget {
 }
 
 class _AdminState extends State<Admin> {
-  Seller sellerProfile;
-  bool isLoading = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    _getSeller();
-    super.initState();
-  }
-  _getSeller() async {
-    var sellerProfile = await SellRepository.getSellerProfileInfo();
-    if (sellerProfile != null){
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +19,19 @@ class _AdminState extends State<Admin> {
            child: Column(children: [
              Row(
                children: [
-                 Text("Add Member to make a team and ",style: TextStyle(fontSize: 20),),
+                 Text(
+                   //"Add Member to make a team and ",
+                   "Add your business assiciates as",
+                   style: TextStyle(fontSize: 20),),
                ],
              ),
             SizedBox(height: 10.0),
              Row(
                children: [
-                 Text("and boost.Your business growth ",style: TextStyle(fontSize: 20),),
+                 Text(
+                   //"and boost.Your business growth ",
+                   "member of your online business ",
+                   style: TextStyle(fontSize: 20),),
                  SizedBox(height: 10.0),
                  
                ],
@@ -54,7 +39,7 @@ class _AdminState extends State<Admin> {
              SizedBox(height: 10.0),
              Row(
                children: [
-                 Text("in Digital Karobaar platform ",style: TextStyle(fontSize: 20),),
+                 Text("on. Digital Karobaar",style: TextStyle(fontSize: 20),),
                  SizedBox(height: 10.0),
                  
                ],
@@ -67,7 +52,7 @@ class _AdminState extends State<Admin> {
          Padding(
            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
            child: Center(
-             child: Text("Digital Karobaar is allow you to add the Seller as a member and make your own team for better growth of your business")
+             child: Text("Make a team and handle all the orders samelessly on the app!")
              
            ),
          ),
@@ -86,38 +71,13 @@ class _AdminState extends State<Admin> {
          SizedBox(height: 15.0),
 
 
-
-
-
-
-
          GestureDetector(
            onTap: ()async {
-             int p = await shareNumber(sellerProfile.phoneNo
-
-
-              //  ListView.builder(
-              //    itemCount: sellerProfile.seller.length,
-              //    itemBuilder: (c, index){
-              //      return Text()
-
-              //    }
-              //    )
-
-
-
-
-             );
-                              share(context, sellerProfile.phoneNo.toString());
+             String p = await shareNumber();
+                              share(context, p);
                                  
                             },
           
-
-
-
-
-
-
            
            child: Padding(
              padding: const EdgeInsets.only(left: 20.0,right: 20.0),
@@ -138,21 +98,16 @@ class _AdminState extends State<Admin> {
          
 
         ],
-      ),
+      )
       
     );
   }
 
-  void share(BuildContext context, t) {
+  void share(BuildContext context, String t) {
     Share.share(t);
   }
 
-  shareNumber(context) async {
-    // return Column(children: [
-    //   Text(sellerProfile.seller[index].phoneNo)
-
-    // ],);
-    
+  shareNumber() async {
     return "join my tean in Digital Karobaar to speed up your Business..9935020063".toString();
     //Text('9935020063').toString();
     // Container(

@@ -1,9 +1,11 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class ForgetPassword extends StatelessWidget {
   //  SellRepository sellRepository = SellRepository();
@@ -77,7 +79,7 @@ class ForgetPassword extends StatelessWidget {
                         SizedBox(height: 20),
                         CommonButton(
                           buttonColor: AppColors.primaryColor,
-                          title: "Submit",
+                          title: LanguageKeys.submit.translate(context),
                           onTap: () {
                             if (_form.currentState.validate()) {
                               _form.currentState.save();

@@ -1,4 +1,6 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 class Support extends StatefulWidget {
   @override
   _SupportState createState() => _SupportState();
@@ -17,7 +19,7 @@ class _SupportState extends State<Support> {
     //      }
     //      ),
     // ],
-    title: Text("Support", style: TextStyle(color: Colors.white),),
+    title: Text(LanguageKeys.support.translate(context), style: TextStyle(color: Colors.white),),
 
 
      leading: Builder(

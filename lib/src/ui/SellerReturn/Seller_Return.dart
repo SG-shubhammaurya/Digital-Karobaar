@@ -1,3 +1,8 @@
+
+
+
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
 import 'package:digitalkarobaar/src/models/seller_returmget.dart';
 import 'package:digitalkarobaar/src/repository/dashboard_repository.dart';
@@ -5,6 +10,7 @@ import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class SellerReturns extends StatefulWidget {
   @override
@@ -44,7 +50,7 @@ class _SellerReturnsState extends State<SellerReturns> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Seller Returns",
+            LanguageKeys.returns.translate(context),
             style: TextStyle(color: Colors.white),
           ),
           leading: Builder(
@@ -74,7 +80,7 @@ class _SellerReturnsState extends State<SellerReturns> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Text(
-                        "Dashboard",
+                        LanguageKeys.dashboard.translate(context),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

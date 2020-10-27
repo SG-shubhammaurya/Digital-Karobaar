@@ -1,7 +1,8 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/ui/home/yourOrder/Seller_all.dart';
 import 'package:digitalkarobaar/src/ui/home/yourOrder/Seller_pending.dart';
 import 'package:flutter/material.dart';
-
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'Seller_Shipped.dart';
 import 'Seller_delivered.dart';
 import 'Seller_placed.dart';
@@ -19,7 +20,7 @@ class _SellerOrderState extends State<SellerOrder> {
             centerTitle: true,
             //leading: Icon(Icons.person_outline),
             title: Text(
-              'Your Orders',
+              LanguageKeys.yourOrders.translate(context),
               style: TextStyle(color: Colors.white),
             ),
             leading: Builder(

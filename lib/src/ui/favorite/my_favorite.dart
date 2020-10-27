@@ -1,3 +1,4 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/user_profile.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
@@ -5,6 +6,7 @@ import 'package:digitalkarobaar/src/repository/product_repository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class MyFavorite extends StatefulWidget {
   @override
@@ -52,7 +54,8 @@ class _MyFavoriteState extends State<MyFavorite> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-        title: const Text('My Favorite'),
+        title:  Text(LanguageKeys.myFavourites.translate(context)
+        ),
       ),
       body: isLoading ? Center(
         child: CircularProgressIndicator(

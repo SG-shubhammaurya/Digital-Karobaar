@@ -1,12 +1,14 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
 import 'package:digitalkarobaar/src/models/seller_dash.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 class SellerShop extends StatefulWidget {
   const SellerShop(this.id);
@@ -70,7 +72,7 @@ class _SellerShopState extends State<SellerShop> {
                                         }),
                                     const SizedBox(width: 10),
                                     Text(
-                                      "Seller Digital  Shop",
+                                      LanguageKeys.sellerShop.translate(context),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -91,7 +93,7 @@ class _SellerShopState extends State<SellerShop> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text("Folllower",
+                                        Text("Folllowers",
                                             style:
                                                 TextStyle(color: Colors.white)),
                                         Text(sellerDash.followers.toString(),
@@ -214,7 +216,7 @@ class _SellerShopState extends State<SellerShop> {
                         child: Container(
                           width: double.infinity,
                           height: 400,
-                          color: Colors.white,
+                        
                         ),
                       ),
                       Positioned(
@@ -333,7 +335,7 @@ class _SellerShopState extends State<SellerShop> {
                         child: Row(
                           children: [
                             Text(
-                              "Brand",
+                              LanguageKeys.brand.translate(context),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Divider(),
@@ -364,7 +366,7 @@ class _SellerShopState extends State<SellerShop> {
                   child: Row(
                     children: [
                       SizedBox(width: 10.0),
-                      Text("Products",
+                      Text(LanguageKeys.product.translate(context),
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -380,7 +382,7 @@ class _SellerShopState extends State<SellerShop> {
                         title: new TextField(
                           controller: controller,
                           decoration: new InputDecoration(
-                              hintText: 'Search', border: InputBorder.none),
+                              hintText: LanguageKeys.search.translate(context),border: InputBorder.none),
                           onChanged: onSearchTextChanged,
                         ),
                         trailing: new IconButton(
@@ -467,7 +469,17 @@ class _SellerShopState extends State<SellerShop> {
     Product product,
     IconData iconData,
   ) {
-    return Container(
+    return GestureDetector(
+
+    onTap: () 
+    {
+      Navigator.pushNamed(context, RouterName.productDetails,
+      arguments: product.id
+      
+      );
+    },
+    
+    child: Container(
       decoration: BoxDecoration(
         border: Border.all(width: 1),
       ),
@@ -477,12 +489,19 @@ class _SellerShopState extends State<SellerShop> {
             onTap: () {
               //Add Operation
             },
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, RouterName.productDetails,
+                arguments:  product.id
+                );
+              },
             child: Container(
               height: 100,
               width: 200,
               child: CachedNetworkImage(imageUrl: product.image1),
               // color: Colors.black12,
             ),
+          ),
           ),
           SizedBox(height: 5),
           product.title != null
@@ -493,6 +512,7 @@ class _SellerShopState extends State<SellerShop> {
               : Text('')
         ],
       ),
+    ),
     );
   }
 

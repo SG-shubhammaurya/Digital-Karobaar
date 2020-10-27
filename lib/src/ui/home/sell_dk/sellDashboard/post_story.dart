@@ -1,11 +1,15 @@
 import 'dart:io';
 
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/repository/dashboard_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 class PostStory extends StatefulWidget {
   @override
@@ -26,7 +30,7 @@ class _PostStoryState extends State<PostStory> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Post  Story'),
+        title: Text(LanguageKeys.story.translate(context)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -130,7 +134,7 @@ class _PostStoryState extends State<PostStory> {
               CommonButton(
                   buttonColor: AppColors.primaryColor,
                   titleColor: Colors.white,
-                  title: 'Post',
+                  title: LanguageKeys.post.translate(context),
                   onTap: () {
                     _formKey.currentState.save();
                     setState(() {

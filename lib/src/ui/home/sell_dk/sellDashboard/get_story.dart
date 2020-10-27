@@ -1,7 +1,3 @@
-
-
-
-import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 
 class SellerStoty extends StatelessWidget {

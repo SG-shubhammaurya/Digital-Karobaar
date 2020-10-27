@@ -11,14 +11,6 @@ class ProductCart {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class Cart {
@@ -27,7 +19,11 @@ class Cart {
   int discount;
   int retail;
   String image1;
+  int price;
   int quantity=1;
+ var perItemsPrice = 0;
+ var  remaining;
+ var delivery;
 
   Cart({this.id, this.title, this.discount, this.retail, this.image1,this.quantity});
 
@@ -37,15 +33,7 @@ class Cart {
     discount = json['Discount'];
     retail = json['Retail'];
     image1 = json['Image1'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['Title'] = this.title;
-    data['Discount'] = this.discount;
-    data['Retail'] = this.retail;
-    data['Image1'] = this.image1;
-    return data;
+    price = json['Price'];
+   delivery = json['Delivery'];
   }
 }

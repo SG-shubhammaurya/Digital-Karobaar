@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/sub_categories.dart';
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class SubCategories extends StatefulWidget {
   final categoriesId;
@@ -46,7 +48,7 @@ class _SubCategoriesState extends State<SubCategories> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Sub Categories"),
+          title: Text(LanguageKeys.subCategories.translate(context)),
         ),
         body: SingleChildScrollView(
           child: Column(

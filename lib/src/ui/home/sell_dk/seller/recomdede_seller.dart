@@ -1,7 +1,10 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/premium_seller.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 class RecomendedSeller extends StatefulWidget {
   @override
@@ -32,7 +35,7 @@ class _RecomendedSeelerState extends State<RecomendedSeller> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(title: Text("Recommended Seller")),
+      appBar: AppBar(title: Text(LanguageKeys.recommemdedSeller.translate(context))),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : ListView(

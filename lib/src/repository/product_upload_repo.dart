@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
 
 class ProductUploadRepo {
- 
   getCategories() async {
     try {
       return await ProductRepository.getTopCategories();
@@ -36,8 +35,7 @@ class ProductUploadRepo {
       final response = await http.post(EndPoint.productPost,
           headers: {
             'Content-type': 'application/json',
-            "Authorization":
-               await getSellerToken(),
+            "Authorization": await getSellerToken(),
             'Accept': 'Application/json'
           },
           body: body);
@@ -46,8 +44,8 @@ class ProductUploadRepo {
         var res = json.decode(response.body);
         showMessagess(res["success"]);
         return res["success"];
-      }else{
-           showMessagess("Try Again");
+      } else {
+        showMessagess("Try Again");
       }
     } catch (e) {
       throw Exception();
@@ -69,8 +67,8 @@ class ProductUploadRepo {
         var res = json.decode(response.body);
         showMessagess(res["success"]);
         return res["success"];
-      }else{
-           showMessagess("Try Again");
+      } else {
+        showMessagess("Try Again");
       }
     } catch (e) {
       throw Exception();

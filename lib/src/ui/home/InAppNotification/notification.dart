@@ -1,6 +1,8 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/ui/home/InAppNotification/Product_notification.dart';
 import 'package:digitalkarobaar/src/ui/home/InAppNotification/Seller_Notification.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class AppNotification extends StatefulWidget {
   @override
@@ -27,7 +29,7 @@ class _AppNotificationState extends State<AppNotification>
             centerTitle: true,
             //leading: Icon(Icons.person_outline),
             title: Text(
-              'Your Orders',
+              LanguageKeys.notification.translate(context),
               style: TextStyle(color: Colors.white),
             ),
             leading: Builder(

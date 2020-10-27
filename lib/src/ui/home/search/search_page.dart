@@ -65,7 +65,7 @@ class _SearchPageState extends State<SearchPage> {
               leading: CachedNetworkImage(
                 height: 30,
                 width: 30,
-                imageUrl: suggestion.image1,
+                imageUrl: suggestion.image1 ?? 'https://azadchaiwala.pk/getImage?i=&t=course',
                 colorBlendMode: BlendMode.darken,
                 errorWidget: (context, url, error) => Image.network(
                   'https://azadchaiwala.pk/getImage?i=&t=course',
@@ -81,9 +81,9 @@ class _SearchPageState extends State<SearchPage> {
               subtitle: Text(suggestion.brand,style: GoogleFonts.poppins(
                 fontSize: 10
               ),),
-              trailing: Text(suggestion.rating,style:GoogleFonts.poppins(
-                fontSize: 10
-              ),),
+              // trailing: Text(suggestion.rating,style:GoogleFonts.poppins(
+              //   fontSize: 10
+              // ),),
               );
       },
       onSuggestionSelected: (suggestion) async {
@@ -93,6 +93,5 @@ class _SearchPageState extends State<SearchPage> {
     ));
   }
 }
-
 
 

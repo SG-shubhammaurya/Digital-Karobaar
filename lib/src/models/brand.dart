@@ -3,7 +3,7 @@ class Brand {
   String image;
   String top;
   String status;
-  String by;
+  int by;
   String category;
 
   Brand(

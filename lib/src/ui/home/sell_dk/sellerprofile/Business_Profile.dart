@@ -1,7 +1,11 @@
+
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
 import 'package:digitalkarobaar/src/models/seller_document.dart';
 import 'package:digitalkarobaar/src/repository/dashboard_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class BusinessProfile extends StatefulWidget {
   @override
@@ -40,7 +44,7 @@ class _BusinessProfileState extends State<BusinessProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Business Profile")),
+        appBar: AppBar(title: Text(LanguageKeys.businessProfile.translate(context))),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             :  sellerDocument.data.length == 0

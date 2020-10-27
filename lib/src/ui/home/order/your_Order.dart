@@ -1,7 +1,10 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/ui/home/order/All.dart';
 import 'package:digitalkarobaar/src/ui/home/order/Delevered.dart';
 import 'package:digitalkarobaar/src/ui/home/order/Pending.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 import 'place_order.dart';
 import 'shipped_order.dart';
@@ -29,7 +32,7 @@ class _YourOrderState extends State<YourOrder>
             centerTitle: true,
             //leading: Icon(Icons.person_outline),
             title: Text(
-              'Your Orders',
+              LanguageKeys.yourOrders.translate(context),
               style: TextStyle(color: Colors.white),
             ),
             leading: Builder(

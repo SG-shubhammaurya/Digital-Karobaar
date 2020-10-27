@@ -82,9 +82,8 @@ class _MessengerState extends State<Messenger> {
               ),
               Divider(),
               ListTile(
-                //onLongPress: (){},
                 onTap: (){
-                  FlutterOpenWhatsapp.sendSingleMessage("+91 8287007747", "Hello, I'm the user of Digital Karobaar. I'm facing some issue please solve this");
+                  FlutterOpenWhatsapp.sendSingleMessage("+91 9818246861", "Hello, I am the user of Digital Karobaar platform please solve my issue");
                 },
                 leading: CircleAvatar(
                   child: Image.asset("assets/icons/whatsapp.png"),
@@ -96,7 +95,7 @@ class _MessengerState extends State<Messenger> {
               ListTile(
                 //onLongPress: (){},
                 onTap: (){
-                  FlutterOpenWhatsapp.sendSingleMessage("+91 9818246861", "Hello,I'm the user of Digital Karobaar. I'm facing some issue please solve this");
+                  FlutterOpenWhatsapp.sendSingleMessage("+91 8287007747", "Hello, I am the user of Digital Karobaar platform please solve my issue");
                 },
                 leading: CircleAvatar(
                   child: Image.asset("assets/icons/whatsapp.png"),
@@ -104,6 +103,7 @@ class _MessengerState extends State<Messenger> {
                 title: Text("Digital Karobaar WhatsApp",style: TextStyle(fontSize: 14)),
 
               ),
+ 
               Divider(),
             ],
           );

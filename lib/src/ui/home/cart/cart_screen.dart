@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_state.dart';
-import 'package:digitalkarobaar/src/bloc/orderplace/order_place_cubit.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/product_cart.dart';
@@ -18,12 +17,12 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   CartCubit cartCubit;
-  OrderPlaceCubit orderPlaceCubit;
+  // OrderPlaceCubit orderPlaceCubit;
   @override
   void initState() {
     _getCartItems();
-  
-    orderPlaceCubit = BlocProvider.of(context);
+
+    // orderPlaceCubit = BlocProvider.of(context);
     super.initState();
   }
 
@@ -36,88 +35,84 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cartItems = Provider.of<CartDetailProvider>(context);
-    // return Consumer<CartDetailProvider>(
-    //     builder: (BuildContext context, cart, child) {
-    return Scaffold(
-        appBar: AppBar(centerTitle: true, title: const Text('My Cart')),
-        body: BlocBuilder<CartCubit, CartState>(
-            cubit: cartCubit,
-            builder: (c, s) {
-              if (s is LoadingCart) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (s is CartItems) {
-                if (s.items.data.length == 0) {
-                  return Center(
-                    child: Text('No items in Cart'),
-                  );
-                }
-              }
-              if (s is CartItems) {
-                cartItems.addItems(s.items.data);
-               showBottom = true;
-                return ListView(
-                  shrinkWrap: true,
-                  children: List<Widget>.generate(s.items.data.length, (index) {
-                  
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
 
-                              spreadRadius: 0.1,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ]),
-                      child: ListTile(
-                          leading: CachedNetworkImage(
-                            width: 60,
-                            height: 50,
-                            imageUrl: s.items.data[index].image1,
-                            placeholder: (context, url) =>
-                                Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.broken_image),
-                          ),
-                          title: Text(s.items.data[index].title),
-                          subtitle:
-                              _setQuantity(s.items.data[index], cartItems),
-                          //   Text(
-                          // '${cartDetailProvider.cartItems.values.toList()[index].quantity}'),
-                          trailing: InkResponse(
-                            onTap: () {
-                              _removeItems(s.items.data[index].id);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 10.0),
-                              child: Icon(
-                                Icons.remove_circle,
-                                color: AppColors.primaryColor,
-                              ),
-                            ),
-                          )),
-                    );
-                  }).toList(),
+    return Scaffold(
+      appBar: AppBar(centerTitle: true, title: const Text('My Cart')),
+      body: BlocBuilder<CartCubit, CartState>(
+          cubit: cartCubit,
+          builder: (c, s) {
+            if (s is LoadingCart) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (s is CartItems) {
+              cartItems.addItems(s.items.data);
+
+              return Stack(
+                fit: StackFit.loose,
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    children:
+                        List<Widget>.generate(s.items.data.length, (index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                              leading: CachedNetworkImage(
+                                  width: 80,
+                                  height: 80,
+                                  imageUrl: s.items.data[index].image1,
+                                  placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) => Icon(
+                                        Icons.broken_image,
+                                        size: 20,
+                                      )),
+                              title: Text(s.items.data[index].title,style: 
+                              TextStyle(fontSize: 12)),
+                              subtitle: _setQuantity(
+                                  s.items.data[index], cartItems, context),
+                              trailing: InkResponse(
+                                onTap: () {
+                                  _removeItems(s.items.data[index].id);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 10.0),
+                                  child: Icon(
+                                    Icons.delete,
+                                    size: 20,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                              )),
+                          Divider(color: Colors.black12, thickness: 2.0)
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _showBottomNav(cartItems),
+                  )
+                ],
+              );
+            }
+            if (s is CartItems) {
+              if (s.items.data.length == 0) {
+                return Center(
+                  child: Text('No items in Cart'),
                 );
               }
-              if (s is SuccessCartRemove) {
-                _getCartItemsAgain();
-              }
-
-              return Container();
-            }),
-        bottomNavigationBar:
-            Consumer<CartDetailProvider>(builder: (c, p, child) {
-          return  showBottom ?  _showBottomNav(p) : SizedBox(height: 5, width: 5);
-        }));
-    // }
-    //);
+            }
+            if (s is SuccessCartRemove) {
+              _getCartItemsAgain(context);
+            }
+            if (s is ErrorStateCart) {
+              Text(s.message.toString());
+            }
+            return Center(child: Text('Loading..'));
+          }),
+    );
   }
 
   _showBottomNav(CartDetailProvider cartItems) {
@@ -127,41 +122,74 @@ class _CartScreenState extends State<CartScreen> {
         : SizedBox(height: 5, width: 5);
   }
 
-  _setQuantity(Cart list, CartDetailProvider cartDetailProvider) {
-    return Container(
-        height: 32,
-        width: MediaQuery.of(context).size.width * 0.30,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.grey[200]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // Text(''),
+  _setQuantity(
+      Cart list, CartDetailProvider cartDetailProvider, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
 
-            InkWell(
-                onTap: () {
-                  cartDetailProvider.updateProduct(list, list.quantity + 1);
-                },
-                child: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                )),
+         Text('Discunt : \u20B9 ${list.discount.toString()}',style: TextStyle(
+           fontSize: 12,
+         )),
+         const SizedBox(height: 10),
+         Text('Prize : \u20B9 ${list.price.toString()}',style: TextStyle(
+           fontSize: 12,
+         )),
+           const SizedBox(height: 10),
+         Text('Margin : % ${list.retail.toString()}',style: TextStyle(
+           fontSize: 12,
+         )),
+           const SizedBox(height: 10),
+         Text('Delivery Charge: \u20B9 ${list.delivery}',style: TextStyle(
+           fontSize: 12,
+         )),
+           const SizedBox(height: 10),
+           Text('Quantity:',style: TextStyle(
+           fontSize: 12,
+         )),
+           const SizedBox(height: 10),
+          Container(
+              height: 30,
+              width: 150,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey[200]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                 
+                  InkWell(
+                      onTap: () {
+                        cartDetailProvider.updateProduct(list, list.quantity + 1);
+                      },
+                      child: Icon(
+                        Icons.add,
+                        size: 18,
+                        color: Colors.black,
+                      )),
 
-            Text('${list.quantity}'),
+                  Text('${list.quantity}',style: TextStyle(
+                    color: Colors.black
+                  ),),
 
-            InkWell(
-                onTap: () {
-                  cartDetailProvider.updateProduct(list, list.quantity - 1);
-                  if (list.quantity == 0) {
-                    _removeItems(list.id);
-                  }
-                },
-                child: Icon(Icons.remove, color: Colors.black))
-          ],
-        ));
+                  list.quantity == 1
+                      ? Icon(Icons.remove, size: 18, color: Colors.black38)
+                      : InkWell(
+                          onTap: () {
+                            final qtr = list.quantity - 1;
+                            cartDetailProvider.updateProduct(list, qtr);
+                          },
+                          child: Icon(Icons.remove, size: 18, color: Colors.black))
+                ],
+              )),
+        ],
+      ),
+    );
   }
 
   _checkOut(CartDetailProvider cart) {
@@ -193,7 +221,7 @@ class _CartScreenState extends State<CartScreen> {
                           color: AppColors.primaryColor),
                       child: Center(
                         child: Text(
-                          cart.calculateTotal().toString(),
+                          '\u20B9 ${cart.calculateTotal()}',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -227,8 +255,8 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void _getCartItemsAgain() async {
-    ///await BlocProvider.of<CartCubit>(context).getCartItems();
+  void _getCartItemsAgain(BuildContext context) async {
+    await BlocProvider.of<CartCubit>(context).getCartItems(context);
   }
 
   void _removeItems(int id) async {

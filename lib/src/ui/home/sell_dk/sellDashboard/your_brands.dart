@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/brand.dart';
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class YourBrands extends StatefulWidget {
   @override
@@ -19,7 +21,7 @@ class _YourBrandsState extends State<YourBrands> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Your Brands'),
+          title: Text(LanguageKeys.brand.translate(context)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -49,7 +51,7 @@ class _YourBrandsState extends State<YourBrands> {
                         Navigator.pushNamed(context, RouterName.brandsMov,
                             arguments: true);
                       },
-                      child: Text('Add'))
+                      child: Text(LanguageKeys.add.translate(context)))
                 ],
               ),
               SizedBox(height: 20),

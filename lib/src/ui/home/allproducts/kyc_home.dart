@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/utils/preference_helper.dart';
-import 'package:digitalkarobaar/src/core/widget/common_button.dart';
+
 import 'package:digitalkarobaar/src/core/widget/common_icon_button.dart';
-import 'package:digitalkarobaar/src/models/CrouselAdvertisment.dart';
+import 'package:digitalkarobaar/src/models/ads_seller.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
-import 'package:digitalkarobaar/src/models/home_adverties.dart';
+
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/top_brands.dart';
-import 'package:digitalkarobaar/src/models/top_products.dart';
+
 import 'package:digitalkarobaar/src/models/user_profile.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
@@ -87,10 +87,10 @@ class _KycHomeState extends State<KycHome> {
     });
   }
 
-  List<DataAdd> addList = [];
+   List<DataAds> addList = [];
   _getCrouselAds() async {
-    var add = await HomeReposiitory.getCrouselAdvertisment();
-    addList = add;
+    var ads = await HomeReposiitory.getAdsSeller();
+    addList =ads;
   }
 
   _getTopProducts() async {
@@ -400,12 +400,13 @@ class _KycHomeState extends State<KycHome> {
                             borderRadius: BorderRadius.circular(10),
                             color: AppColors.primaryColor,
                           ),
-                          height: 50,
+                          height: 30,
                           width: MediaQuery.of(context).size.width,
                           child: Center(
                             child: Text(
                               'Show all Products',
                               style: GoogleFonts.openSans(
+                                color: Colors.white,
                                   fontWeight: FontWeight.w600, fontSize: 14),
                             ),
                           ),
@@ -419,65 +420,7 @@ class _KycHomeState extends State<KycHome> {
       ),
     ));
   }
-  // _buildProductsList() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //     children: [
-  //        GestureDetector(
-  //                           onTap: ( ) {
-
-  //                             Navigator.pushNamed(context, RouterName.productPage);
-  //                           },
-  //                          child: SizedBox(
-  //                           width: 100,
-  //                           height:100,
-  //                           child: CachedNetworkImage(
-  //                             imageUrl: topProduts[index].image1,
-  //                             placeholder: (context, url) =>
-  //                                 Center(child: CircularProgressIndicator()),
-  //                             errorWidget: (context, url, error) =>
-  //                                 Icon(Icons.error),
-  //                           ),
-  //                         )
-  //                   ),
-  //        GestureDetector(
-  //                           onTap: ( ) {
-
-  //                             Navigator.pushNamed(context, RouterName.productPage);
-  //                           },
-  //                          child: SizedBox(
-  //                           width: 100,
-  //                           height:100,
-  //                           child: CachedNetworkImage(
-  //                             imageUrl: topProducts.image,
-  //                             placeholder: (context, url) =>
-  //                                 Center(child: CircularProgressIndicator()),
-  //                             errorWidget: (context, url, error) =>
-  //                                 Icon(Icons.error),
-  //                           ),
-  //                         )
-  //                   ),
-  //        GestureDetector(
-  //                           onTap: ( ) {
-
-  //                             Navigator.pushNamed(context, RouterName.productPage);
-  //                           },
-  //                          child: SizedBox(
-  //                           width: 100,
-  //                           height:100,
-  //                           child: CachedNetworkImage(
-  //                             imageUrl: topProducts.image,
-  //                             placeholder: (context, url) =>
-  //                                 Center(child: CircularProgressIndicator()),
-  //                             errorWidget: (context, url, error) =>
-  //                                 Icon(Icons.error),
-  //                           ),
-  //                         )
-  //                   ),
-  //     ],
-  //   );
-  // }
-
+  
   _buildDrawer() {
     return Drawer(
       child: ListView(
@@ -633,14 +576,9 @@ class _KycHomeState extends State<KycHome> {
   }
 
   logout() async {
-    SharedPreferences pre = await SharedPreferences.getInstance();
-    setState(() {
-      pre.clear();
-      PreferenceHelper.accessToken = "";
-      PreferenceHelper.refreshToken = "";
-      PreferenceHelper.userId = null;
-      //PreferenceHelper.userId =""
-    });
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('accessToken');
+
     Navigator.pushNamedAndRemoveUntil(
         context, RouterName.otp, ModalRoute.withName("/"));
   }

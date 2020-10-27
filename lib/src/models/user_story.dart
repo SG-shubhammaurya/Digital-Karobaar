@@ -14,20 +14,20 @@ class UserStory {
 }
 
 class Stories {
-  int id;
+  
   int sellerId;
   String file;
   String text;
-  String status;
+ 
 
-  Stories({this.id, this.sellerId, this.file, this.text, this.status});
+  Stories({this.sellerId, this.file, this.text});
 
   Stories.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    sellerId = json['Seller_id'];
+ 
+    sellerId = json['Seller'];
     file = json['File'];
     text = json['Text'];
-    status = json['Status'];
+ 
   }
 
 }

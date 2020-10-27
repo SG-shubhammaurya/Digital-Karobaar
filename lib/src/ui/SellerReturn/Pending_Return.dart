@@ -1,3 +1,4 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
 import 'package:digitalkarobaar/src/models/seller_returmget.dart';
 import 'package:digitalkarobaar/src/repository/dashboard_repository.dart';
@@ -5,6 +6,7 @@ import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 class SellerPendingReturn extends StatefulWidget {
   @override
   _SellerPendingReturnState createState() => _SellerPendingReturnState();
@@ -48,7 +50,7 @@ class _SellerPendingReturnState extends State<SellerPendingReturn> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Seller Returns",
+            LanguageKeys.returns.translate(context),
             style: TextStyle(color: Colors.white),
           ),
           leading: Builder(
@@ -79,7 +81,7 @@ class _SellerPendingReturnState extends State<SellerPendingReturn> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Text(
-                        "Dashboard",
+                       LanguageKeys.dashboard.translate(context),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -145,6 +147,12 @@ class _SellerPendingReturnState extends State<SellerPendingReturn> {
                             sellerReturn[index].user,
                           );
                         }),
+
+
+
+
+            /////ListView.builder(itemBuilder: null),
+
 
 
 

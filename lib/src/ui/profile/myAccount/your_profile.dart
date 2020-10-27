@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/models/seller_profile.dart';
 import 'package:digitalkarobaar/src/repository/dashboard_repository.dart';
@@ -6,6 +8,7 @@ import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class YourProfile extends StatefulWidget {
   @override
@@ -35,7 +38,7 @@ class _YourProfileState extends State<YourProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Your Profile")),
+        appBar: AppBar(title: Text(LanguageKeys.yourProfile.translate(context))),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             : ListView.builder(

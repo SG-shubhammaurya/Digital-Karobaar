@@ -65,7 +65,6 @@ class EndPoint {
 
   static String singleSeller = baseUrl + "/user/seller/premium?id=";
   static String followUser = baseUrl + "/social/follow";
-
   static String followingGetUser = baseUrl + "/social/follow";
   static String followerSellerGet = baseUrl + "/social/follow/get";
 
@@ -113,16 +112,19 @@ class EndPoint {
   static String userShipedOrder = baseUrl + "/order/?status=shipped";
 
   static String sellerReturnGet = baseUrl + "/order/return/seller";
-    static String sellerPendingReturnGet = baseUrl + "/order/return/search?search=pending";
-  static String sellerApprovedReturnGet = baseUrl + "/order/return/search?search=approved";
-static String storyUpdatebySeller = baseUrl + "/social/story";
-static String getSellerStory = baseUrl + "/social/story";
-static String getUserStory = baseUrl + "/social/user/story";
-static String getSellerProducts = baseUrl + "/dashboard/?id=";
-static String getSellerStoryProducts = baseUrl + "/products/shop/search?id=";
-static String getSellerAds = baseUrl + "/adv";
-static String addImages = baseUrl + "/img";
-static String advertismentHome = baseUrl + "/adv/get";
-static String kycAdvertisment = baseUrl + "/adv/kyc";
+  static String storyUpdatebySeller = baseUrl + "/social/story";
+  static String getSellerStory = baseUrl + "/social/story";
+  static String getUserStory = baseUrl + "/social/user/story";
+  static String getSellerProducts = baseUrl + "/dashboard/?id=";
+  static String getSellerStoryProducts = baseUrl + "/products/shop/search?id=";
+  static String getSellerAds = baseUrl + "/adv";
+  static String getSellerHomeAds = baseUrl + "/adv/get";
+  static String addImages = baseUrl + "/img";
+  static String advertismentHome = baseUrl + "/adv/home";
+  static String sellerPendingReturnGet =
+      baseUrl + "/order/return/search?search=pending";
+  static String sellerApprovedReturnGet =
+      baseUrl + "/order/return/search?search=approved";
 static String getNotification = baseUrl + "/notify/";
+      
 }

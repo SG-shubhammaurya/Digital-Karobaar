@@ -1,6 +1,8 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class YourReturns extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class _YourReturnsState extends State<YourReturns> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Your Returns",
+            LanguageKeys.yourReturns.translate(context),
             style: TextStyle(color: Colors.white),
           ),
           leading: Builder(

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/utils/util.dart';
-import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/seller_document.dart';
 import 'package:digitalkarobaar/src/models/seller_order_get.dart';
 import 'package:digitalkarobaar/src/models/seller_profile.dart';
@@ -32,6 +31,29 @@ class DashRepository {
       throw Exception(e);
     }
   }
+  // static Future<List<Document>> sellerDocument() async {
+  //   try {
+  //     final response = await http.get(
+  //       EndPoint.sellerDocumentGet,
+  //       headers: {
+  //         "Authorization": await getSellerToken(),
+  //         'Accept': 'application/json',
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final res = json.decode(response.body);
+  //       List<dynamic> data = res["document"];
+  //       return List.generate(data.length, (index){
+  //         return Document.fromJson(data[index]);
+  //       }).toList();
+  //       //return Document.fromJson(res);
+  //     } else {
+  //       _handleResponse(response);
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
 
   static _handleResponse(http.Response response) {
     if (response.statusCode == 406 || response.statusCode == 404) {
@@ -353,60 +375,6 @@ class DashRepository {
       throw Exception(e);
     }
   }
-  
-static Future<List<SellerReturnGet>> getSellerPendingReturn() async {
-    try {
-      final response = await http.get(
-        //EndPoint.sellerOrderPlaced
-        EndPoint.sellerPendingReturnGet,
-        headers: {
-          "Authorization":  await getSellerToken(),
-          'content-type': 'application/json',
-          'Accept': 'application/json',
-        },
-      );
-      // var token = await PreferenceHelper.getSellAccessToken();
-      // print(token);
-      if(response.statusCode == 200){
-        final res = json.decode(response.body) as List;
-        return List.generate(res.length,(index){
-          return SellerReturnGet.fromJson(res[index]);
-        }).toList();
-      } else {
-        _handleResponse(response);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-
-  static Future<List<SellerReturnGet>> getSellerApprovedReturn() async {
-    try {
-      final response = await http.get(
-        //EndPoint.sellerOrderPlaced
-        EndPoint.sellerApprovedReturnGet,
-        headers: {
-          "Authorization": await getSellerToken(),
-          'content-type': 'application/json',
-          'Accept': 'application/json',
-        },
-      );
-      // var token = await PreferenceHelper.getSellAccessToken();
-      // print(token);
-      if(response.statusCode == 200){
-        final res = json.decode(response.body) as List;
-        return List.generate(res.length,(index){
-          return SellerReturnGet.fromJson(res[index]);
-        }).toList();
-      } else {
-         _handleResponse(response);
-      }
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-  
 
   static Future<List<SellerStory>> getSellerSoty() async {
     try {
@@ -430,7 +398,6 @@ static Future<List<SellerReturnGet>> getSellerPendingReturn() async {
       throw Exception(e);
     }
   }
-  
 
  
 
@@ -447,7 +414,7 @@ static Future<List<SellerReturnGet>> getSellerPendingReturn() async {
       );
       FormData formData = FormData.fromMap({
         //"Video": await MultipartFile.fromFile(video.path, filename: imageName),
-        "Image": await MultipartFile.fromFile(image.path, filename: imageName),
+        "File": await MultipartFile.fromFile(image.path, filename: imageName),
         "Text": message
       });
       double _progressValue = 0;
@@ -493,4 +460,54 @@ static Future<List<SellerReturnGet>> getSellerPendingReturn() async {
 //     response.stream.transform(utf8.decoder).listen((value) {
 //       print(value);
 //     });
+static Future<List<SellerReturnGet>> getSellerPendingReturn() async {
+    try {
+      final response = await http.get(
+        //EndPoint.sellerOrderPlaced
+        EndPoint.sellerPendingReturnGet,
+        headers: {
+          "Authorization":  await getSellerToken(),
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      // var token = await PreferenceHelper.getSellAccessToken();
+      // print(token);
+      if(response.statusCode == 200){
+        final res = json.decode(response.body) as List;
+        return List.generate(res.length,(index){
+          return SellerReturnGet.fromJson(res[index]);
+        }).toList();
+      } else {
+        _handleResponse(response);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+  static Future<List<SellerReturnGet>> getSellerApprovedReturn() async {
+    try {
+      final response = await http.get(
+        //EndPoint.sellerOrderPlaced
+        EndPoint.sellerApprovedReturnGet,
+        headers: {
+          "Authorization": await getSellerToken(),
+          'content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      // var token = await PreferenceHelper.getSellAccessToken();
+      // print(token);
+      if(response.statusCode == 200){
+        final res = json.decode(response.body) as List;
+        return List.generate(res.length,(index){
+          return SellerReturnGet.fromJson(res[index]);
+        }).toList();
+      } else {
+         _handleResponse(response);
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

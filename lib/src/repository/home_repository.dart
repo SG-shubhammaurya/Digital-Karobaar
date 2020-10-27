@@ -7,10 +7,9 @@ import 'package:digitalkarobaar/src/models/categories.dart';
 import 'package:digitalkarobaar/src/models/get_userOrder.dart';
 import 'package:digitalkarobaar/src/models/home_adverties.dart';
 import 'package:digitalkarobaar/src/models/home_image.dart';
-import 'package:digitalkarobaar/src/models/notification.dart';
+import 'package:digitalkarobaar/src/models/notification_in_app.dart';
 import 'package:digitalkarobaar/src/models/product_spec.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
-import 'package:digitalkarobaar/src/models/seller_dash.dart';
 import 'package:digitalkarobaar/src/models/top_products.dart';
 import 'package:digitalkarobaar/src/models/user_profile.dart';
 import 'package:digitalkarobaar/src/models/user_story.dart';
@@ -336,9 +335,9 @@ class HomeReposiitory {
       final response = await http.get(
         EndPoint.userAllOrder,
         headers: {
-          "Authorization":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NDU3MzUwLCJqdGkiOiJjYzNkZjA5NTRkMjA0N2U5OGUyOTgxOTNiZGFiM2QzNSIsInVzZXJfaWQiOjN9.CFlsZNFEk0lwC0VP5Gnz2JyC35TVP2TcyN0TYJMd5XE",
-          //await getAccessToken(),
+          "Authorization":await getAccessToken(),
+            //  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NDU3MzUwLCJqdGkiOiJjYzNkZjA5NTRkMjA0N2U5OGUyOTgxOTNiZGFiM2QzNSIsInVzZXJfaWQiOjN9.CFlsZNFEk0lwC0VP5Gnz2JyC35TVP2TcyN0TYJMd5XE",
+          //,
           'content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -453,7 +452,7 @@ class HomeReposiitory {
     }
   }
 
-  static Future<List<DataAds>>   getAdsSeller() async {
+  static Future<List<DataAds>> getAdsSeller() async {
     try {
       final response = await http.get(
         EndPoint.getSellerAds,
@@ -482,9 +481,8 @@ class HomeReposiitory {
       final response = await http.get(
         EndPoint.getUserStory,
         headers: {
-          "Authorization":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4OTgxODk0LCJqdGkiOiJhNjYwNDY3ZTIwOTk0YTE2OTYyNmY4MGM5ZTI3YjUxMyIsInVzZXJfaWQiOjN9.AyU752lLzIEblPwxGjGUS29IJcdt0j-MAKiJRs-wmXQ",
-          //await getAccessToken(),
+          "Authorization":await getAccessToken(),
+         
           'content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -501,12 +499,12 @@ class HomeReposiitory {
     }
   }
 
-  static Future<List<Products>> getSellerSotyProducts() async {
+  static Future<List<Products>> getSellerSotyProducts(String id) async {
     try {
       final response = await http.get(
-        EndPoint.getSellerStoryProducts + '2',
+        EndPoint.getSellerStoryProducts + id,
         headers: {
-          "Authorization": await getSellerToken(),
+         // "Authorization": await getSellerToken(),
           'content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -517,7 +515,7 @@ class HomeReposiitory {
           return Products.fromJson(res[index]);
         }).toList();
       } else {
-        //_handleResponse(response);
+       //_handleResponse(response);
       }
     } catch (e) {
       throw Exception(e);
@@ -541,7 +539,7 @@ class HomeReposiitory {
   static Future<HomeAdvertisment> getAdvertisment() async {
     try {
       final response = await http.get(
-        EndPoint.advertismentHome,
+        EndPoint.getSellerHomeAds,
         headers: {'Accept': 'application/json'},
       );
       if (response.statusCode == 200) {
@@ -554,28 +552,6 @@ class HomeReposiitory {
       throw Exception(e);
     }
   }
-
-  static Future<List<DataAdd>>   getCrouselAdvertisment()async{
-    try {
-      final response = await http.get(
-        EndPoint.kycAdvertisment,
-        headers: {
-          'content-type':'application/json',
-          'Accept':'application/json',
-        },
-      );
-      if(response.statusCode == 200 || response.statusCode == 201){
-        final res = json.decode(response.body);
-        List<dynamic> data = res["data"];
-        return List.generate(data.length, (index){
-          return DataAdd.fromJson(data[index]);
-        }).toList();
-      }
-    }catch(e){
-      throw Exception(e);
-    }
-  }
-
   static Future<List<ProductNoti>> getProductNotification() async {
     try{
       final response = await http.get(
@@ -613,7 +589,6 @@ class HomeReposiitory {
          return List.generate(data.length, (index) {
           return SellerNoti.fromJson(data[index]);
         }).toList();
-      
       }else {
         print(response.statusCode.toString());
       }
@@ -621,9 +596,6 @@ class HomeReposiitory {
       throw Exception(e);
     }
   }
-
-
-
 
 
 }

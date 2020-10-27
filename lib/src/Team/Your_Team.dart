@@ -1,7 +1,10 @@
 import 'package:digitalkarobaar/src/Team/Admin/admin.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:flutter/material.dart';
 import 'Manage/Manage.dart';
 import 'Member/TeamMember.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 
 class YourTeam extends StatefulWidget {
   @override
@@ -26,7 +29,7 @@ TabController _tabController;
       child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Manage Your Team'),
+            title: Text(LanguageKeys.manageYourTeam.translate(context)),
    bottom: PreferredSize(
                     child: Container(
                       color: Colors.black12,
@@ -43,13 +46,12 @@ TabController _tabController;
                             Tab(
                               text: "     Admin     ",
                             ),
-                            // SizedBox(width: 10.0,),
                             Tab(
                               text: "    Manage     ",
                             ),
                             Tab(
                               text: "    Member     ",
-                            ),
+                            ), 
                           ]
                         ),
                     ),

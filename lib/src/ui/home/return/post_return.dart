@@ -42,7 +42,7 @@ class _PostReturnState extends State<PostReturn> {
                     message = val;
                   },
                   keyboardType: TextInputType.text,
-                  decoration: inputDecoration(hint: "Message")),
+                  decoration: inputDecoration(hint: "Message or Reason")),
               const SizedBox(height: 10),
               TextFormField(
                 readOnly: true,

@@ -87,6 +87,5 @@ static const getUserreturn = "getUserReturn";
 static const sellerReturn = "/sellerReturn";
 static const sellerPendingReturn = "pendingReturn";
 static const sellerApprovedReturn = "approvedReturn";
-static const notificationPart = "notification";
 
 }

@@ -3,22 +3,17 @@ import 'package:digitalkarobaar/src/bloc/orderplace/order_place_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/orderplace/order_place_state.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
-import 'package:digitalkarobaar/src/core/utils/util.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/models/order_address.dart';
 import 'package:digitalkarobaar/src/models/order_res.dart';
 import 'package:digitalkarobaar/src/models/product_cart.dart';
-import 'package:digitalkarobaar/src/payment/products_payment.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class CheckOut extends StatefulWidget {
@@ -27,8 +22,8 @@ class CheckOut extends StatefulWidget {
 }
 
 class _CheckOutState extends State<CheckOut> {
-  double _progressValue = 0;
-  int _progressPercentValue = 0;
+  // double _progressValue = 0;
+  // int _progressPercentValue = 0;
   var documents = [];
 
   String selectedRadioTile;
@@ -47,11 +42,10 @@ class _CheckOutState extends State<CheckOut> {
   int addressId;
   _getAddress() async {
     orderPlaceCubit = await context.bloc<OrderPlaceCubit>().getOrderAddress();
-
-    // ProductOrderRepository.getdeliveryAddress();
   }
 
   String method;
+
   setSelectedRadioTile(String val, String type) {
     setState(() {
       selectedRadioTile = val;
@@ -68,11 +62,9 @@ class _CheckOutState extends State<CheckOut> {
   bool selected1 = true;
   bool selected2 = true;
   var checkoutVaue;
-
   @override
   Widget build(BuildContext context) {
-    final cartItems = context.watch<
-        CartDetailProvider>(); //Provider.of<CartDetailProvider>(context);
+    final cartItems = Provider.of<CartDetailProvider>(context);
     return Scaffold(
         appBar: AppBar(centerTitle: true, title: const Text('Check Out')),
         body: ListView(children: [
@@ -126,6 +118,12 @@ class _CheckOutState extends State<CheckOut> {
               BlocBuilder<OrderPlaceCubit, OrderPlaceState>(
                   cubit: orderPlaceCubit,
                   builder: (c, s) {
+                    if (s is LoadingStateOrders) {
+                      return Center(
+                          child: CircularProgressIndicator(
+                        backgroundColor: AppColors.primaryColor,
+                      ));
+                    }
                     if (s is GetOrderAddress) {
                       result = s.orderAdd;
                       return _buildAddress();
@@ -137,7 +135,7 @@ class _CheckOutState extends State<CheckOut> {
                         if (selectedRadioTile == '2' ||
                             selectedRadioTile == '3') {
                           orderResponce = s.orderSuccessRes;
-                          print(orderResponce.id.toString());
+
                           cartItems.orderResponce = s.orderSuccessRes;
                           _paymentForOrder();
                         } else {
@@ -190,9 +188,9 @@ class _CheckOutState extends State<CheckOut> {
                               style: TextStyle(color: Colors.orange),
                             ),
                             onChanged: (val) {
-                              print("Radio Tile pressed $val");
                               setSelectedRadioTile(
                                   val, 'Full Cash On Delivery');
+                              checkoutVaue = cartItems.checkOutTotal;
                             },
                             activeColor: Colors.orange,
                           ),
@@ -202,11 +200,10 @@ class _CheckOutState extends State<CheckOut> {
                             title: Text("20% Advance | 80% COD"),
                             //subtitle: Text("3% Extra Discount",style: TextStyle(color: Colors.orange),),
                             onChanged: (val) {
-                              print("Radio Tile pressed $val");
                               setSelectedRadioTile(
                                   val, '20% Advance | 80% COD');
-                              cartItems.twentyPercentDiss(
-                                  cartItems.calculateTotal());
+                              cartItems
+                                  .twentyPercentDiss(cartItems.checkOutTotal);
                               checkoutVaue = cartItems.checkOutTotal;
                             },
                             activeColor: Colors.orange,
@@ -220,8 +217,8 @@ class _CheckOutState extends State<CheckOut> {
                               style: TextStyle(color: Colors.orange),
                             ),
                             onChanged: (val) {
-                              print("Radio Tile pressed $val");
                               setSelectedRadioTile(val, '100% Advance');
+                              checkoutVaue = cartItems.checkOutTotal;
                             },
                             activeColor: Colors.orange,
                           )
@@ -338,7 +335,7 @@ class _CheckOutState extends State<CheckOut> {
                           Text(
                             "Order Summery",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           Padding(
                             padding:
@@ -393,23 +390,30 @@ class _CheckOutState extends State<CheckOut> {
                             height: 35,
                             onTap: () async {
                               if (addressId != null) {
-                                List<Cart> cart = cartItems.getCartItems();
-                                var list = cart
-                                    .map((e) => {
-                                          "ProductId": e.id,
-                                          "OrderAddress": addressId,
-                                          "Quantity": e.quantity,
-                                          "Amount": e.retail,
-                                          "Paid_Amount":
-                                              cartItems.checkOutTotal,
-                                          "method": method,
-                                          "Remaining": cartItems.remaining
-                                        })
-                                    .toList();
-                                print(list.toString());
-                                context
-                                    .bloc<OrderPlaceCubit>()
-                                    .confirmOrder(list);
+                                if (checkoutVaue != 0.0 || checkoutVaue != -1) {
+                                  if (method != null) {
+                                    List<Cart> cart = cartItems.getCartItems();
+                                    var list = cart
+                                        .map((e) => {
+                                              "ProductId": e.id,
+                                              "OrderAddress": addressId,
+                                              "Quantity": e.quantity,
+                                              "Amount": e.price,
+                                              "Paid_Amount": e.perItemsPrice,
+
+                                              "method": method,
+                                              "Remaining": e.remaining
+                                              //cartItems.remaining
+                                            })
+                                        .toList();
+                                    print(list);
+                                    context
+                                        .bloc<OrderPlaceCubit>()
+                                        .confirmOrder(list);
+                                  } else {
+                                    showMessagess("Select Payment Option");
+                                  }
+                                }
                               } else {
                                 showMessagess("Select Address");
                               }
@@ -424,14 +428,15 @@ class _CheckOutState extends State<CheckOut> {
           BlocBuilder<OrderPlaceCubit, OrderPlaceState>(
               cubit: orderPlaceCubit,
               builder: (c, s) {
-                if (s is SuccessStateOrder) {
-                  showMessagess(s.message.toString());
-                }
-                if (s is LoadingStateOrder) {
+                if (s is LoadingStateOrders) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
+                if (s is SuccessStateOrder) {
+                  showMessagess(s.message.toString());
+                }
+
                 if (s is ErrorStateOrder) {
                   showMessagess("Order Failed");
                 }
@@ -440,150 +445,6 @@ class _CheckOutState extends State<CheckOut> {
               }),
         ]));
   }
-
-  // showAlertDialog(BuildContext context) {
-  //   Widget onCancel = FlatButton(
-  //     child: Text("Cancel"),
-  //     onPressed: () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  //   AlertDialog alert = AlertDialog(
-  //     title: Column(
-  //       children: [
-  //         Text(
-  //           'Upload one of the given',
-  //           style: TextStyle(fontSize: 18),
-  //         ),
-  //         SizedBox(height: 10),
-  //         Row(
-  //           children: [
-  //             Text(
-  //               "Visiting card",
-  //               style: TextStyle(color: Colors.blue, fontSize: 15),
-  //             ),
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text(
-  //               "Shop photo",
-  //               style: TextStyle(color: Colors.blue, fontSize: 15),
-  //             ),
-  //           ],
-  //         ),
-  //         Row(
-  //           children: [
-  //             Text(
-  //               "Bill no",
-  //               style: TextStyle(color: Colors.blue, fontSize: 15),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //     content: ListView(
-  //       shrinkWrap: true,
-  //       children: [
-  //         InkWell(
-  //           onTap: () {
-  //             _uploadKyc(context);
-  //             Navigator.pop(context);
-  //           },
-  //           child: Text("Gallery",
-  //               style: TextStyle(fontSize: 15, color: Colors.black54)),
-  //         ),
-  //         SizedBox(height: 10),
-  //         InkWell(
-  //             onTap: () {
-  //               _fromCamera(context);
-  //               Navigator.pop(context);
-  //             },
-  //             child: Text("Camera",
-  //                 style: TextStyle(fontSize: 15, color: Colors.black54)))
-  //       ],
-  //     ),
-  //     actions: [onCancel],
-  //   );
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
-
-  // void _uploadKyc(BuildContext context) async {
-  //   try {
-  //     File fileKyc = await FilePicker.getFile();
-  //     _setUploadProgress(0, 0);
-
-  //   } catch (e) {
-  //     Fluttertoast.showToast(
-  //         textColor: Colors.red, msg: e.toString() ?? 'Failed');
-  //     Navigator.pop(context);
-  //   }
-  // }
-
-  // _fromCamera(BuildContext context) async {
-  //   try {
-  //     final pickedFile =
-  //         await ImagePicker().getImage(source: ImageSource.camera);
-
-  //     if (pickedFile != null) {
-  //       File imageFile = File(pickedFile.path);
-  //       HomeReposiitory.uploadKyc(
-  //           file: imageFile, onUploadProgressCallback: (s, t) {});
-  //     }
-  //   } catch (e) {}
-  // }
-
-  void _setUploadProgress(int sentBytes, int totalBytes) {
-    double __progressValue =
-        Util.remap(sentBytes.toDouble(), 0, totalBytes.toDouble(), 0, 1);
-
-    __progressValue = double.parse(__progressValue.toStringAsFixed(2));
-
-    if (__progressValue != _progressValue)
-      setState(() {
-        _progressValue = __progressValue;
-        _progressPercentValue = (_progressValue * 100.0).toInt();
-
-        //  showProgress(context);
-      });
-  }
-
-  // showProgress(BuildContext context) {
-  //   Widget onFinih = FlatButton(
-  //     child: Text("Ok"),
-  //     onPressed: () {
-  //       Navigator.pop(context);
-  //     },
-  //   );
-  //   AlertDialog alert = AlertDialog(
-  //     title: Text('Uploading..'),
-  //     content: ListView(
-  //       shrinkWrap: true,
-  //       children: [
-  //         Text(
-  //           '$_progressPercentValue %',
-  //           style: Theme.of(context).textTheme.bodyText1,
-  //         ),
-  //         SizedBox(height: 10),
-  //         Container(
-  //             padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-  //             child: LinearProgressIndicator(value: _progressValue)),
-  //       ],
-  //     ),
-  //     actions: [onFinih],
-  //   );
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
 
   showAlertDialogBox(BuildContext context) {
     Widget okButton = FlatButton(
@@ -656,20 +517,5 @@ class _CheckOutState extends State<CheckOut> {
   _paymentForOrder() async {
     await Navigator.pushNamed(context, RouterName.paymentPage,
         arguments: checkoutVaue);
-
-    // Navigator.pushNamed(context, RouterName.paymentPage);
-    // if (selectedRadioTile == '2' || selectedRadioTile == '3') {
-    //   //payment
-    //   var data = {
-    //     "Order": orderResponce.id,
-    //     "Txn_Amount": "200",
-    //     "created_on": TimeOfDay.now(),
-    //     "email": "a@gmail.com",
-    //     "Orderid": "2",
-    //     "contact": "123478"
-    //   };
-    //   context.bloc<OrderPlaceCubit>().confirmpayment(data);
-    //   Navigator.pushNamed(context, RouterName.paymentPage);
-    // }
   }
 }

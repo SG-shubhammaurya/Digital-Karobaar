@@ -74,7 +74,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               placeholder: (context, url) =>
                                   Center(child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                                  Icon(Icons.broken_image,color: Colors.black12),
                             ),
                           ),
                           title: Text(productItem[pos].title,

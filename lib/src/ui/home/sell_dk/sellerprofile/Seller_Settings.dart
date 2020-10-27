@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
@@ -57,7 +59,7 @@ class _SellerSettingState extends State<SellerSetting> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Documents Update'),
+        title: Text(LanguageKeys.sellerSetting.translate(context)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -250,7 +252,7 @@ class _SellerSettingState extends State<SellerSetting> {
                   CommonButton(
                     buttonColor: AppColors.primaryColor,
                     titleColor: Colors.white,
-                    title: "Svae Update",
+                    title: LanguageKeys.saveAndVerify.translate(context),
                     onTap: () {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();

@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 abstract class OrderPlaceState extends Equatable {}
 
-class LoadingStateOrder extends OrderPlaceState {
+class LoadingStateOrders extends OrderPlaceState {
   @override
   List<Object> get props => [];
 }

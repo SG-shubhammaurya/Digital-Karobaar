@@ -1,5 +1,4 @@
-import 'package:digitalkarobaar/src/models/notification.dart';
-import 'package:digitalkarobaar/src/models/seller_profile.dart';
+import 'package:digitalkarobaar/src/models/notification_in_app.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
@@ -44,19 +43,7 @@ class _SellerNotificationState extends State<SellerNotification> {
         isLoading
         ? Center(child: CircularProgressIndicator(),):
 
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   //controller: scrollController,
-            //   itemCount: notificationProduct.length,
-            //   itemBuilder: (BuildContext context, int index) {
-            //     return _buildProductNotification(
-            //       notificationProduct[index].image,
-            //       notificationProduct[index].title,
-            //       notificationProduct[index].description,
-            //       notificationProduct[index].productId,
-            //     );
-            //   }
-            // ),
+           
             SizedBox(height: 10),
              ListView.builder(
                shrinkWrap: true,

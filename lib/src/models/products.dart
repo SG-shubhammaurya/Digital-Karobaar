@@ -20,7 +20,7 @@ class Products {
   String subCategory;
   String brand;
   num numOfItems;
-
+ var delivery;
   Products(
       {this.id,
       this.title,
@@ -41,7 +41,9 @@ class Products {
       this.sellerId,
       this.category,
       this.subCategory,
-      this.brand});
+      this.brand,
+      this.delivery
+      });
 
   Products.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -64,31 +66,9 @@ class Products {
     category = json['Category'];
     subCategory = json['SubCategory'];
     brand = json['Brand'];
+    delivery = json['Delivery'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['Title'] = this.title;
-    data['Shop'] = this.shop;
-    data['Location'] = this.location;
-    data['Discount'] = this.discount;
-    data['Retail'] = this.retail;
-    data['Image1'] = this.image1;
-    data['Image2'] = this.image2;
-    data['Image3'] = this.image3;
-    data['Image4'] = this.image4;
-    data['Image5'] = this.image5;
-    data['Prize'] = this.prize;
-    data['Description'] = this.description;
-    data['Buy'] = this.buy;
-    data['rating'] = this.rating;
-    data['Popular'] = this.popular;
-    data['SellerId'] = this.sellerId;
-    data['Category'] = this.category;
-    data['SubCategory'] = this.subCategory;
-    data['Brand'] = this.brand;
-    return data;
-  }
+  
 }
 

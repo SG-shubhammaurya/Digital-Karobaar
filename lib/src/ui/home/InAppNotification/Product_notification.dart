@@ -1,4 +1,4 @@
-import 'package:digitalkarobaar/src/models/notification.dart';
+import 'package:digitalkarobaar/src/models/notification_in_app.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
@@ -21,20 +21,11 @@ class _InApplicationNotificationState extends State<InApplicationNotification> {
   @override
   void initState() {
     _getProductNotification();
-   // _getSellerNotification();
+  
     super.initState();
   }
 
-  // _getProductNotification() async {
-  //   var productNotificationList =
-  //   await HomeReposiitory.getProductNotification();
-  //   setState(() {
-  //     notificationProduct = productNotificationList;
-  //     if (notificationProduct != null) {
-  //       isLoading = false;
-  //     }
-  //   }); 
-  // }
+
   _getProductNotification() async {
     var productNotifyList =
      await HomeReposiitory.getProductNotification();
@@ -75,18 +66,7 @@ class _InApplicationNotificationState extends State<InApplicationNotification> {
               }
             ),
             SizedBox(height: 10),
-            //  ListView.builder(
-            //   itemCount: notificationSeller.length,
-            //   itemBuilder: (BuildContext context, int index) {
-            //     return _buildSellerNotification(
-            //       notificationSeller[index].image,
-            //       notificationSeller[index].title,
-            //       notificationSeller[index].description,
-            //       notificationSeller[index].sellerId,
-            //     );
-            //   }
-            // ),
-
+           
 
         
       ],

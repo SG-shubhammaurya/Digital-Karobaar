@@ -1,4 +1,6 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 class TermOfUse extends StatefulWidget {
   @override
   _TermOfUseState createState() => _TermOfUseState();
@@ -9,7 +11,7 @@ class _TermOfUseState extends State<TermOfUse> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Term of Use",style: TextStyle(color: Colors.white),),
+        title: Text(LanguageKeys.termOfUse.translate(context),style: TextStyle(color: Colors.white),),
          leading: Builder(
        builder: (BuildContext context) {
          return IconButton(

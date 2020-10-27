@@ -1,6 +1,11 @@
+
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 class SellerSupport extends StatefulWidget {
   @override
   _SellerSupportState createState() => _SellerSupportState();
@@ -11,7 +16,7 @@ class _SellerSupportState extends State<SellerSupport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Seller Support"),
+        title: Text(LanguageKeys.support.translate(context)),
       ),
     
       body: Center(
@@ -54,7 +59,9 @@ class _SellerSupportState extends State<SellerSupport> {
                               
                               
                                 child:  Center(
-                                child: Text("Support")
+                                child: Text(
+                                  LanguageKeys.support.translate(context)
+                                  )
                                 )
                             
 

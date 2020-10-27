@@ -1,8 +1,11 @@
+
+
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/home_image.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
-
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 // class MyAccount extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -141,7 +144,7 @@ class _MyAccountState extends State<MyAccount> {
   return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Account',
+            LanguageKeys.account.translate(context),
           ),
         ),
         
@@ -179,7 +182,9 @@ class _MyAccountState extends State<MyAccount> {
                           backgroundColor: Colors.transparent,
                         ),
                         SizedBox(width: 20),
-                        Text("Your Profile",style: TextStyle(fontSize: 20),)
+                        Text(
+                          LanguageKeys.yourProfile.translate(context),
+                          style: TextStyle(fontSize: 20),)
 
                       ]
                     )
@@ -199,13 +204,13 @@ class _MyAccountState extends State<MyAccount> {
                             itemBuilder: (c, index){
                               return 
                               
-                              Image.network(images[index].analyticsIcon,fit: BoxFit.cover,);
+                              Image.network(images[index].accountSetting,fit: BoxFit.cover,);
                             }
                             ),
                           backgroundColor: Colors.transparent,
                         ),
                         SizedBox(width: 20),
-                        Text("Account Settings",style: TextStyle(fontSize: 20),)
+                        Text( LanguageKeys.accountSetting.translate(context),style: TextStyle(fontSize: 20),)
 
                       ]
                     )
@@ -231,7 +236,7 @@ class _MyAccountState extends State<MyAccount> {
                           backgroundColor: Colors.transparent,
                         ),
                         SizedBox(width: 20),
-                        Text("Business Profile",style: TextStyle(fontSize: 20),)
+                        Text( LanguageKeys.businessProfile.translate(context),style: TextStyle(fontSize: 20),)
                       ]
                     )
                 ),
@@ -250,18 +255,22 @@ class _MyAccountState extends State<MyAccount> {
                             itemBuilder: (c, index){
                               return 
                               
-                              Image.network(images[index].autoPartIcon,fit: BoxFit.cover,);
+                              Image.network(images[index].businessSetting ,fit: BoxFit.cover,);
                             }
                             ),
                           backgroundColor: Colors.transparent,
                         ),
                         SizedBox(width: 20),
-                        Text("Seller Settings",style: TextStyle(fontSize: 20),)
+                        Text( LanguageKeys.sellerSetting.translate(context),style: TextStyle(fontSize: 20),)
 
                       ]
                     )
                 ),
                 Divider(),
+
+                  
+                
+                
               ],),
             )
           ]

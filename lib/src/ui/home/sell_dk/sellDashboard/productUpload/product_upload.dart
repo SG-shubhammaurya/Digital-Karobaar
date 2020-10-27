@@ -1,6 +1,7 @@
 import 'package:digitalkarobaar/src/bloc/productUpload/product_upload_bloc.dart';
 import 'package:digitalkarobaar/src/bloc/productUpload/product_upload_state.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/models/sub_categories.dart';
@@ -55,7 +56,7 @@ class _ProductUploadState extends State<ProductUpload> {
     });
   }
 
-  List<String> reportList = ["Red", "Blue", "Black", "Brown"];
+  List<String> reportList = ["Red", "Blue", "Black", "Brown",' yellow','orange','green','white','gold','indigo','violet','silver','purple','pink','grey/gray'];
   TextEditingController image1 = TextEditingController();
   TextEditingController image2 = TextEditingController();
   TextEditingController image3 = TextEditingController();
@@ -75,7 +76,9 @@ class _ProductUploadState extends State<ProductUpload> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(LanguageKeys.uploadYourProduct.translate(context)),
+      ),
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -390,7 +393,7 @@ class _ProductUploadState extends State<ProductUpload> {
                   CommonButton(
                     buttonColor: AppColors.primaryColor,
                     titleColor: Colors.white,
-                    title: 'save',
+                    title: LanguageKeys.save.translate(context),
                     onTap: () {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();

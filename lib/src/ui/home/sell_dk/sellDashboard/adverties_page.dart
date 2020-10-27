@@ -1,72 +1,13 @@
-// import 'package:digitalkarobaar/src/res/app_colors.dart';
-// import 'package:flutter/material.dart';
 
-// class Advertiespage extends StatefulWidget {
-//   @override
-//   _AdvertiespageState createState() => _AdvertiespageState();
-// }
-
-// class _AdvertiespageState extends State<Advertiespage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Advertise'),
-//       ),
-//       body: Container(
-//         child: Column(
-//           children:[
-//             Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Container(
-//                 height:300,
-//                 width: MediaQuery.of(context).size.width,
-//                 color: Colors.blue,
-//               ),
-//             ),
-//             SizedBox(height: 50),
-//             Padding(
-//               padding: const EdgeInsets.only(left:10,right: 10),
-//               child: Center(
-//                 child: Text(
-//                   "Advertise your product by posting Ads in Digital Karobaar platform",style: TextStyle(fontSize: 20),
-//                 )
-//                 ),
-//             ),
-//             SizedBox(height: 50),
-
-
-
-//             InkWell(
-//               onTap: (){
-
-//               },
-//               child: Container(
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(10),
-//                   color: AppColors.primaryColor
-//                 ),
-//                 height: 50,
-//                 width: 200,
-//                 child: Center(
-//                   child: Text("Post your Add")
-//                 ) ,),
-//               )
-//           ]
-//         ),
-
-//       )
-//     );
-//   }
-// }
-
-
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/home_image.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+
 class Advertiespage extends StatefulWidget {
   @override
   _AdvertiespageState createState() => _AdvertiespageState();
@@ -104,7 +45,7 @@ class _AdvertiespageState extends State<Advertiespage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Advertisment'),
+        title: Text(LanguageKeys.advertised.translate(context)),
       ),
       body: isLoading
       ?Center(
@@ -115,14 +56,15 @@ class _AdvertiespageState extends State<Advertiespage> {
       //ListView(children: [
       
       
-      Container(
-        child: Column(
+      ListView(
+        children: [
+         Column(
           children:[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container
               (
-                height: 250,
+                height: 200,
                 width: MediaQuery.of(context).size.width,
                 //color: Colors.blue,
                  child: ListView.builder(
@@ -135,16 +77,62 @@ class _AdvertiespageState extends State<Advertiespage> {
                             ),
               ),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left:10,right: 10),
               child: Center(
                 child: Text(
-                   "Advertise your product by posting Ads in Digital Karobaar platform",style: TextStyle(fontSize: 20),
+                   "Are you struggling with Slumped Sales, Late Payements and Pricy- Logistics? You've come to the right place! Now increase your brand coverage throughout India and get Bulk Orders for your products - while sitting in your offices / factories! With in- house logisitics and payment handling system, DigitalKarobaar is a complete package which will help your business reach a National Audience - without any tension whatsoever!",style: TextStyle(fontSize: 20),
+                )
+                ),
+            ),
+            SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(left:10,right: 10),
+              child: Center(
+                child: Text(
+                   "With Advertising on DigitalKarobaar- you are reaching ",style: TextStyle(fontSize: 20),
+                )
+                ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left:10,right: 10),
+              child: Center(
+                child: Text(
+                   "i) An average of 5000 retailers / Outstation parties of your industry.",style: TextStyle(fontSize: 17),
+                )
+                ),
+            ),
+              SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.only(left:10,right: 10),
+              child: Center(
+                child: Text(
+                   "ii) 20X more eyeballs on your brand and its products.",style: TextStyle(fontSize: 17),
+                )
+                ),
+            ),
+              SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.only(left:10,right: 10),
+              child: Center(
+                child: Text(
+                   "iii) Create a name for your brand and yourself throughout India!",style: TextStyle(fontSize: 17),
+                )
+                ),
+            ),
+            SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(left:10,right: 10),
+              child: Center(
+                child: Text(
+                   "So what are you waiting for? Contact our team for posting your brand's advertisment now! ",style: TextStyle(fontSize: 20),
                 )
                 ),
             ),
             SizedBox(height: 50),
+
 
 
 
@@ -160,11 +148,13 @@ class _AdvertiespageState extends State<Advertiespage> {
                 height: 50,
                 width: 200,
                 child: Center(
-                  child: Text("Post your Add")
+                  child: Text(LanguageKeys.postAdvertisment.translate(context))
                 ) ,),
-              )
+              ),
+              SizedBox(height: 50,)
           ]
         ),
+        ]
 
       ),
       //SizedBox(height: 50),

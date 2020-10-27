@@ -105,7 +105,7 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 title: 'DigitalKarobaar',
                 home: RedirectWidget(),
-                initialRoute: RouterName.splashScreen,
+                initialRoute: RouterName.initialRoute,
                 onGenerateRoute: AppRouter.getGeneratedRouute,
               );
             },

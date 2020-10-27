@@ -14,7 +14,7 @@ class OrderPlaceCubit extends Cubit<OrderPlaceState> with ConnectivityChecker {
         emit(ErrorStateOrder('Please Check Your NetWork Connection'));
         return;
       }
-      emit(LoadingStateOrder());
+      emit(LoadingStateOrders());
      final result =  await productOrderRepository.confirmplaceOrder(map);
      emit(GetOrderResponse(result));
 
@@ -28,7 +28,7 @@ class OrderPlaceCubit extends Cubit<OrderPlaceState> with ConnectivityChecker {
         emit(ErrorStateOrder('Please Check Your NetWork Connection'));
         return;
       }
-      emit(LoadingStateOrder());
+      emit(LoadingStateOrders());
      final result =  await productOrderRepository.confirmpayment(data);
      emit(SuccessStateOrder(result));
 
@@ -43,7 +43,7 @@ class OrderPlaceCubit extends Cubit<OrderPlaceState> with ConnectivityChecker {
         emit(ErrorStateOrder('Please Check Your NetWork Connection'));
         return;
       }
-      emit(LoadingStateOrder());
+      emit(LoadingStateOrders());
      final result =  await productOrderRepository.getdeliveryAddress();
     emit(GetOrderAddress(result));
 

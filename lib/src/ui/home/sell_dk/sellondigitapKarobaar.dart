@@ -1,4 +1,5 @@
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
@@ -22,7 +23,7 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
 
   Widget _buildNo() {
     return TextFormField(
-      decoration: inputDecoration(hint: "Mobile No"),
+      decoration: inputDecoration(hint:  LanguageKeys.mobileNo.translate(context)),
       keyboardType: TextInputType.number,
       validator: (String value) {
         if (value.isEmpty) {
@@ -38,7 +39,7 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
 
   Widget _buildPassword() {
     return TextFormField(
-        decoration: inputDecoration(hint: "Password"),
+        decoration: inputDecoration(hint: LanguageKeys.pssword.translate(context),),
         keyboardType: TextInputType.text,
         validator: (String value) {
           Validators.patternString(
@@ -69,7 +70,7 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Sell on Digital Karobaar",
+           LanguageKeys.sellOnDigialKarobaar.translate(context),
             style: TextStyle(color: Colors.white),
           ),
           leading: InkWell(
@@ -92,7 +93,7 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Center(
                       child: Text(
-                        "Login",
+                        LanguageKeys.login.translate(context),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -105,13 +106,16 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0, right: 15),
               child: Column(children: <Widget>[
-                SizedBox(height: 10),
+                SizedBox(height: 20),
+                
+
+
                 Row(
                   children: [
                     Column(
                       children: [
                         Text(
-                          "Do you want to create your own",
+                          "Sell on DigitalKarobaar :",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -119,74 +123,51 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("E-distribution channel",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
-                  ],
+                SizedBox(height: 20.0),
+                Center(
+                  child: Text("Seamless Logistics, Secure payments and Nationwide Coverage of your brand ",style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("Across India ?",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)),
-                  ],
+                 SizedBox(height: 10),
+                 Center(
+                  child: Text(" Make your Business go online with DigitalKarobaar and increase your sales 10X than your current ones.",style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))
                 ),
-                SizedBox(height: 20),
-                Row(children: <Widget>[
-                  Text("With the help of Digital Karobaar Technology"),
-                ]),
-                SizedBox(height: 5),
+                //SizedBox(height: 10),
                 Row(
                   children: [
-                    Text("Allow you to access your own distribution"),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("channel without the middlemen and allows"),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("you to directly add retailer "),
+                    Column(
+                      children: [
+                        Text(
+                          "Sign up as a seller now!",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(height: 20),
-                Text(
-                  "On Digital Karobaar",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                SizedBox(height: 15),
                 Row(
                   children: [
-                    Text("Not only you. Everyone will be able to create"),
+                    Column(
+                      children: [
+                        Text(
+                          "On DigitalKarobaar -",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("the multiple retailer directly. And also will"),
-                  ],
+                SizedBox(height: 10),
+                Center(
+                  child: Text("Get bulk orders directory from Outstation parties. No middlemen. Increased profits. Hassle - free sales, all through DigitalKarobaar. ",style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("be able to earn double of the margin as well as"),
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Text("better cash flow"),
-                  ],
-                ),
-                SizedBox(height: 20),
+
+                SizedBox(height: 50),
                 Text(
                   "Seller Signup form",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -201,7 +182,9 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                           _buildPassword(),
                           SizedBox(height: 20),
                           CommonButton(
-                            title: "Save and Verify",
+                            title: 
+                            LanguageKeys.saveAndVerify.translate(context),
+                            //"Save and Verify",
                             buttonColor: AppColors.primaryColor,
                             height: 35,
                             onTap: () {
@@ -226,6 +209,8 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                 SizedBox(height: 50),
               ]),
             )
+
+
           ],
         ));
   }

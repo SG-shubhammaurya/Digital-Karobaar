@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class CommonCard extends StatelessWidget {
   final child;
-  CommonCard({this.child});
+  final elevation;
+  CommonCard({this.child,this.elevation});
   @override
   Widget build(BuildContext context) {
     return Card(

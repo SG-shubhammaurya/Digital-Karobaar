@@ -37,7 +37,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   void initState() {
     _getProductsById();
     _getUserProfile();
-  
+
     cartCubit = BlocProvider.of<CartCubit>(context);
     super.initState();
   }
@@ -66,14 +66,16 @@ class _ProductDetailsState extends State<ProductDetails> {
       }
     });
   }
-   Specification specifications;
+
+  Specification specifications;
   _getProductsById() async {
-    specifications =Specification();
+    specifications = Specification();
     final getProductDetails =
         await HomeReposiitory.getProductsDetails(widget.id);
 
     if (getProductDetails != null) {
-      final specification = await HomeReposiitory.getProductsSpecification(widget.id);
+      final specification =
+          await HomeReposiitory.getProductsSpecification(widget.id);
       setState(() {
         productDetails = getProductDetails;
         specifications = specification;
@@ -184,10 +186,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                       height: 180,
                       child: PageView(controller: pageController, children: [
                         _buildImageLis(productDetails.image1),
-                        _buildImageLis(productDetails.image2),
-                        _buildImageLis(productDetails.image3),
-                        _buildImageLis(productDetails.image4),
-                        _buildImageLis(productDetails.image5),
+                        // _buildImageLis(productDetails.image2),
+                        // _buildImageLis(productDetails.image3),
+                        // _buildImageLis(productDetails.image4),
+                        // _buildImageLis(productDetails.image5),
                       ]),
                     ),
                   ),
@@ -237,10 +239,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         spacing: 0.0),
                   ],
                 ),
-                Text(productDetails.description,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                    )),
+                
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -264,7 +263,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                       'Discount: ',
                       style: subtitleStyle,
                     ),
-                    Text('${productDetails.discount}'),
+                    Text('\u20B9 ${productDetails.discount}'),
+                  ],
+                ),
+                    const SizedBox(height: 10),
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Margin: ',
+                      style: subtitleStyle,
+                    ),
+                    Text('% ${productDetails.retail}'),
+                  ],
+                ),
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Delivery: ',
+                      style: subtitleStyle,
+                    ),
+                    Text('\u20B9 ${productDetails.delivery}'),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -279,38 +299,44 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ],
                 ),
                 const SizedBox(height: 10),
+                Text(productDetails.description,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                    )),
+                const SizedBox(height: 10),
                 Text(
                   "Supplier Profile",
                   style: GoogleFonts.poppins(fontSize: 15),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, RouterName.supplier);
-                      },
-                      child: Text(
-                        "Changzhou Auto Co.Ltp",
+               InkWell(
+                 onTap: (){
+                   Navigator.pushNamed(context, RouterName.sellerShop, arguments: productDetails.sellerId);
+                 },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        productDetails.shop,
                         style:
                             GoogleFonts.openSans(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Container(
-                      height: 25,
-                      width: 60,
-                      child: Center(
-                          child: Text('Follow',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.primaryColor))),
-                      decoration: BoxDecoration(
-                          color: Colors.orange[200],
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                    )
-                  ],
+                      
+                      // Container(
+                      //   height: 25,
+                      //   width: 60,
+                      //   child: Center(
+                      //       child: Text('Follow',
+                      //           style: TextStyle(
+                      //               fontSize: 12,
+                      //               color: AppColors.primaryColor))),
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.orange[200],
+                      //       shape: BoxShape.rectangle,
+                      //       borderRadius: BorderRadius.all(Radius.circular(20))),
+                      // )
+                    ],
+                  ),
                 ),
                 SizedBox(height: 10),
                 Container(
@@ -421,7 +447,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         width: 150,
                         title: 'Buy',
                         onTap: () {
-                         // print(productDetails.title.toString());
+                          // print(productDetails.title.toString());
                           cartCubit.addToCart(productDetails.id.toString());
                           // cartItems.setCardItems(productDetails.id.toString(),productDetails.title,productDetails.prize.toDouble(),productDetails.image1);
                           // _checkKycUpload(cartItems);
@@ -465,8 +491,19 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 _buildImageLis(String path) {
   if (path != null) {
-    return CachedNetworkImage(imageUrl: path);
+    return CachedNetworkImage(
+               
+                imageUrl: path,
+                colorBlendMode: BlendMode.darken,
+                errorWidget: (context, url, error) => Image.network(
+                  'https://azadchaiwala.pk/getImage?i=&t=course',
+                 
+                ),
+              );
+   
   } else {
-    return Icon(Icons.broken_image);
+    return Image.network(
+      'https://azadchaiwala.pk/getImage?i=&t=course',
+    );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/user_return_model.dart';
 import 'package:digitalkarobaar/src/repository/order_return_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class GetUserReturn extends StatelessWidget {
   Future<List<UserReturnModel>> _getUserReturn() async {
@@ -12,7 +14,7 @@ class GetUserReturn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Your Return'),
+          title: Text(LanguageKeys.yourReturns.translate(context)),
         ),
         body: FutureBuilder<List<UserReturnModel>>(
             future: _getUserReturn(),

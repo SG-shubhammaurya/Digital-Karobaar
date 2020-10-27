@@ -21,8 +21,8 @@ class ProductOrderRepository {
           body: body);
 
       if (response.statusCode == 200) {
-         var res = json.decode(response.body);
-          return OrderResponce.fromJson(res);
+        var res = json.decode(response.body);
+        return OrderResponce.fromJson(res);
       }
     } catch (e) {
       throw Exception();
@@ -31,7 +31,7 @@ class ProductOrderRepository {
 
   confirmpayment(Map<String, dynamic> data) async {
     try {
-     var body = json.encode(data);
+      var body = json.encode(data);
       final response = await http.post(EndPoint.payment,
           headers: {
             'Content-type': 'application/json',
@@ -42,7 +42,7 @@ class ProductOrderRepository {
 
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
-         return res["success"];
+        return res["success"];
         //Fluttertoast.showToast(msg: res["success"]);
       }
     } catch (e) {
@@ -96,6 +96,7 @@ class ProductOrderRepository {
       throw Exception();
     }
   }
+
   Future<List<OrderAddress>> getdeliveryAddress() async {
     final token = await getAccessToken();
 
@@ -109,8 +110,8 @@ class ProductOrderRepository {
         },
       );
       if (response.statusCode == 200) {
-            final res = json.decode(response.body);
-             return List.generate(res.length, (index) {
+        final res = json.decode(response.body);
+        return List.generate(res.length, (index) {
           return OrderAddress.fromJson(res[index]);
         }).toList();
       }
@@ -121,7 +122,8 @@ class ProductOrderRepository {
       throw Exception("Sarver Failed");
     }
   }
-   static Future<List<SellerOrder>> getOrderProducts() async {
+
+  static Future<List<SellerOrder>> getOrderProducts() async {
     final token = await getSellerToken();
 
     try {
@@ -134,8 +136,8 @@ class ProductOrderRepository {
         },
       );
       if (response.statusCode == 200) {
-            final res = json.decode(response.body);
-             return List.generate(res.length, (index) {
+        final res = json.decode(response.body);
+        return List.generate(res.length, (index) {
           return SellerOrder.fromJson(res[index]);
         }).toList();
       }
@@ -150,7 +152,7 @@ class ProductOrderRepository {
   _handleResponse(http.Response response) {
     if (response.statusCode == 200) {
       final res = json.decode(response.body);
-      showMessagess(res["success"]);
+      showMessagess(res["success"] ?? 'item already exist in cart');
       // return res["success"];
     } else if (response.statusCode == 406) {
       final res = json.decode(response.body);

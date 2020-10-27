@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductPayment extends StatefulWidget {
-  ProductPayment(this.totalAmount);
+  ProductPayment(this.totalAmount) :assert(totalAmount !=null) ;
   final totalAmount;
   @override
   _ProductPaymentState createState() => _ProductPaymentState();
@@ -36,7 +36,7 @@ class _ProductPaymentState extends State<ProductPayment> {
   void openCheckout() async {
     var options = {
       'key': 'rzp_test_ELeMTlrU5ymqKt',
-      'amount': widget.totalAmount * -100,
+      'amount': widget.totalAmount *100,
       'name': 'Digital Karobaar',
       'description': 'Test Payment',
       'prefill': {'contact': '7579013416', 'email': 'test@gmail.com'},
@@ -76,8 +76,8 @@ class _ProductPaymentState extends State<ProductPayment> {
   @override
   Widget build(BuildContext context) {
      final cartItems = Provider.of<CartDetailProvider>(context);
-     orderIders = cartItems.orderRes.id;
-   print(cartItems.orderRes.id);
+   //  orderIders = cartItems.orderRes.id;
+  // print(cartItems.orderRes.id);
   
     return Scaffold(
       appBar: AppBar(title: Text("Amount Paid")
