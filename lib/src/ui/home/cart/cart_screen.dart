@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_state.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/product_cart.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
@@ -9,6 +10,7 @@ import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -37,7 +39,8 @@ class _CartScreenState extends State<CartScreen> {
     final cartItems = Provider.of<CartDetailProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('My Cart')),
+      appBar: AppBar(centerTitle: true, 
+      title: Text(LanguageKeys.myCart.translate(context))),
       body: BlocBuilder<CartCubit, CartState>(
           cubit: cartCubit,
           builder: (c, s) {
@@ -239,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CommonButton(
-                      title: "checkOut",
+                      title:LanguageKeys.checkOut.translate(context),
                       buttonColor: AppColors.primaryColor,
                       onTap: () {
                         Navigator.pushNamed(context, RouterName.checkOutConfm);

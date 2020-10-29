@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_state.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_icon_button.dart';
 import 'package:digitalkarobaar/src/models/product_spec.dart';
@@ -18,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class ProductDetails extends StatefulWidget {
   final id;
@@ -260,7 +262,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Discount: ',
+                      LanguageKeys.discount.translate(context),
                       style: subtitleStyle,
                     ),
                     Text('\u20B9 ${productDetails.discount}'),
@@ -271,7 +273,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Margin: ',
+                      LanguageKeys.retailMargib.translate(context),
                       style: subtitleStyle,
                     ),
                     Text('% ${productDetails.retail}'),
@@ -281,7 +283,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      'Delivery: ',
+                      LanguageKeys.delivery.translate(context),
                       style: subtitleStyle,
                     ),
                     Text('\u20B9 ${productDetails.delivery}'),
@@ -290,7 +292,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Text("Min Order:",
+                    Text(LanguageKeys.minOrder.translate(context),
                         style: GoogleFonts.openSans(
                           fontSize: 12,
                         )),
@@ -305,7 +307,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     )),
                 const SizedBox(height: 10),
                 Text(
-                  "Supplier Profile",
+                  LanguageKeys.sellerShop.translate(context),
                   style: GoogleFonts.poppins(fontSize: 15),
                 ),
                 SizedBox(height: 10),
@@ -355,12 +357,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                         children: [
                           Icon(Icons.group_work, size: 10),
                           Text(
-                            "Vypar Suraksha",
+                            LanguageKeys.vypaarSuraksha.translate(context),
                             style: TextStyle(fontSize: 12),
                           ),
                           SizedBox(width: 20),
                           Icon(Icons.group_work, size: 10),
-                          Text("Verified Supplier",
+                          Text(LanguageKeys.verifiesSeller.translate(context),
                               style: TextStyle(fontSize: 12))
                         ],
                       ),
@@ -433,9 +435,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         color: Colors.orange[200],
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, RouterName.messanger);
+                        },
                         child: Text(
-                          'Chat Now',
+                          LanguageKeys.chatNow.translate(context),
                           style: TextStyle(color: AppColors.primaryColor),
                         )),
                     BlocBuilder<CartCubit, CartState>(builder: (c, s) {
@@ -445,7 +449,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       return CommonButton(
                         buttonColor: AppColors.primaryColor,
                         width: 150,
-                        title: 'Buy',
+                        title: LanguageKeys.buy.translate(context),
                         onTap: () {
                           // print(productDetails.title.toString());
                           cartCubit.addToCart(productDetails.id.toString());

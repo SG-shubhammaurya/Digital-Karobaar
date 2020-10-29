@@ -126,5 +126,6 @@ class EndPoint {
   static String sellerApprovedReturnGet =
       baseUrl + "/order/return/search?search=approved";
 static String getNotification = baseUrl + "/notify/";
+static String getNewArrival = baseUrl + "/products/search?search=";
       
 }

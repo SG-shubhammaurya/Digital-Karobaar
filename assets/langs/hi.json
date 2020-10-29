@@ -60,7 +60,30 @@
   "post": "डालना",
   "save": "सहेजें",
   "sellerShop": "विक्रेता की दुकान",
-  "subCategories" : "उप श्रेणियों"
+  "subCategories" : "उप श्रेणियों",
+  "kyc" : " केवाईसी ",
+  "topRanking" : "टॉप वर्ग",
+  "topBrand": "शीर्ष ब्रांड",
+  "topCategories": "शीर्ष श्रेणियां",
+  "filterProduct" : "उत्पाद को फ़िल्टर करें",
+  "minOrder": "न्यूनतम आदेश:",
+  "price" : "मूल्य ₹",
+  "maximun" : "अधिकतम ₹",
+  "minimum" :"न्यूनतम  ₹",
+  "location" : "स्थान",
+  "everyOne" : "हर",
+  "verifiesSeller" : "सत्यापित विक्रेता",
+  "clearAll": "सभी साफ करें",
+  "done" : "किया हुआ",
+  "result" : "परिणाम",
+  "discount" : "छूट:",
+  "retailMargib" : "खुदरा मार्जिन:",
+  "delivery" : "वितरण:",
+  "chatNow" : "अभी चैट करें",
+  "buy": "खरीद",
+  "myCart" : "मेरी गाड़ी",
+  "checkOut" : "चेक आउट",
+  "newArrival" : "नया आगमन"
 
 
  

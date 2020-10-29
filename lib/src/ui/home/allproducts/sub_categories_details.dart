@@ -55,11 +55,12 @@ var id;
             }),
             items: [
       BottomNavyBarItem(
-        icon: Icon(Icons.cloud_upload),
+        icon: Icon(Icons.category),
        
        activeColor: AppColors.primaryColor,
        inactiveColor:Colors.grey,
-        title: Text("kyc",
+        title: Text(LanguageKeys.subCategories.translate(context),
+          //  LanguageKeys.kyc.translate(context),
           //LanguageKeys.kyc.translate(context),
          style: TextStyle(color:Colors.grey),
         ),

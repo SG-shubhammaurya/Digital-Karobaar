@@ -3,6 +3,8 @@ import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/utils/preference_helper.dart';
 
 import 'package:digitalkarobaar/src/core/widget/common_icon_button.dart';
+import 'package:digitalkarobaar/src/models/New_Arrival.dart';
+import 'package:digitalkarobaar/src/models/New_Arrival.dart';
 import 'package:digitalkarobaar/src/models/ads_seller.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
 
@@ -39,6 +41,7 @@ class _KycHomeState extends State<KycHome> {
   );
   bool selected = false;
   // TopProducts topProducts;
+  List<NewArrival> newArrival;
   List<TopBrands> topBrands;
   List<Products> topProduts;
 //  TopProducts topCategories;
@@ -50,6 +53,7 @@ class _KycHomeState extends State<KycHome> {
   void initState() {
     _getTopBrands();
     _getCrouselAds();
+    _getNewArrival();
     super.initState();
   }
 
@@ -72,6 +76,19 @@ class _KycHomeState extends State<KycHome> {
         isUserProfileLoading = false;
       }
     });
+  }
+  _getNewArrival() async {
+    newArrival = [];
+    await ProductRepository.getNewArrival().then((arrival){
+      if (newArrival !=null) {
+        newArrival = arrival;
+      }
+      setState(() {
+        
+      });
+
+    });
+
   }
 
   _getTopBrands() async {
@@ -130,7 +147,7 @@ class _KycHomeState extends State<KycHome> {
                       size: 18,
                       color: Colors.white,
                     ),
-                    hintText: " Search",
+                    hintText: LanguageKeys.search.translate(context),
                     border: InputBorder.none,
                     hintStyle: TextStyle(fontSize: 14, color: Colors.white))),
           ),
@@ -206,6 +223,7 @@ class _KycHomeState extends State<KycHome> {
 
 
 
+
             // GestureDetector(
             //   onTap: () {
             //     Navigator.pushNamed(context, RouterName.shopkyc);
@@ -243,22 +261,22 @@ class _KycHomeState extends State<KycHome> {
 
 
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text('Top Ranking',
-                    style: GoogleFonts.openSans(fontSize: 12)),
-                Text('Top New Arrival',
-                    style: GoogleFonts.openSans(fontSize: 12)),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     Text('Top Ranking',
+            //         style: GoogleFonts.openSans(fontSize: 12)),
+            //     Text('Top New Arrival',
+            //         style: GoogleFonts.openSans(fontSize: 12)),
+            //   ],
+            // ),
             !isLoading
                 ? SizedBox() //_buildProductsList()
                 : Center(child: CircularProgressIndicator()),
             Divider(),
             SizedBox(height: 10),
             Text(
-              'Top Brands',
+              LanguageKeys.topBrand.translate(context),
               style: GoogleFonts.openSans(
                   fontWeight: FontWeight.w600, fontSize: 14),
             ),
@@ -318,49 +336,109 @@ class _KycHomeState extends State<KycHome> {
                   )
                 : Center(child: CircularProgressIndicator()),
             Divider(color: Colors.grey[300], thickness: 5),
-            Text(
-              'Top Categories',
-              style: GoogleFonts.openSans(
-                  fontWeight: FontWeight.w600, fontSize: 14),
-            ),
-            !isLoading
-                ? Container(
-                    height: 140,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: topCategories.length,
-                        scrollDirection: Axis.horizontal,
-                        primary: false,
-                        itemBuilder: (context, index) {
-                          // print(topCategories.image.toString());
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouterName.productPage,
-                                    arguments: topBrands[index].title);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        offset: Offset(5, 5),
-                                        blurRadius: 10,
-                                        color:
-                                            Color(0xFFE9E9E9).withOpacity(0.56),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 10),
-                                    SizedBox(
+            // Text(
+            //   LanguageKeys.topCategories.translate(context),
+            //   style: GoogleFonts.openSans(
+            //       fontWeight: FontWeight.w600, fontSize: 14),
+            // ),
+            // !isLoading
+            //     ? Container(
+            //         height: 140,
+            //         child: ListView.builder(
+            //             shrinkWrap: true,
+            //             itemCount: topCategories.length,
+            //             scrollDirection: Axis.horizontal,
+            //             primary: false,
+            //             itemBuilder: (context, index) {
+            //               // print(topCategories.image.toString());
+            //               return Padding(
+            //                 padding: const EdgeInsets.all(8.0),
+            //                 child: InkWell(
+            //                   onTap: () {
+            //                     Navigator.pushNamed(
+            //                         context, RouterName.productPage,
+            //                         arguments: topBrands[index].title);
+            //                   },
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                         color: Colors.white,
+            //                         boxShadow: [
+            //                           BoxShadow(
+            //                             offset: Offset(5, 5),
+            //                             blurRadius: 10,
+            //                             color:
+            //                                 Color(0xFFE9E9E9).withOpacity(0.56),
+            //                           )
+            //                         ],
+            //                         borderRadius: BorderRadius.circular(15)),
+            //                     child: Column(
+            //                       children: [
+            //                         SizedBox(height: 10),
+            //                         SizedBox(
+            //                           height: 80,
+            //                           width: 100,
+            //                           child: CachedNetworkImage(
+            //                             imageUrl: topCategories[index].image,
+            //                             fit: BoxFit.cover,
+            //                             placeholder: (context, url) => Center(
+            //                                 child: CircularProgressIndicator()),
+            //                             errorWidget: (context, url, error) =>
+            //                                 Icon(
+            //                               Icons.broken_image,
+            //                               color: Colors.black26,
+            //                             ),
+            //                           ),
+            //                         ),
+            //                         SizedBox(height: 5),
+            //                         Text(topCategories[index].title,
+            //                             style:
+            //                                 GoogleFonts.poppins(fontSize: 12)),
+            //                         SizedBox(height: 2),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ),
+            //               );
+            //             }),
+            //       )
+            //     : Center(child: CircularProgressIndicator()),
+            //     Divider(color: Colors.grey[300],thickness: 5),
+
+                Text(LanguageKeys.newArrival.translate(context)),
+                !isLoading
+                ?Container(
+                  height: 140,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: newArrival.length,
+                    itemBuilder: (context, index){
+                      return 
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.white,
+                            boxShadow:  [
+                              BoxShadow(
+                                offset: Offset(5,5),
+                                blurRadius: 10,
+                                color:
+                                      Color(0xFFE9E9E9).withOpacity(0.56),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(15)
+                            
+                            ),
+                            child: Column(
+                              children: [
+                              SizedBox(height: 10,),
+                               SizedBox(
                                       height: 80,
                                       width: 100,
                                       child: CachedNetworkImage(
-                                        imageUrl: topCategories[index].image,
+                                        imageUrl: newArrival[index].image1,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => Center(
                                             child: CircularProgressIndicator()),
@@ -372,19 +450,30 @@ class _KycHomeState extends State<KycHome> {
                                       ),
                                     ),
                                     SizedBox(height: 5),
-                                    Text(topCategories[index].title,
+                                    Text(newArrival[index].title,
                                         style:
                                             GoogleFonts.poppins(fontSize: 12)),
                                     SizedBox(height: 2),
-                                  ],
-                                ),
-                              ),
+                                  ]
+
+
                             ),
-                          );
-                        }),
+
+                          )
+                        ),
+                      );
+
+                    }
                   )
-                : Center(child: CircularProgressIndicator()),
+                )
+                 : Center(child: CircularProgressIndicator()),
                 Divider(color: Colors.grey[300],thickness: 5),
+
+
+
+
+
+
              SizedBox(height: 10),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -404,7 +493,7 @@ class _KycHomeState extends State<KycHome> {
                           width: MediaQuery.of(context).size.width,
                           child: Center(
                             child: Text(
-                              'Show all Products',
+                              LanguageKeys.showAllProducts.translate(context),
                               style: GoogleFonts.openSans(
                                 color: Colors.white,
                                   fontWeight: FontWeight.w600, fontSize: 14),
@@ -448,7 +537,7 @@ class _KycHomeState extends State<KycHome> {
             },
             child: ListTile(
               leading: Icon(Icons.home),
-              title: Text('Home'),
+              title: Text(LanguageKeys.home.translate(context)),
             ),
           ),
           InkWell(
@@ -457,7 +546,7 @@ class _KycHomeState extends State<KycHome> {
               },
               child: ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('Your Orders'),
+                title: Text(LanguageKeys.yourOrders.translate(context)),
               )),
           InkWell(
             onTap: () {
@@ -465,7 +554,16 @@ class _KycHomeState extends State<KycHome> {
             },
             child: ListTile(
               leading: Icon(Icons.settings),
-              title: Text('Your Returns'),
+              title: Text(LanguageKeys.yourReturns.translate(context)),
+            ),
+          ),
+           InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, RouterName.favourites);
+            },
+            child: ListTile(
+              leading: Icon(Icons.favorite),
+              title: Text(LanguageKeys.myFavourites.translate(context)),
             ),
           ),
           ListTile(
@@ -476,22 +574,22 @@ class _KycHomeState extends State<KycHome> {
                 },
                 child: Text(LanguageKeys.language.translate(context))),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, RouterName.rateCard);
-            },
-            child: ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text('Rate Card'),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.pushNamed(context, RouterName.rateCard);
+          //   },
+          //   child: ListTile(
+          //     leading: Icon(Icons.credit_card),
+          //     title: Text('Rate Card'),
+          //   ),
+          // ),
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, RouterName.sellOnKarobaar);
             },
             child: ListTile(
               leading: Icon(Icons.shop),
-              title: Text('Sell on Digital Karobaar'),
+              title: Text(LanguageKeys.sellOnDigialKarobaar.translate(context)),
             ),
           ),
           InkWell(
@@ -500,7 +598,7 @@ class _KycHomeState extends State<KycHome> {
             },
             child: ListTile(
               leading: Icon(Icons.text_format),
-              title: Text('Terms Of Use'),
+              title: Text(LanguageKeys.termOfUse.translate(context)),
             ),
           ),
           InkWell(
@@ -509,14 +607,14 @@ class _KycHomeState extends State<KycHome> {
             },
             child: ListTile(
               leading: Icon(Icons.call),
-              title: Text('Support'),
+              title: Text(LanguageKeys.support.translate(context))
             ),
           ),
           Container(
             child: ListTile(
               selected: selected,
               leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
+              title: Text(LanguageKeys.logOut.translate(context)),
               onTap: () {
                 _showAlertDialog();
               },

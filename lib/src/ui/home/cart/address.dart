@@ -1,7 +1,9 @@
+import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/cart_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class AddressDelivery extends StatefulWidget {
   @override
@@ -152,7 +154,7 @@ class _AddressDeliveryState extends State<AddressDelivery> {
                   _buildAlternameNo(),
                   SizedBox(height: 50),
                   CommonButton(
-                      title: "Save Address",
+                      title: LanguageKeys.save.translate(context),
                       buttonColor: AppColors.primaryColor,
                       height: 40,
                       onTap: () {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:digitalkarobaar/src/core/endpoint/end_points.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
+import 'package:digitalkarobaar/src/models/New_Arrival.dart';
 import 'package:digitalkarobaar/src/models/brand.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
@@ -199,6 +200,32 @@ class ProductRepository {
       }
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+
+  static Future<List<NewArrival>> getNewArrival() async {
+    try {
+      final response = await http.get(
+        EndPoint.getNewArrival,
+        headers: {
+          'Content-type': 'application.json',
+          'Accept': 'application/json'
+        }
+      );
+       if (response.statusCode == 200 || response.statusCode == 201) {
+        final res = json.decode(response.body) as List;
+         
+      
+      return  List.generate(res.length, (index) {
+          return NewArrival.fromJson(res[index]);
+        }).toList();
+      } else {
+        print(response.statusCode.toString());
+      }
+
+    }catch (e) {
+      throw Exception (e);
     }
   }
 }
