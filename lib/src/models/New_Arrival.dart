@@ -20,7 +20,6 @@ class NewArrival {
   String category;
   String subCategory;
   String brand;
-
   NewArrival(
       {this.id,
       this.title,
@@ -43,7 +42,6 @@ class NewArrival {
       this.category,
       this.subCategory,
       this.brand});
-
   NewArrival.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['Title'];
@@ -66,31 +64,5 @@ class NewArrival {
     category = json['Category'];
     subCategory = json['SubCategory'];
     brand = json['Brand'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['Title'] = this.title;
-    data['Shop'] = this.shop;
-    data['Location'] = this.location;
-    data['Discount'] = this.discount;
-    data['Retail'] = this.retail;
-    data['Image1'] = this.image1;
-    data['Image2'] = this.image2;
-    data['Image3'] = this.image3;
-    data['Image4'] = this.image4;
-    data['Image5'] = this.image5;
-    data['Prize'] = this.prize;
-    data['Description'] = this.description;
-    data['Buy'] = this.buy;
-    data['rating'] = this.rating;
-    data['Popular'] = this.popular;
-    data['Delivery'] = this.delivery;
-    data['SellerId'] = this.sellerId;
-    data['Category'] = this.category;
-    data['SubCategory'] = this.subCategory;
-    data['Brand'] = this.brand;
-    return data;
   }
 }

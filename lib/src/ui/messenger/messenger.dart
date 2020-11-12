@@ -1,6 +1,5 @@
 import 'package:digitalkarobaar/src/bloc/chat_cubit/chat.cubit.dart';
 import 'package:digitalkarobaar/src/bloc/chat_cubit/chat_state.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/models/message_response.dart';
 import 'package:digitalkarobaar/src/models/user_profile.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
@@ -8,7 +7,6 @@ import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class Messenger extends StatefulWidget {
   @override
@@ -44,7 +42,7 @@ class _MessengerState extends State<Messenger> {
           textTheme:
               Theme.of(context).textTheme.apply(bodyColor: Colors.black45),
           iconTheme: IconThemeData(color: Colors.black45),
-          title: Text(LanguageKeys.messanger.translate(context),style: TextStyle(color:Colors.white)),
+          title: Text("Messenger",style: TextStyle(color:Colors.white)),
           
         ),
         body:BlocBuilder<ChatCubit, ChatState>(

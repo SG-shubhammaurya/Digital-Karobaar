@@ -42,55 +42,54 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _searchproducts(BuildContext context) {
    
-    return Expanded(
-        child: TypeAheadFormField<Products>(
+    return TypeAheadFormField<Products>(
       textFieldConfiguration: TextFieldConfiguration(
-         
-          decoration: InputDecoration.collapsed(
-            //  prefixIcon: Icon(Icons.search),
-              border: InputBorder.none,
-                hintStyle: TextStyle(color: Colors.white,
-                fontSize: 15
-                ),
-               hintText: "Search Products"),
-          controller: _searchQuery),
+     
+      decoration: InputDecoration.collapsed(
+        //  prefixIcon: Icon(Icons.search),
+          border: InputBorder.none,
+            hintStyle: TextStyle(color: Colors.white,
+            fontSize: 15
+            ),
+           hintText: "Search Products"),
+      controller: _searchQuery),
       suggestionsCallback: (pattern) async {
-        return await HomeReposiitory.searchProduts(pattern).then((value) {
-          return value;
-        }).catchError((e) {});
+    return await HomeReposiitory.searchProduts(pattern).then((value) {
+      return value;
+    }).catchError((e) {});
       },
       itemBuilder: (context, suggestion) {
        
-        return ListTile(
-              leading: CachedNetworkImage(
-                height: 30,
-                width: 30,
-                imageUrl: suggestion.image1 ?? 'https://azadchaiwala.pk/getImage?i=&t=course',
-                colorBlendMode: BlendMode.darken,
-                errorWidget: (context, url, error) => Image.network(
-                  'https://azadchaiwala.pk/getImage?i=&t=course',
-                  width: 30,
-                  height: 30,
-                ),
-              ),
-              title: Text(
-                suggestion.title,style: GoogleFonts.poppins(
-                fontSize: 12
-              ),
-              ),
-              subtitle: Text(suggestion.brand,style: GoogleFonts.poppins(
-                fontSize: 10
-              ),),
-              // trailing: Text(suggestion.rating,style:GoogleFonts.poppins(
-              //   fontSize: 10
-              // ),),
-              );
+    return ListTile(
+          leading: CachedNetworkImage(
+            height: 30,
+            width: 30,
+            imageUrl: suggestion.image1 ?? 'https://azadchaiwala.pk/getImage?i=&t=course',
+            colorBlendMode: BlendMode.darken,
+            errorWidget: (context, url, error) => Image.network(
+              'https://azadchaiwala.pk/getImage?i=&t=course',
+              width: 30,
+              height: 30,
+            ),
+          ),
+          title: Text(
+            suggestion.title,style: GoogleFonts.poppins(
+            fontSize: 12
+          ),
+          ),
+          subtitle: Text(suggestion.brand,style: GoogleFonts.poppins(
+            fontSize: 10
+          ),),
+          // trailing: Text(suggestion.rating,style:GoogleFonts.poppins(
+          //   fontSize: 10
+          // ),),
+          );
       },
       onSuggestionSelected: (suggestion) async {
-        Navigator.pushNamed(context, RouterName.productDetails,arguments: suggestion.id);
+    Navigator.pushNamed(context, RouterName.productDetails,arguments: suggestion.id);
       
       },
-    ));
+    );
   }
 }
 

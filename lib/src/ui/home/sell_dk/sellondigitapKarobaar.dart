@@ -23,7 +23,8 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
 
   Widget _buildNo() {
     return TextFormField(
-      decoration: inputDecoration(hint:  LanguageKeys.mobileNo.translate(context)),
+      decoration:
+          inputDecoration(hint: LanguageKeys.mobileNo.translate(context)),
       keyboardType: TextInputType.number,
       validator: (String value) {
         if (value.isEmpty) {
@@ -39,7 +40,9 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
 
   Widget _buildPassword() {
     return TextFormField(
-        decoration: inputDecoration(hint: LanguageKeys.pssword.translate(context),),
+        decoration: inputDecoration(
+          hint: LanguageKeys.pssword.translate(context),
+        ),
         keyboardType: TextInputType.text,
         validator: (String value) {
           Validators.patternString(
@@ -54,23 +57,26 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
           _password = value;
         });
   }
-@override
+
+  @override
   void initState() {
     _checkSellerLogin();
     super.initState();
   }
-   _checkSellerLogin()async{
- final accessSellerToken = await getSellerToken();
-  if(accessSellerToken !=null){
-    Navigator.pushReplacementNamed(context, RouterName.sellerDash);
+
+  _checkSellerLogin() async {
+    final accessSellerToken = await getSellerDashToken();
+    if (accessSellerToken != null) {
+      Navigator.pushReplacementNamed(context, RouterName.sellerDash);
+    }
   }
-   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-           LanguageKeys.sellOnDigialKarobaar.translate(context),
+            LanguageKeys.sellOnDigialKarobaar.translate(context),
             style: TextStyle(color: Colors.white),
           ),
           leading: InkWell(
@@ -107,8 +113,6 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
               padding: const EdgeInsets.only(left: 15.0, right: 15),
               child: Column(children: <Widget>[
                 SizedBox(height: 20),
-                
-
 
                 Row(
                   children: [
@@ -125,14 +129,16 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                 ),
                 SizedBox(height: 20.0),
                 Center(
-                  child: Text("Seamless Logistics, Secure payments and Nationwide Coverage of your brand ",style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15))
-                ),
-                 SizedBox(height: 10),
-                 Center(
-                  child: Text(" Make your Business go online with DigitalKarobaar and increase your sales 10X than your current ones.",style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15))
-                ),
+                    child: Text(
+                        "Seamless Logistics, Secure payments and Nationwide Coverage of your brand ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))),
+                SizedBox(height: 10),
+                Center(
+                    child: Text(
+                        " Make your Business go online with DigitalKarobaar and increase your sales 10X than your current ones.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))),
                 //SizedBox(height: 10),
                 Row(
                   children: [
@@ -163,9 +169,10 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                 ),
                 SizedBox(height: 10),
                 Center(
-                  child: Text("Get bulk orders directory from Outstation parties. No middlemen. Increased profits. Hassle - free sales, all through DigitalKarobaar. ",style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15))
-                ),
+                    child: Text(
+                        "Get bulk orders directory from Outstation parties. No middlemen. Increased profits. Hassle - free sales, all through DigitalKarobaar. ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15))),
 
                 SizedBox(height: 50),
                 Text(
@@ -182,13 +189,14 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                           _buildPassword(),
                           SizedBox(height: 20),
                           CommonButton(
-                            title: 
-                            LanguageKeys.saveAndVerify.translate(context),
+                            title:
+                                LanguageKeys.saveAndVerify.translate(context),
                             //"Save and Verify",
                             buttonColor: AppColors.primaryColor,
                             height: 35,
                             onTap: () {
-                            
+                         
+
                               if (_form.currentState.validate()) {
                                 _form.currentState.save();
                                 sellRepository
@@ -198,7 +206,7 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                                 )
                                     .then((response) {
                                   if (response.statusCode == 200) {
-                                    Navigator.pushNamed(
+                                    Navigator.pushReplacementNamed(
                                         context, RouterName.sellOtp);
                                   }
                                 });
@@ -209,8 +217,6 @@ class _SellOnDigitalKarobaarState extends State<SellOnDigitalKarobaar> {
                 SizedBox(height: 50),
               ]),
             )
-
-
           ],
         ));
   }

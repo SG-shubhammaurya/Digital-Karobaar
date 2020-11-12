@@ -1,18 +1,15 @@
-
-
-class HomeAdvertisment {
+class KycPageAdd {
   Data data;
   Data x;
   Data y;
-
-  HomeAdvertisment({this.data, this.x, this.y});
-
-  HomeAdvertisment.fromJson(Map<String, dynamic> json) {
+  Data z;
+  KycPageAdd({this.data, this.x, this.y, this.z});
+  KycPageAdd.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     x = json['x'] != null ? new Data.fromJson(json['x']) : null;
     y = json['y'] != null ? new Data.fromJson(json['y']) : null;
+    z = json['z'] != null ? new Data.fromJson(json['z']) : null;
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.data != null) {
@@ -24,21 +21,20 @@ class HomeAdvertisment {
     if (this.y != null) {
       data['y'] = this.y.toJson();
     }
+    if (this.z != null) {
+      data['z'] = this.z.toJson();
+    }
     return data;
   }
 }
-
 class Data {
   int seller;
   String pic;
-
   Data({this.seller, this.pic});
-
   Data.fromJson(Map<String, dynamic> json) {
     seller = json['Seller'];
     pic = json['Pic'];
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['Seller'] = this.seller;

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_state.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/product_cart.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
@@ -10,7 +9,6 @@ import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -19,28 +17,40 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   CartCubit cartCubit;
-  // OrderPlaceCubit orderPlaceCubit;
+
   @override
   void initState() {
     _getCartItems();
 
-    // orderPlaceCubit = BlocProvider.of(context);
     super.initState();
   }
 
+  var deliveryCharge = 0;
   _getCartItems() async {
+    //   getToCart().then((value) {
+    //     productCart = value;
+    //   });
+
     cartCubit = await BlocProvider.of<CartCubit>(context).getCartItems(context);
+  }
+
+  List<Cart> cartData = [];
+  _setCart(CartDetailProvider cartItems, List<Cart> data) {
+    if (cartData.length == 0) {
+      cartData = data;
+      cartItems.addItems(data);
+    }
   }
 
   bool isshow = false;
   bool showBottom = false;
+  var id;
   @override
   Widget build(BuildContext context) {
     final cartItems = Provider.of<CartDetailProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(centerTitle: true, 
-      title: Text(LanguageKeys.myCart.translate(context))),
+      appBar: AppBar(centerTitle: true, title: const Text('My Cart')),
       body: BlocBuilder<CartCubit, CartState>(
           cubit: cartCubit,
           builder: (c, s) {
@@ -49,56 +59,10 @@ class _CartScreenState extends State<CartScreen> {
             }
 
             if (s is CartItems) {
-              cartItems.addItems(s.items.data);
+              deliveryCharge = s.items.delivery;
+              _setCart(cartItems, s.items.data);
 
-              return Stack(
-                fit: StackFit.loose,
-                children: [
-                  ListView(
-                    shrinkWrap: true,
-                    children:
-                        List<Widget>.generate(s.items.data.length, (index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                              leading: CachedNetworkImage(
-                                  width: 80,
-                                  height: 80,
-                                  imageUrl: s.items.data[index].image1,
-                                  placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => Icon(
-                                        Icons.broken_image,
-                                        size: 20,
-                                      )),
-                              title: Text(s.items.data[index].title,style: 
-                              TextStyle(fontSize: 12)),
-                              subtitle: _setQuantity(
-                                  s.items.data[index], cartItems, context),
-                              trailing: InkResponse(
-                                onTap: () {
-                                  _removeItems(s.items.data[index].id);
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.only(right: 10.0),
-                                  child: Icon(
-                                    Icons.delete,
-                                    size: 20,
-                                    color: AppColors.primaryColor,
-                                  ),
-                                ),
-                              )),
-                          Divider(color: Colors.black12, thickness: 2.0)
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: _showBottomNav(cartItems),
-                  )
-                ],
-              );
+              return buildCartItems();
             }
             if (s is CartItems) {
               if (s.items.data.length == 0) {
@@ -108,14 +72,75 @@ class _CartScreenState extends State<CartScreen> {
               }
             }
             if (s is SuccessCartRemove) {
+         cartItems. removeProduct(id);
               _getCartItemsAgain(context);
             }
             if (s is ErrorStateCart) {
-              Text(s.message.toString());
+              return Center(
+                child: Text('No items in Cart'),
+              );
+              
             }
             return Center(child: Text('Loading..'));
           }),
     );
+  }
+
+  Widget buildCartItems() {
+    return Consumer<CartDetailProvider>(builder: (context, cart, child) {
+      //  _setCart(cart, cart.cartItems);
+
+      return Stack(
+        fit: StackFit.loose,
+        children: [
+          ListView(
+           shrinkWrap: true,
+          primary: true,
+            children: List<Widget>.generate(cart.cartItems.length, (index) {
+              return Column(
+                children: [
+                  ListTile(
+                      leading: CachedNetworkImage(
+                          width: 80,
+                          height: 80,
+                          imageUrl: cart.cartItems[index].image1,
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) => Icon(
+                                Icons.broken_image,
+                                size: 20,
+                              )),
+                      title: Text(cart.cartItems[index].title,
+                          style: TextStyle(fontSize: 12)),
+                      subtitle:
+                          _setQuantity(cart.cartItems[index], cart, context),
+                      trailing: InkResponse(
+                        onTap: () {
+                        id=cart.cartItems[index];
+                   
+                          _removeItems(cart.cartItems[index].id);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: Icon(
+                            Icons.delete,
+                            size: 20,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      )),
+                  Divider(color: Colors.black12, thickness: 2.0)
+                ],
+              );
+            }).toList(),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _showBottomNav(cart),
+          )
+        ],
+      );
+    });
   }
 
   _showBottomNav(CartDetailProvider cartItems) {
@@ -126,34 +151,44 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   _setQuantity(
-      Cart list, CartDetailProvider cartDetailProvider, BuildContext context) {
+      Cart cart, CartDetailProvider cartDetailProvider, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-
-         Text('Discunt : \u20B9 ${list.discount.toString()}',style: TextStyle(
-           fontSize: 12,
-         )),
-         const SizedBox(height: 10),
-         Text('Prize : \u20B9 ${list.price.toString()}',style: TextStyle(
-           fontSize: 12,
-         )),
-           const SizedBox(height: 10),
-         Text('Margin : % ${list.retail.toString()}',style: TextStyle(
-           fontSize: 12,
-         )),
-           const SizedBox(height: 10),
-         Text('Delivery Charge: \u20B9 ${list.delivery}',style: TextStyle(
-           fontSize: 12,
-         )),
-           const SizedBox(height: 10),
-           Text('Quantity:',style: TextStyle(
-           fontSize: 12,
-         )),
-           const SizedBox(height: 10),
+          const SizedBox(height: 10),
+          Text('Price After Discount : \u20B9 ${cart.discount.toString()}',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
+          Text('MRP: \u20B9 ${cart.price.toString()}',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
+          Text('Margin : % ${cart.retail.toString()}',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
+          Text('GST : % ${cart.gst}',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
+          Text('Delivery Charge: \u20B9 $deliveryCharge',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
+          Text('Quantity:',
+              style: TextStyle(
+                fontSize: 12,
+              )),
+          const SizedBox(height: 10),
           Container(
               height: 30,
               width: 150,
@@ -165,29 +200,30 @@ class _CartScreenState extends State<CartScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                 
                   InkWell(
                       onTap: () {
-                        cartDetailProvider.updateProduct(list, list.quantity + 1);
+                        cartDetailProvider.updateProduct(
+                            cart, cart.quantity + 1, deliveryCharge);
                       },
                       child: Icon(
                         Icons.add,
                         size: 18,
                         color: Colors.black,
                       )),
-
-                  Text('${list.quantity}',style: TextStyle(
-                    color: Colors.black
-                  ),),
-
-                  list.quantity == 1
+                  Text(
+                    '${cart.quantity}',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  cart.quantity ==  cart.initQuantity
                       ? Icon(Icons.remove, size: 18, color: Colors.black38)
                       : InkWell(
                           onTap: () {
-                            final qtr = list.quantity - 1;
-                            cartDetailProvider.updateProduct(list, qtr);
+                            final qtr = cart.quantity - 1;
+                            cartDetailProvider.updateProduct(
+                                cart, qtr, deliveryCharge);
                           },
-                          child: Icon(Icons.remove, size: 18, color: Colors.black))
+                          child:
+                              Icon(Icons.remove, size: 18, color: Colors.black))
                 ],
               )),
         ],
@@ -224,7 +260,7 @@ class _CartScreenState extends State<CartScreen> {
                           color: AppColors.primaryColor),
                       child: Center(
                         child: Text(
-                          '\u20B9 ${cart.calculateTotal()}',
+                          '\u20B9 ${cart.calculateTotal(deliveryCharge)}',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -242,10 +278,11 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CommonButton(
-                      title:LanguageKeys.checkOut.translate(context),
+                      title: "CheckOut",
                       buttonColor: AppColors.primaryColor,
                       onTap: () {
-                        Navigator.pushNamed(context, RouterName.checkOutConfm);
+                        Navigator.pushNamed(context, RouterName.checkOutConfm,
+                            arguments: deliveryCharge);
                       },
                     )
                   ],

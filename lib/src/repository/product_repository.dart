@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:digitalkarobaar/src/core/endpoint/end_points.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
-import 'package:digitalkarobaar/src/models/New_Arrival.dart';
 import 'package:digitalkarobaar/src/models/brand.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
+import 'package:digitalkarobaar/src/models/new_arrival.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/sub_categories.dart';
 import 'package:digitalkarobaar/src/models/top_brands.dart';
@@ -12,7 +12,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class ProductRepository {
-
   static Future<List<Products>> getFilterProduct(
       String min, String max, String location) async {
     try {
@@ -70,7 +69,30 @@ class ProductRepository {
       throw Exception(e);
     }
   }
-   static Future<List<Brand>> getBrands() async {
+
+  static Future<List<Brand>> getSellerBrands() async {
+    try {
+      final response = await http.get(
+        EndPoint.brandRegister,
+        headers: {
+          "Authorization": await getSellerToken(),
+          'Content-type': 'application.json',
+          'Accept': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        final res = json.decode(response.body);
+
+        return List.generate(res.length, (index) {
+          return Brand.fromJson(res[index]);
+        }).toList();
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  static Future<List<Brand>> getBrands() async {
     try {
       final response = await http.get(
         EndPoint.brand,
@@ -81,7 +103,7 @@ class ProductRepository {
         return List.generate(res.length, (index) {
           return Brand.fromJson(res[index]);
         }).toList();
-      } 
+      }
     } catch (e) {
       throw Exception(e);
     }
@@ -111,16 +133,15 @@ class ProductRepository {
       final response = await http.get(
         EndPoint.topcategories,
         headers: {
-          "Authorization":  await  getAccessToken(),
+          "Authorization": await getAccessToken(),
           'Content-type': 'application.json',
           'Accept': 'application/json',
         },
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         final res = json.decode(response.body) as List;
-         
-      
-      return  List.generate(res.length, (index) {
+
+        return List.generate(res.length, (index) {
           return Categories.fromJson(res[index]);
         }).toList();
       } else {
@@ -136,7 +157,7 @@ class ProductRepository {
       final response = await http.get(
         EndPoint.getFavorite + "?id=$userId",
         headers: {
-          "Authorization": await  getAccessToken(),
+          "Authorization": await getAccessToken(),
           'Content-type': 'application.json',
           'Accept': 'application/json',
         },
@@ -147,7 +168,7 @@ class ProductRepository {
 
         return res.map((e) => Products.fromJson(e)).toList();
       } else {
-       throw Exception();
+        throw Exception();
       }
     } catch (e) {
       throw Exception(e);
@@ -159,7 +180,7 @@ class ProductRepository {
       final response = await http.post(
         EndPoint.postFavorite + "?id=$id",
         headers: {
-          "Authorization": await  getAccessToken(),
+          "Authorization": await getAccessToken(),
           'Content-type': 'application.json',
           'Accept': 'application/json',
         },
@@ -185,7 +206,7 @@ class ProductRepository {
       final response = await http.post(
         EndPoint.removeFavorite + "?id=$id",
         headers: {
-          "Authorization": await  getAccessToken(),
+          "Authorization": await getAccessToken(),
           'Content-type': 'application.json',
           'Accept': 'application/json',
         },
@@ -194,7 +215,7 @@ class ProductRepository {
         final res = json.decode(response.body);
         Fluttertoast.showToast(
             backgroundColor: AppColors.primaryColor, msg: 'Favorite Removed');
-      } 
+      }
       if (response.statusCode == 404) {
         Fluttertoast.showToast(msg: 'Not Found');
       }
@@ -202,8 +223,6 @@ class ProductRepository {
       throw Exception(e);
     }
   }
-
-
   static Future<List<NewArrival>> getNewArrival() async {
     try {
       final response = await http.get(
@@ -215,15 +234,12 @@ class ProductRepository {
       );
        if (response.statusCode == 200 || response.statusCode == 201) {
         final res = json.decode(response.body) as List;
-         
-      
       return  List.generate(res.length, (index) {
           return NewArrival.fromJson(res[index]);
         }).toList();
       } else {
         print(response.statusCode.toString());
       }
-
     }catch (e) {
       throw Exception (e);
     }

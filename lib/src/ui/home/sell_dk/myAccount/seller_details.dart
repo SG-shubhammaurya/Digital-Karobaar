@@ -1,5 +1,6 @@
 import 'package:digitalkarobaar/src/bloc/seller/seller_details_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/seller/seller_state.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/utils/util.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/states.dart';
@@ -10,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SellerDetails extends StatelessWidget {
-  SellerDetails({this.isFormUpdate=false});
-  final isFormUpdate;
+  SellerDetails({this.isFormUpdate});
+  bool isFormUpdate = false;
   var companyName;
   var representativeName;
   var emailId;
@@ -21,6 +22,7 @@ class SellerDetails extends StatelessWidget {
   var addressLine2;
   var pincode;
   var state;
+  var dispatch;
   var city;
   List profileType = ['Footwear Wholesaler', 'Footwear Manufacturer'];
   List citiesRow = <dynamic>["select"];
@@ -34,7 +36,7 @@ class SellerDetails extends StatelessWidget {
     sellCubit.getAllStates();
     return Scaffold(
       appBar: AppBar(
-        title: isFormUpdate ? Text('Update Account') :  Text("Seller Details"),
+        title: isFormUpdate ? Text('Update Account') : Text("Seller Details"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -132,6 +134,21 @@ class SellerDetails extends StatelessWidget {
                       textInputAction: TextInputAction.next,
                       decoration: inputDecoration(hint: "Your Address Line2")),
                   SizedBox(height: 10),
+                  Text("Dispatch Day"),
+                  SizedBox(height: 10),
+                  TextFormField(
+                      validator: (val) {
+                        if (val.isEmpty) {
+                          return "This is Required";
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      onSaved: (dispa) {
+                        dispatch = dispa;
+                      },
+                      onChanged: (val) {},
+                      decoration: inputDecoration(hint: "Dispatch in day")),
+                  const SizedBox(height: 10),
                   Text("Pincode"),
                   SizedBox(height: 10),
                   TextFormField(
@@ -204,6 +221,9 @@ class SellerDetails extends StatelessWidget {
                           citiesRow = state.cities;
                           return _buildCities(state.cities);
                         }
+                        if (state is SellerDetailErrorState) {
+                          showMessagess('Error');
+                        }
 
                         return _buildCities(citiesRow);
                       }),
@@ -213,57 +233,59 @@ class SellerDetails extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                      isFormUpdate ?
-                      CommonButton(
-                          buttonColor: AppColors.primaryColor,
-                          titleColor: Colors.white,
-                          title: "Update Accouunt",
-                          onTap: () {
-                            
-                           if (formKey.currentState.validate()) {
-                             formKey.currentState.save();
-                              Map<dynamic, dynamic> data = {
-                                "Company_Name": companyName,
-                                "Name": representativeName,
-                                "Email": emailId,
-                                "Phone": phoneNo,
-                                "Profile": selectProfileType.toString(),
-                                "Address1": addressLine1,
-                                "Address2": addressLine2,
-                                "PinCode": pincode.toString(),
-                                "State": state,
-                                "City": dropdownValue.value.toString(),
-                              };
+                        isFormUpdate
+                            ? CommonButton(
+                                buttonColor: AppColors.primaryColor,
+                                titleColor: Colors.white,
+                                title: "Update Accouunt",
+                                onTap: () {
+                                  if (formKey.currentState.validate()) {
+                                    formKey.currentState.save();
+                                    Map<dynamic, dynamic> data = 
+                                    {
+                                      "Company_Name": companyName,
+                                      "Name": representativeName,
+                                      "Email": emailId,
+                                      "Phone": phoneNo,
+                                      "Profile": selectProfileType.toString(),
+                                      "Address1": addressLine1,
+                                      "Address2": addressLine2,
+                                        "Dispatch": dispatch,
+                                      "PinCode": pincode.toString(),
+                                      "State": state,
+                                      "City": dropdownValue.value.toString(),
+                                    };
 
-                              sellCubit.updateDetails(data);
-                           }
-                          },
-                        )
-                      :  CommonButton(
-                          buttonColor: AppColors.primaryColor,
-                          titleColor: Colors.white,
-                          title: "Svae next",
-                          onTap: () {
-                            //  Navigator.pushNamed(context, RouterName.documents);
-                           if (formKey.currentState.validate()) {
-                             formKey.currentState.save();
-                              Map<dynamic, dynamic> data = {
-                                "Company_Name": companyName,
-                                "Name": representativeName,
-                                "Email": emailId,
-                                "Phone": phoneNo,
-                                "Profile": selectProfileType.toString(),
-                                "Address1": addressLine1,
-                                "Address2": addressLine2,
-                                "PinCode": pincode.toString(),
-                                "State": state,
-                                "City": dropdownValue.value.toString(),
-                              };
+                                    sellCubit.updateDetails(data);
+                                  }
+                                },
+                              )
+                            : CommonButton(
+                                buttonColor: AppColors.primaryColor,
+                                titleColor: Colors.white,
+                                title: "Save next",
+                                onTap: () {
+                                 if (formKey.currentState.validate()) {
+                                    formKey.currentState.save();
+                                   
+                                    Map<dynamic, dynamic> data = {
+                                      "Company_Name": companyName,
+                                      "Name": representativeName,
+                                      "Email": emailId,
+                                      "Phone": phoneNo,
+                                      "Profile": selectProfileType.toString(),
+                                      "Address1": addressLine1,
+                                      "Address2": addressLine2,
+                                      "PinCode": pincode.toString(),
+                                      "State": state,
+                                      "Dispatch": dispatch,
+                                      "City": dropdownValue.value.toString(),
+                                    };
 
-                              sellCubit.fillDetails(data);
-                           }
-                          },
-                        ),
+                                    sellCubit.fillDetails(data);
+                                  }
+                               },
+                              ),
                         BlocBuilder<SellerCubit, SellerDetail>(
                             builder: (_, state) {
                           if (state is SellerDetailLoadingSate) {
@@ -316,7 +338,7 @@ class SellerDetails extends StatelessWidget {
 
   _buildCities(List<dynamic> result) {
     dropdownValue = ValueNotifier<String>(result[0]);
-  
+
     return ValueListenableBuilder<String>(
         valueListenable: dropdownValue,
         builder: (context, value, child) {
@@ -347,9 +369,13 @@ class SellerDetails extends StatelessWidget {
   }
 
   void _navigateToDoc(BuildContext context, id) async {
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.pushReplacementNamed(context, RouterName.documents, arguments: id);
-          });
-     
+    if (id != null) {
+      if (!isFormUpdate) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, RouterName.documents,
+              arguments: id);
+        });
+      }
+    }
   }
 }

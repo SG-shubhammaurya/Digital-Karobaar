@@ -2,12 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_cubit.dart';
 import 'package:digitalkarobaar/src/bloc/cart/cart_state.dart';
 import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_icon_button.dart';
 import 'package:digitalkarobaar/src/models/product_spec.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
-import 'package:digitalkarobaar/src/models/user_profile.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
@@ -18,8 +16,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class ProductDetails extends StatefulWidget {
   final id;
@@ -43,9 +39,6 @@ class _ProductDetailsState extends State<ProductDetails> {
     cartCubit = BlocProvider.of<CartCubit>(context);
     super.initState();
   }
-
-  var _userId;
-  UserProfile _userProfile;
   _getUserProfile() async {
     await HomeReposiitory.getProfileInfo().then((userProfile) {
       if (userProfile != null) {
@@ -104,6 +97,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   buildbody(CartDetailProvider cartItems) {
+    print(  productDetails);
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxScrolled) {
@@ -130,6 +124,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             backgroundColor: Colors.black12,
                             child: Icon(
                               Icons.favorite_border,
+                              color: AppColors.primaryColor,
                               size: 20,
                             ))),
                 CircleAvatar(
@@ -139,7 +134,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                         onTap: () {
                           _shareProducts();
                         },
-                        child: Icon(Icons.share))),
+                        child: Icon(
+                          Icons.share,
+                          color: AppColors.primaryColor,
+                        ))),
                 CommonIconButton(
                   onPressed: () {
                     Navigator.pushNamed(context, RouterName.cartScreen);
@@ -187,11 +185,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: Container(
                       height: 180,
                       child: PageView(controller: pageController, children: [
-                        _buildImageLis(productDetails.image1),
-                        // _buildImageLis(productDetails.image2),
-                        // _buildImageLis(productDetails.image3),
-                        // _buildImageLis(productDetails.image4),
-                        // _buildImageLis(productDetails.image5),
+                         _buildImageLis(productDetails.image1),
+                         _buildImageLis(productDetails.image2),
+                        _buildImageLis(productDetails.image3),
+                        _buildImageLis(productDetails.image4),
+                        _buildImageLis(productDetails.image5),
                       ]),
                     ),
                   ),
@@ -215,135 +213,206 @@ class _ProductDetailsState extends State<ProductDetails> {
           ];
         },
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text(productDetails.title,
-                        style: GoogleFonts.poppins(
-                            fontSize: 20, fontWeight: FontWeight.w400)),
-                    SmoothStarRating(
-                        allowHalfRating: true,
-                        onRated: (v) {
-                          setState(() {
-                            rating = v;
-                          });
-                        },
-                        starCount: 5,
-                        rating: rating,
-                        size: 10.0,
-                        color: Colors.amber,
-                        borderColor: Colors.amber,
-                        spacing: 0.0),
-                  ],
-                ),
-                
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "\u20B9",
-                      style: GoogleFonts.openSans(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '${productDetails.prize}',
-                      style: GoogleFonts.openSans(
-                          fontSize: 25, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      LanguageKeys.discount.translate(context),
-                      style: subtitleStyle,
-                    ),
-                    Text('\u20B9 ${productDetails.discount}'),
-                  ],
-                ),
-                    const SizedBox(height: 10),
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      LanguageKeys.retailMargib.translate(context),
-                      style: subtitleStyle,
-                    ),
-                    Text('% ${productDetails.retail}'),
-                  ],
-                ),
-                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      LanguageKeys.delivery.translate(context),
-                      style: subtitleStyle,
-                    ),
-                    Text('\u20B9 ${productDetails.delivery}'),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text(LanguageKeys.minOrder.translate(context),
-                        style: GoogleFonts.openSans(
-                          fontSize: 12,
-                        )),
-                    SizedBox(width: 10),
-                    Text("15", style: GoogleFonts.openSans(fontSize: 12))
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(productDetails.description,
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                    )),
-                const SizedBox(height: 10),
-                Text(
-                  LanguageKeys.sellerShop.translate(context),
-                  style: GoogleFonts.poppins(fontSize: 15),
-                ),
-                SizedBox(height: 10),
-               InkWell(
-                 onTap: (){
-                   Navigator.pushNamed(context, RouterName.sellerShop, arguments: productDetails.sellerId);
-                 },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        productDetails.shop,
-                        style:
-                            GoogleFonts.openSans(fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(productDetails.title,
+                              style: GoogleFonts.openSans(
+                                  color: Color(0xff212121),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800)),
+
+                          // SmoothStarRating(
+                          //     allowHalfRating: true,
+                          //     onRated: (v) {
+                          //       setState(() {
+                          //         rating = v;
+                          //       });
+                          //     },
+                          //     starCount: 5,
+                          //     rating: rating,
+                          //     size: 10.0,
+                          //     color: Colors.amber,
+                          //     borderColor: Colors.amber,
+                          //     spacing: 0.0),
+                        ],
                       ),
-                      
-                      // Container(
-                      //   height: 25,
-                      //   width: 60,
-                      //   child: Center(
-                      //       child: Text('Follow',
-                      //           style: TextStyle(
-                      //               fontSize: 12,
-                      //               color: AppColors.primaryColor))),
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.orange[200],
-                      //       shape: BoxShape.rectangle,
-                      //       borderRadius: BorderRadius.all(Radius.circular(20))),
-                      // )
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            ' Sold By : ',
+                            style: subtitleStyle,
+                          ),
+                          Text(
+                            productDetails.brand,
+                            style: GoogleFonts.openSans(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Price After Discount :',
+                            style: subtitleStyle,
+                          ),
+                          Text(
+                            '\u20B9 ${productDetails.discount}',
+                            style: GoogleFonts.openSans(
+                                fontSize: 20,
+                                color: Color(0xff0039cb),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Center(
+                        child: _getgetGstBenefit(productDetails.discount, productDetails.gst),
+                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     _getgetGstBenefit(
+                      //         productDetails.discount, productDetails.gst),
+                      //   ],
+                      // ),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        color: Color(0xffffcc80),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const SizedBox(width: 10),
+                            Text(
+                              "MRP :\u20B9",
+                              style: GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${productDetails.prize}',
+                              style: GoogleFonts.openSans(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            Text(
+                              'Retail Margin: ',
+                              style: subtitleStyle,
+                            ),
+                            Text('% ${productDetails.retail}'),
+                            const SizedBox(width: 20)
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Delivery: ',
+                            style: subtitleStyle,
+                          ),
+                          Text('\u20B9 ${productDetails.delivery}'),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text("Min Order:",
+                              style: GoogleFonts.openSans(
+                                fontSize: 12,
+                              )),
+                          SizedBox(width: 10),
+                          Text(" ${productDetails.minBuy}", style: GoogleFonts.openSans(fontSize: 12))
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        children: [
+                          Text("Description :",
+                              style: GoogleFonts.openSans(
+                                fontSize: 12,
+                              )),
+                          SizedBox(width: 10),
+                          Text(productDetails.description,
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                              )),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Container(
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Supplier Profile: ',
+                            style: GoogleFonts.poppins(
+                                color: Color(0xff212121), fontSize: 15),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, RouterName.sellerShop,
+                              arguments: productDetails.sellerId);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              productDetails.shop,
+                              style: GoogleFonts.openSans(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              height: 25,
+                              width: 60,
+                              child: Center(
+                                  child: Text('View',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: AppColors.primaryColor))),
+                              decoration: BoxDecoration(
+                                  color: Colors.orange[200],
+                                  shape: BoxShape.rectangle,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Card(
+                child: Container(
                   padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(color: Colors.black12),
+                  decoration: BoxDecoration(color: Colors.orange[200]),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -355,68 +424,149 @@ class _ProductDetailsState extends State<ProductDetails> {
                       SizedBox(height: 5),
                       Row(
                         children: [
-                          Icon(Icons.group_work, size: 10),
+                          Container(
+                              child: Image.asset(
+                            'assets/icons/vaypar.png',
+                            width: 20,
+                            height: 20,
+                          )),
                           Text(
-                            LanguageKeys.vypaarSuraksha.translate(context),
+                            "Vypar Suraksha",
                             style: TextStyle(fontSize: 12),
                           ),
                           SizedBox(width: 20),
                           Icon(Icons.group_work, size: 10),
-                          Text(LanguageKeys.verifiesSeller.translate(context),
+                          Text("Verified Supplier",
                               style: TextStyle(fontSize: 12))
                         ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Text("Specification", style: titleStyle),
-                DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text(
-                        'Property',
-                        style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 10),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Specification",
+                            style: GoogleFonts.poppins(
+                                color: Color(0xff212121), fontSize: 15),
+                          ),
+                        ],
                       ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Quantity',
-                        style: TextStyle(fontStyle: FontStyle.italic),
+
+                      // Text("highlights:", style: titleStyle),
+
+                      // Text( specifications.highlights[0].toString()),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: const <DataColumn>[
+                            DataColumn(
+                              label: Text(
+                                'Property',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Text(
+                                '',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ),
+                          ],
+                          rows: <DataRow>[
+                             specifications.highlights.length != 0
+                                ? DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text(
+                                          specifications.highlights[0].title)),
+                                      DataCell(Text(specifications
+                                          .highlights[0].description)),
+                                    ],
+                                  )
+                                : DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text('No Available')),
+                                      DataCell(Text('No Available')),
+                                    ],
+                                  ),
+                            specifications.highlights.length != 0
+                                ? DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text(
+                                          specifications.highlights[1].title)),
+                                      DataCell(Text(specifications
+                                          .highlights[1].description)),
+                                    ],
+                                  )
+                                : DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text('No Available')),
+                                      DataCell(Text('No Available')),
+                                    ],
+                                  ),
+                            specifications.features.length != 0
+                                ? DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text(
+                                          specifications.features[0].title)),
+                                      DataCell(Text(specifications
+                                          .features[0].description)),
+                                    ],
+                                  )
+                                : DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text('No Available')),
+                                      DataCell(Text('No Available')),
+                                    ],
+                                  ),
+                            specifications.features.length != 0
+                                ? DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text(
+                                          specifications.features[1].title)),
+                                      DataCell(Text(specifications
+                                          .features[1].description)),
+                                    ],
+                                  )
+                                : DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text('No Available')),
+                                      DataCell(Text('No Available')),
+                                    ],
+                                  ),
+                            specifications.specs.length != 0
+                                ? DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text(
+                                          specifications.specs[0].title ?? '')),
+                                      DataCell(Text(
+                                          specifications.specs[0].description ??
+                                              '')),
+                                    ],
+                                  )
+                                : DataRow(
+                                    cells: <DataCell>[
+                                      DataCell(Text('No Available')),
+                                      DataCell(Text('No Available')),
+                                    ],
+                                  )
+                          ],
+                        ),
                       ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Role',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                  ],
-                  rows: <DataRow>[
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('Model')),
-                        DataCell(Text('No Available')),
-                        DataCell(Text('No Available')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('Color')),
-                        DataCell(Text('productDetails.highlights[0]')),
-                        DataCell(Text('No Available')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('Processor')),
-                        DataCell(Text('')),
-                        DataCell(Text('No Available')),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Container(
+              ),
+              Card(
+                child: Container(
                   padding: EdgeInsets.all(10),
                   width: double.infinity,
                   decoration: BoxDecoration(color: Colors.black12),
@@ -428,7 +578,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ],
                   ),
                 ),
-                Row(
+              ),
+              SizedBox(height: 30),
+              Card(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     FlatButton(
@@ -439,7 +592,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Navigator.pushNamed(context, RouterName.messanger);
                         },
                         child: Text(
-                          LanguageKeys.chatNow.translate(context),
+                          'Chat Now',
                           style: TextStyle(color: AppColors.primaryColor),
                         )),
                     BlocBuilder<CartCubit, CartState>(builder: (c, s) {
@@ -449,19 +602,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                       return CommonButton(
                         buttonColor: AppColors.primaryColor,
                         width: 150,
-                        title: LanguageKeys.buy.translate(context),
-                        onTap: () {
-                          // print(productDetails.title.toString());
-                          cartCubit.addToCart(productDetails.id.toString());
+                        title: 'Buy',
+                        onTap: ()  {
+                        cartCubit.addToCart(productDetails.id.toString());
+                     
+  
+                      //  cartCubit.getCartItems(context);
+  
+
+                          // cartItems.addItems(data);
                           // cartItems.setCardItems(productDetails.id.toString(),productDetails.title,productDetails.prize.toDouble(),productDetails.image1);
                           // _checkKycUpload(cartItems);
                         },
                       );
                     })
                   ],
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -491,20 +649,30 @@ class _ProductDetailsState extends State<ProductDetails> {
       ProductRepository.removeFavorite(widget.id);
     }
   }
+
+  _getgetGstBenefit(int discount, gst) {
+    var discountGst = discount * gst / 100;
+    var price = discount - discountGst;
+    if (gst != null && discount != null) {
+      return Text('\u20B9 $price + \u20B9 $discountGst ($gst% GST Benefit)');
+    } else {
+      return Text('\u20B9 $price + \u20B9 (gst% GST Benefit)');
+    }
+  }
 }
 
 _buildImageLis(String path) {
   if (path != null) {
-    return CachedNetworkImage(
-               
-                imageUrl: path,
-                colorBlendMode: BlendMode.darken,
-                errorWidget: (context, url, error) => Image.network(
-                  'https://azadchaiwala.pk/getImage?i=&t=course',
-                 
-                ),
-              );
-   
+    return Container(
+      color: Colors.black12,
+      child: CachedNetworkImage(
+        imageUrl: path,
+        colorBlendMode: BlendMode.darken,
+        errorWidget: (context, url, error) => Image.network(
+          'https://azadchaiwala.pk/getImage?i=&t=course',
+        ),
+      ),
+    );
   } else {
     return Image.network(
       'https://azadchaiwala.pk/getImage?i=&t=course',

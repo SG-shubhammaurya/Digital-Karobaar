@@ -72,8 +72,7 @@ class _SubCategoriesState extends State<SubCategories> {
                   : grid ? _buildGrid() : _buildList(),
             ],
           ),
-        )
-        );
+        ));
   }
 
   _buildList() {
@@ -99,7 +98,7 @@ class _SubCategoriesState extends State<SubCategories> {
                        Container(
                       height: 120,
                       width: 200,
-                      //color: Colors.pink[50],
+                      color: Colors.pink[50],
                       child: subCategories[index].image == null
                           ? Text('')
                           : CachedNetworkImage(
@@ -178,7 +177,7 @@ class _SubCategoriesState extends State<SubCategories> {
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             crossAxisCount: 2,
-            children: _getGridList());
+            children: _getList());
   }
 
   _getList() {
@@ -195,7 +194,7 @@ class _SubCategoriesState extends State<SubCategories> {
               Container(
                 height: 120,
                 width: 180,
-                //color: Colors.pink[50],
+                color: Colors.pink[50],
                 child: subCategories[index].image == null
                     ? Text('')
                     : Image.network(subCategories[index].image,
@@ -214,40 +213,4 @@ class _SubCategoriesState extends State<SubCategories> {
       );
     });
   }
-
-  _getGridList() {
-    return List.generate(subCategories.length, (index) {
-      return InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, RouterName.subCategoriesDetails,
-              arguments: subCategories[index].title);
-        },
-        child: Card(
-          elevation: 1.0,
-          child: new Column(
-            children: <Widget>[
-              Container(
-                height: 120,
-                width: 180,
-                //color: Colors.pink[50],
-                child: subCategories[index].image == null
-                    ? Text('')
-                    : Image.network(subCategories[index].image,
-                        fit: BoxFit.cover),
-              ),
-              Spacer(),
-              Text(
-                subCategories[index].title,
-                style: GoogleFonts.poppins(fontSize: 14),
-              ),
-              Text(subCategories[index].category,
-                  style: GoogleFonts.poppins(fontSize: 12)),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
-
 }

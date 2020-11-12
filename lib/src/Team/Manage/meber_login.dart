@@ -4,6 +4,7 @@ import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
+
 class MemberLogin extends StatefulWidget {
   @override
   _MemberLoginState createState() => _MemberLoginState();
@@ -14,9 +15,6 @@ class _MemberLoginState extends State<MemberLogin> {
   String _password;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   SellRepository sellRepository = SellRepository();
-
-
-
 
   Widget _buildPhoneNo() {
     return SizedBox(
@@ -42,7 +40,7 @@ class _MemberLoginState extends State<MemberLogin> {
       height: 80,
       child: TextFormField(
           textInputAction: TextInputAction.next,
-          decoration: inputDecoration(hint: "Password",isPasswordField: true),
+          decoration: inputDecoration(hint: "Password", isPasswordField: true),
           keyboardType: TextInputType.text,
           validator: (String value) {
             if (value.isEmpty) {
@@ -56,17 +54,10 @@ class _MemberLoginState extends State<MemberLogin> {
     );
   }
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Member Login")
-      ),
+      appBar: AppBar(title: Text("Member Login")),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView(children: [
@@ -106,17 +97,16 @@ class _MemberLoginState extends State<MemberLogin> {
                       title: "Login",
                       buttonColor: AppColors.primaryColor,
                       onTap: () {
-                     //   Navigator.pushNamed(context, RouterName.sellerDetails);
+                        //   Navigator.pushNamed(context, RouterName.sellerDetails);
                         if (_form.currentState.validate()) {
                           _form.currentState.save();
-                          sellRepository.memberLogin(_no, _password).then((response) {
-
-                            if(response.statusCode == 200){
-                               Navigator.pushReplacementNamed(context, RouterName.memberUploadProducts);
-
+                          sellRepository
+                              .memberLogin(_no, _password)
+                              .then((response) {
+                            if (response.statusCode == 200) {
+                              Navigator.pushReplacementNamed(
+                                  context, RouterName.productUpload);
                             }
-
-
                           });
                         }
                       },
@@ -124,7 +114,6 @@ class _MemberLoginState extends State<MemberLogin> {
                   ])))
         ]),
       ),
-      
     );
   }
 }

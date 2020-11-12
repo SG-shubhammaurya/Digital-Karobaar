@@ -141,7 +141,10 @@ class _ForgetOtpState extends State<ForgetOtp> {
                   if (formKey.currentState.validate()) {
                     sellRepository
                         .verifyForgetPswd(textEditingController.text).then((value){
-                         Navigator.pushReplacementNamed(context,RouterName.sellLogin);
+                          if(value?.statusCode ==200){
+                        Navigator.pushReplacementNamed(context,RouterName.sellLogin);
+                          }
+                        
                         });
                   }
                 },

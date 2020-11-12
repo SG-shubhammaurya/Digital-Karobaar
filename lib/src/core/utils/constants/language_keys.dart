@@ -1,6 +1,6 @@
 class LanguageKeys {
   LanguageKeys._();
-
+  static const String getVerified='getVerified';
   static const String en = 'en';
   static const String hi = 'hi';
   static const String language = 'language';
@@ -64,27 +64,8 @@ class LanguageKeys {
   static const String manageYourTeam = 'manageYourTeam';
   static const String sellerShop = 'sellerShop';
   static const String subCategories = 'subCategories';
-  static const String kyc = 'kyc';
-  static const String topRanking = 'topRanking';
-  static const String topCategories = 'topCategories';
-  static const String topBrand = 'topBrand';
-  static const String filterProduct = 'filterProduct';
-  static const String minOrder = 'minOrder';
-  static const String price = 'price';
-  static const String minimum = 'minimum';
-  static const String maximun = 'maximun';
-  static const String location = 'location';
-  static const String everyOne = 'everyOne';
-  static const String verifiesSeller = 'verifiesSeller';
-  static const String clearAll = 'clearAll';
-  static const String done = 'done';
-  static const String result = 'result';
-  static const String discount = 'discount';
-  static const String retailMargib = 'retailMargib';
-  static const String delivery = 'delivery';
-  static const String chatNow = 'chatNow';
-  static const String  buy = 'buy';
-  static const String myCart = 'myCart';
-  static const String checkOut = 'checkOut';
   static const String newArrival = 'newArrival';
+  static const String pinCode = "pinCode";
+  static const String topBrand = "topBrand";
+
 }

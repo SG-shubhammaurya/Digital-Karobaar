@@ -56,6 +56,7 @@ class _BusinessProfileState extends State<BusinessProfile> {
                       itemCount: sellerDocument.data.length,
                       itemBuilder: (context, index) {
                         return Column(
+                          
                           children: [
                             SizedBox(
                               height: 100.0,

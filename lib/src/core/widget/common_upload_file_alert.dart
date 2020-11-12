@@ -12,7 +12,7 @@ class CommonAlertBox {
     return commonAlertBox(context, onPressed: (fromCamera) {
       if (fromCamera) {
         try {
-          selectFile = ImagePicker.pickImage(source: ImageSource.camera)
+          selectFile = ImagePicker.pickImage(source: ImageSource.camera,imageQuality: 85)
               .whenComplete(() {
             Navigator.pop(context);
           });

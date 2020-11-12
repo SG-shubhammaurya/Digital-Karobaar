@@ -1,3 +1,4 @@
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/search_pincode_by.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
@@ -30,15 +31,18 @@ class _PickupDetailsState extends State<PickupDetails> {
 
   var state;
 
-  List<dynamic> pincodeDetails = [Data(stateName: "")];
+  List<dynamic> pincodeDetails = [];
   _getPinCode(String code) async {
-    pincodeDetails = [Data(stateName: "")];
-    final details = await SellRepository.getStateCity(code);
-
-    setState(() {
-      pincodeDetails = details;
-      print(pincodeDetails[0].stateName);
+    //  pincodeDetails = [Data(stateName: "")];
+    final details = await SellRepository.stateCity(code).catchError((e) {
+      showMessagess('Picode Not Found');
     });
+    if (details != null) {
+      setState(() {
+        pincodeDetails = details;
+        // print(pincodeDetails[0]);
+      });
+    }
   }
 
   @override
@@ -70,7 +74,7 @@ class _PickupDetailsState extends State<PickupDetails> {
                   onChanged: (val) {
                     if (val.length == 6) {
                       _getPinCode(val);
-                    }else{
+                    } else {
                       Fluttertoast.showToast(msg: 'Enter 6 digit Number');
                     }
                   },
@@ -117,66 +121,56 @@ class _PickupDetailsState extends State<PickupDetails> {
               const SizedBox(height: 10),
               const Text("City"),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                 autofocus: true,
-                value: null,
-                items: [
-                  DropdownMenuItem<String>(
-                      value: pincodeDetails[0].stateName,
-                      child: Text(
-                        pincodeDetails[0].stateName,
-                        style: TextStyle(fontSize: 14),
-                      )),
-                ],
-                // items: pincodeDetails[0].map((e) {
-                //   return DropdownMenuItem<String>(
-                //       value: e.stateName,
-                //       child: Text(
-                //         e.toString(),
-                //         style: TextStyle(fontSize: 14),
-                //       ));
-                // }).toList(),
-                onChanged: (val) {},
-                // validator: (val) {
-                //   if (val.isEmpty) {
-                //     return "This is Required";
-                //   }
-                //   return null;
-                // },
-                decoration: inputDecoration(hint: "state"),
-              ),
+              pincodeDetails.length == 0
+                  ? Text('Enter PinCode First ')
+                  : DropdownButtonFormField<String>(
+                      autofocus: true,
+                      value: null,
+                      items: [
+                        DropdownMenuItem<String>(
+                            value: pincodeDetails[0].state,
+                            child: Text(
+                              pincodeDetails[0].state,
+                              style: TextStyle(fontSize: 14),
+                            )),
+                      ],
+                      onChanged: (val) {},
+                      decoration: inputDecoration(hint: "state"),
+                    ),
               // auto slacted
               const SizedBox(height: 10),
               const Text("State"),
               const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                autofocus: true,
-                value: null,
-                items: [
-                  DropdownMenuItem<String>(
-                      value: pincodeDetails[0].stateName,
-                      child: Text(
-                        pincodeDetails[0].stateName,
-                        style: TextStyle(fontSize: 14),
-                      )),
-                ],
-                // items: pincodeDetails[0].map((e) {
-                //   return DropdownMenuItem<String>(
-                //       value: e.stateName,
-                //       child: Text(
-                //         e.toString(),
-                //         style: TextStyle(fontSize: 14),
-                //       ));
-                // }).toList(),
-                onChanged: (val) {},
-                // validator: (val) {
-                //   if (val.isEmpty) {
-                //     return "This is Required";
-                //   }
-                //   return null;
-                // },
-                decoration: inputDecoration(hint: "city"),
-              ),
+              pincodeDetails.length == 0
+                  ? Text('Enter PinCode First ')
+                  : DropdownButtonFormField<String>(
+                      autofocus: true,
+                      value: null,
+                      items: [
+                        DropdownMenuItem<String>(
+                            value: pincodeDetails[0].state,
+                            child: Text(
+                              pincodeDetails[0].state,
+                              style: TextStyle(fontSize: 14),
+                            )),
+                      ],
+                      // items: pincodeDetails[0].map((e) {
+                      //   return DropdownMenuItem<String>(
+                      //       value: e.stateName,
+                      //       child: Text(
+                      //         e.toString(),
+                      //         style: TextStyle(fontSize: 14),
+                      //       ));
+                      // }).toList(),
+                      onChanged: (val) {},
+                      // validator: (val) {
+                      //   if (val.isEmpty) {
+                      //     return "This is Required";
+                      //   }
+                      //   return null;
+                      // },
+                      decoration: inputDecoration(hint: "city"),
+                    ),
               const SizedBox(height: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -186,9 +180,9 @@ class _PickupDetailsState extends State<PickupDetails> {
                     CommonButton(
                       buttonColor: AppColors.primaryColor,
                       titleColor: Colors.white,
-                      title: "Svae next",
+                      title: "Save next",
                       onTap: () {
-                     // Navigator.pushNamed(context, RouterName.bankDetails);
+                       
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
 
@@ -196,8 +190,8 @@ class _PickupDetailsState extends State<PickupDetails> {
                             "Address1": addressLine1,
                             "Address2": addressLine2,
                             "PinCode": pinCode,
-                            "State": pincodeDetails[0].stateName,
-                            "City": pincodeDetails[0].stateName,
+                            "State": pincodeDetails[0].state,
+                            "City": pincodeDetails[0].state,
                             "SellerDetailId": widget.sellerDetailId
                           };
                           _savePickupDetails(data, context);
@@ -216,8 +210,12 @@ class _PickupDetailsState extends State<PickupDetails> {
 
   void _savePickupDetails(Map data, BuildContext context) async {
     SellRepository.pickupDetails(data).then((value) {
-      Navigator.pushReplacementNamed(context, RouterName.bankDetails,
-          arguments: value.toString());
+      if (value != null) {
+        Navigator.pushReplacementNamed(context, RouterName.bankDetails,
+            arguments: value.toString());
+      }
+    }).catchError((e) {
+      showMessagess('Error');
     });
   }
 }

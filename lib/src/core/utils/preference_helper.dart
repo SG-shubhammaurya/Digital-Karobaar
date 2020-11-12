@@ -20,42 +20,42 @@ class PreferenceHelper {
 
   static const String languageKeyCode = 'languageCode';
   static const String countryKeyCode = 'countryCode';
-    static String accessToken = "accessToken";
+  static String accessToken = "accessToken";
   static String refreshToken = "refreshToken";
   static String userId = "userId";
   static String phoneNumber = "phoneNumber";
-   static String otpforNewUser = "otpforNewUser";
-      static String appThemeMode = "appThemeMode";
+  static String otpforNewUser = "otpforNewUser";
+  static String appThemeMode = "appThemeMode";
 
-        static const String sellAccessToken = "sellaccessToken";
-  
-   static String accessTemToken = "accessTemToken";
-     static String memberAccessToken = "accessTemToken";
+  static const String sellAccessToken = "sellaccessToken";
+
+  static String accessTemToken = "accessTemToken";
+  static String memberAccessToken = "accessTemToken";
   static SharedPreferences prefs;
+
+  static String sellerTokenDash = "sellerTokenDash";
 
   Future<void> setLanguageCode(String languageCode) async =>
       _preferences.setString(languageKeyCode, languageCode);
- 
 
   Future<void> setCountryCode(String countryCode) async =>
       await _preferences.setString(countryKeyCode, countryCode);
-      
- String get languageCode => _preferences.getString(languageKeyCode);
+
+  String get languageCode => _preferences.getString(languageKeyCode);
   String get countryCode => _preferences.getString(countryKeyCode);
 
 //phone no
-Future<void> setPhoneNumber(String phoneNo) async =>
+  Future<void> setPhoneNumber(String phoneNo) async =>
       _preferences.setString(phoneNumber, phoneNo);
- 
- String get phoneNo => _preferences.getString(phoneNumber);
 
- // ..
- //otp no
-Future<void> setOtpForNewUser(bool value) async =>
+  String get phoneNo => _preferences.getString(phoneNumber);
+
+  // ..
+  //otp no
+  Future<void> setOtpForNewUser(bool value) async =>
       _preferences.setBool(otpforNewUser, value);
- 
- bool get otpForNewUser => _preferences.getBool(otpforNewUser);
 
+  bool get otpForNewUser => _preferences.getBool(otpforNewUser);
 
   //access Token
   static Future<String> getAccessToken() async {
@@ -68,16 +68,15 @@ Future<void> setOtpForNewUser(bool value) async =>
     await prefs.setString(accessToken, value);
   }
 
-   Future<void> setDarkmode(bool isDarkMode) async =>
-    await _preferences.setBool(appThemeMode, isDarkMode);
-   
+  Future<void> setDarkmode(bool isDarkMode) async =>
+      await _preferences.setBool(appThemeMode, isDarkMode);
 
-   bool get isDarkMode =>_preferences.getBool(appThemeMode);
+  bool get isDarkMode => _preferences.getBool(appThemeMode);
 
-    //access Sell Token
+  //access Sell Token
   static setSellAccessToken(String value) async {
     prefs = await SharedPreferences.getInstance();
-    await prefs.setString(sellAccessToken, value); 
+    await prefs.setString(sellAccessToken, value);
   }
 
   static Future<String> getSellAccessToken() async {
@@ -85,7 +84,7 @@ Future<void> setOtpForNewUser(bool value) async =>
     return prefs.getString(sellAccessToken);
   }
 
- static Future<String> getTemToken() async {
+  static Future<String> getTemToken() async {
     prefs = await SharedPreferences.getInstance();
     return prefs.getString(accessTemToken);
   }
@@ -94,13 +93,24 @@ Future<void> setOtpForNewUser(bool value) async =>
     prefs = await SharedPreferences.getInstance();
     await prefs.setString(accessTemToken, value);
   }
-   static setMemberAccessToken(String value) async {
+
+  static setMemberAccessToken(String value) async {
     prefs = await SharedPreferences.getInstance();
     await prefs.setString(memberAccessToken, value);
   }
+
   static Future<String> getMemberToken() async {
     prefs = await SharedPreferences.getInstance();
     return prefs.getString(memberAccessToken);
+  }
+   static Future<String> getSellerTokenDash() async {
+    prefs = await SharedPreferences.getInstance();
+    return prefs.getString(sellerTokenDash);
+  }
+
+  static setSellerTokenDash(String value) async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs.setString(sellerTokenDash, value);
   }
 
 }

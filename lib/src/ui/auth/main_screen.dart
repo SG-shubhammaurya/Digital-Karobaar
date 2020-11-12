@@ -1,7 +1,6 @@
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
-import 'package:digitalkarobaar/src/ui/auth/account_info.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
@@ -13,10 +12,10 @@ class MainScreen extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
-                height: 100,
-                width: 100,
-                //color: Colors.black12,
+              child: SizedBox(
+                height: 150,
+                width: 150,
+                child: Image.asset('assets/icons/launcher.png'),
               ),
             ),
             Expanded(
@@ -44,7 +43,6 @@ class MainScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushReplacementNamed(
                             context, RouterName.termCondition);
-                            
                       },
                       child: Text('Get Started',
                           style: TextStyle(

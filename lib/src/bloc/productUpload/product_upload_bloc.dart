@@ -1,5 +1,6 @@
 import 'package:digitalkarobaar/src/repository/product_upload_repo.dart';
 import 'package:digitalkarobaar/src/res/connectivity.dart';
+import 'package:dio/src/form_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'product_upload_state.dart';
 
@@ -50,7 +51,7 @@ class ProductUploadCubit extends Cubit<ProductUploadState>
     }
   }
 
-  uploadProduct(Map<String, dynamic> data) async {
+  uploadProduct( Map<dynamic,dynamic> data) async {
     try {
       if (!await isConnected()) {
         emit(ErrorState('Please Check Your NetWork Connection'));
@@ -64,7 +65,7 @@ class ProductUploadCubit extends Cubit<ProductUploadState>
     }
   }
 
-  uploadProductAsMember(Map<String, dynamic> data) async {
+  uploadProductAsMember( Map<dynamic,dynamic> data) async {
     try {
       if (!await isConnected()) {
         emit(ErrorState('Please Check Your NetWork Connection'));

@@ -402,7 +402,7 @@ class _SellerDashBoardState extends State<SellerDashBoard> {
 
    _logout(String v) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove('sellaccessToken');
+    preferences.remove('sellerTokenDash');
 
     Navigator.pushNamedAndRemoveUntil(
       context, RouterName.mainPage, ModalRoute.withName("/sellOnKarobaar")

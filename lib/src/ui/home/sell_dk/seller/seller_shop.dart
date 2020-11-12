@@ -7,8 +7,6 @@ import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
-
 
 class SellerShop extends StatefulWidget {
   const SellerShop(this.id);
@@ -29,16 +27,15 @@ class _SellerShopState extends State<SellerShop> {
   List<Product> sellerProducts = [];
   bool isLoading = true;
   _getSellerDetails() async {
-    sellerDash = SellerDash();
-    //SellRepository.getSellerFollower();
-    // SellRepository.getFolloweing() ;
-    sellerDash = await SellRepository.getSellerShop(widget.id).whenComplete(() {
-      setState(() {
-        if (sellerDash != null) {
-          isLoading = false;
-        }
+    
+ final   shop = await SellRepository.getSellerShop(widget.id);
+
+    if(shop !=null){
+       sellerDash = shop;
+       setState(() {
+         isLoading = false;
       });
-    });
+    }
   }
 
   bool isFollow = false;
@@ -72,12 +69,14 @@ class _SellerShopState extends State<SellerShop> {
                                         }),
                                     const SizedBox(width: 10),
                                     Text(
-                                      LanguageKeys.sellerShop.translate(context),
+                                      LanguageKeys.sellerShop
+                                          .translate(context),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15),
                                     ),
+                                    // SizedBox(width: 40.0),
                                   ],
                                 ),
                                 Row(children: [
@@ -100,41 +99,56 @@ class _SellerShopState extends State<SellerShop> {
                                             style:
                                                 TextStyle(color: Colors.white))
                                       ]),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(children: [
-                                    Text("Following",
-                                        style: TextStyle(color: Colors.white)),
-                                    Text("22",
-                                        style: TextStyle(color: Colors.white))
-                                  ])
+
+                                  // SizedBox(
+                                  //   width: 20,
+                                  // ),
+
+                                  sellerDash.image != null
+                                      ? Container(
+                                          height: 50,
+                                          width: 150,
+                                          child: Image.network(sellerDash.image,
+                                              fit: BoxFit.cover),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                RouterName.vypaarSuraksha);
+                                          },
+                                          child: Text(
+                                            LanguageKeys.getVerified
+                                                .translate(context),
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                        ),
+//
                                 ]),
                                 SizedBox(height: 15),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
+                                  sellerDash.profile.name != null ?    Container(
                                       decoration: BoxDecoration(
                                           color: Colors.black12,
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       height: 40,
-                                      width: 80,
+                                      width: 180,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                              sellerDash.profile.name
+                                              sellerDash.profile.name != null ? sellerDash.profile.name : 'Unknown'
                                                   .toString(),
                                               style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.white)),
                                         ],
                                       ),
-                                    ),
-                                    // SizedBox(width: 5),
+                                    ):Text("No Name"),
+                                     //SizedBox(width: 5),
                                     IconButton(
                                         iconSize: 30,
                                         color: Colors.white,
@@ -145,7 +159,7 @@ class _SellerShopState extends State<SellerShop> {
                                         ),
                                         onPressed: () async {
                                           //String p = await shareProfile(id);
-                                          /// share(context, p);
+                                          // share(context, p);
                                         }),
 
                                     !isFollow
@@ -181,27 +195,6 @@ class _SellerShopState extends State<SellerShop> {
                                                 style: GoogleFonts.poppins(
                                                     fontSize: 12,
                                                     color: Colors.white))),
-
-                                    // Row(
-                                    //   children: [
-
-                                    //    favorite ? IconButton(
-                                    //         color: Colors.white,
-                                    //         icon: Icon(Icons.favorite),
-                                    //         onPressed: () {
-                                    //            setState(() {
-                                    //             favorite = !favorite;
-                                    //           });
-                                    //         }):IconButton(
-                                    //         color: Colors.white,
-                                    //         icon: Icon(Icons.favorite_border),
-                                    //         onPressed: () {
-                                    //            setState(() {
-                                    //             favorite = !favorite;
-                                    //           });
-                                    //         })
-                                    //   ],
-                                    // ),
                                   ],
                                 ),
                               ],
@@ -216,11 +209,10 @@ class _SellerShopState extends State<SellerShop> {
                         child: Container(
                           width: double.infinity,
                           height: 400,
-                        
                         ),
                       ),
                       Positioned(
-                          top: 170,
+                          top: 200,
                           child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 25),
@@ -263,46 +255,59 @@ class _SellerShopState extends State<SellerShop> {
                                         ]),
                                   ))))
                     ])),
+                SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0),
                   child: Row(
                     children: [
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.black12,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         height: 40,
-                        width: 100,
+                        width: 115,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              sellerDash.customers.toString(),
-                              style: TextStyle(fontSize: 11),
+                            Row(
+                              children: [
+                                Text(
+                                  sellerDash.customers.toString(),
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                SizedBox(width: 5),
+                                Text("Customers"),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.black12,
                             borderRadius: BorderRadius.circular(10)),
                         height: 40,
-                        width: 100,
+                        width: 110,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              sellerDash.products.toString(),
-                              style: TextStyle(fontSize: 11),
+                            Row(
+                              children: [
+                                Text(
+                                  sellerDash.products.toString(),
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                SizedBox(width: 5),
+                                Text("Products"),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.black12,
@@ -313,8 +318,10 @@ class _SellerShopState extends State<SellerShop> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
+                              Text(sellerDash.dispatch,
+                                  style: TextStyle(fontSize: 11)),
                               Text(
-                                "6 Days Dispatch",
+                                " Days Dispatch",
                                 style: TextStyle(fontSize: 11),
                               ),
                             ],
@@ -324,7 +331,7 @@ class _SellerShopState extends State<SellerShop> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 Container(
                   height: 100,
                   child: ListView(
@@ -382,7 +389,8 @@ class _SellerShopState extends State<SellerShop> {
                         title: new TextField(
                           controller: controller,
                           decoration: new InputDecoration(
-                              hintText: LanguageKeys.search.translate(context),border: InputBorder.none),
+                              hintText: LanguageKeys.search.translate(context),
+                              border: InputBorder.none),
                           onChanged: onSearchTextChanged,
                         ),
                         trailing: new IconButton(
@@ -470,49 +478,40 @@ class _SellerShopState extends State<SellerShop> {
     IconData iconData,
   ) {
     return GestureDetector(
-
-    onTap: () 
-    {
-      Navigator.pushNamed(context, RouterName.productDetails,
-      arguments: product.id
-      
-      );
-    },
-    
-    child: Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 1),
+      onTap: () {
+        Navigator.pushNamed(context, RouterName.productDetails,
+            arguments: product.id);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 1),
+        ),
+        child: Column(
+  
+          children: [
+            SizedBox(
+                                  height:90,
+                                width: 120,
+                                  child: CachedNetworkImage(
+                                    imageUrl: product.image1,
+                                    fit: BoxFit.cover,
+                                    
+                                    placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.broken_image),
+                                  ),
+                                ),
+            SizedBox(height: 5),
+            product.title != null
+                ? Text(
+                    product.title,
+                    style: GoogleFonts.poppins(fontSize: 12),
+                  )
+                : Text('')
+          ],
+        ),
       ),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              //Add Operation
-            },
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, RouterName.productDetails,
-                arguments:  product.id
-                );
-              },
-            child: Container(
-              height: 100,
-              width: 200,
-              child: CachedNetworkImage(imageUrl: product.image1),
-              // color: Colors.black12,
-            ),
-          ),
-          ),
-          SizedBox(height: 5),
-          product.title != null
-              ? Text(
-                  product.title,
-                  style: GoogleFonts.poppins(fontSize: 12),
-                )
-              : Text('')
-        ],
-      ),
-    ),
     );
   }
 

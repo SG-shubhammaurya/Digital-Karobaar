@@ -83,7 +83,9 @@
   "buy": "खरीद",
   "myCart" : "मेरी गाड़ी",
   "checkOut" : "चेक आउट",
-  "newArrival" : "नया आगमन"
+  "newArrival" : "नया आगमन",
+  "getVerified" : "सत्यापित करा लें",
+  "pinCode" : "पिन कोड:"
 
 
  

@@ -1,13 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
-import 'package:digitalkarobaar/src/core/utils/preference_helper.dart';
-
 import 'package:digitalkarobaar/src/core/widget/common_icon_button.dart';
-import 'package:digitalkarobaar/src/models/New_Arrival.dart';
-import 'package:digitalkarobaar/src/models/New_Arrival.dart';
 import 'package:digitalkarobaar/src/models/ads_seller.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
-
+import 'package:digitalkarobaar/src/models/kyc_add_page.dart';
+import 'package:digitalkarobaar/src/models/new_arrival.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/top_brands.dart';
 
@@ -33,19 +30,16 @@ class KycHome extends StatefulWidget {
 }
 
 class _KycHomeState extends State<KycHome> {
-
-
-
-   PageController _pageController = PageController(
+  PageController _pageController = PageController(
     initialPage: 0,
   );
   bool selected = false;
   // TopProducts topProducts;
-  List<NewArrival> newArrival;
-  List<TopBrands> topBrands;
-  List<Products> topProduts;
+  List<NewArrival> newArrival = [];
+  List<TopBrands> topBrands = [];
+  List<Products> topProduts = [];
 //  TopProducts topCategories;
-  List<Categories> topCategories;
+  List<Categories> topCategories = [];
   bool isLoading = true;
   bool isUserProfileLoading = true;
   UserProfile userProfile;
@@ -54,18 +48,24 @@ class _KycHomeState extends State<KycHome> {
     _getTopBrands();
     _getCrouselAds();
     _getNewArrival();
+    _getAdvertisment();
+    _getUserProfile();
     super.initState();
   }
 
-  _getTopCategories() async {
-    topCategories = [];
+  KycPageAdd kycPageAdd;
+  bool isLoadingImage = true;
 
-    await ProductRepository.getTopCategories().then((topCatrgory) {
-      if (topCategories != null) {
-        topCategories = topCatrgory;
-      }
-      setState(() {});
-    });
+  _getAdvertisment() async {
+    try {
+      var advertisement = await HomeReposiitory.getKycAdvertisment();
+      setState(() {
+        kycPageAdd = advertisement;
+        if (kycPageAdd != null) {
+          isLoadingImage = false;
+        }
+      });
+    } catch (e) {}
   }
 
   _getUserProfile() async {
@@ -77,47 +77,39 @@ class _KycHomeState extends State<KycHome> {
       }
     });
   }
+
   _getNewArrival() async {
-    newArrival = [];
-    await ProductRepository.getNewArrival().then((arrival){
-      if (newArrival !=null) {
+    await ProductRepository.getNewArrival().then((arrival) {
+      if (arrival != null) {
         newArrival = arrival;
       }
-      setState(() {
-        
-      });
-
+      setState(() {});
     });
-
   }
 
   _getTopBrands() async {
-    topBrands = [];
     await ProductRepository.getTopBrands(widget.id).then((brands) {
-      if (topBrands != null) {
+      if (brands != null) {
         topBrands = brands;
       }
-      _getTopCategories();
+      //_getTopCategories();
     });
     setState(() {
       isLoading = false;
     });
   }
 
-   List<DataAds> addList = [];
+  List<DataAds> adsList = [];
+
   _getCrouselAds() async {
     var ads = await HomeReposiitory.getAdsSeller();
-    addList =ads;
-  }
-
-  _getTopProducts() async {
-    topProduts = await ProductRepository.getTopProducts();
+    adsList = ads;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
@@ -166,115 +158,92 @@ class _KycHomeState extends State<KycHome> {
         child: ListView(
           shrinkWrap: true,
           children: [
-
-
-
-            Stack(
-                  fit: StackFit.loose,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 180,
-                        child: PageView(
-                          controller: _pageController,
-                          children: List.generate(
-                            addList.length,
-                            (i) => InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, RouterName.sellerShop,
-                                    arguments: addList[i].seller);
-                              },
-                              child: SizedBox(
-                                child: CachedNetworkImage(
-                                  imageUrl: addList[i].pic,
-                                  placeholder: (context, url) => Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.broken_image),
+            adsList.length == 0
+                ? Center(
+                    child: CircularProgressIndicator(
+                    backgroundColor: AppColors.primaryColor,
+                  ))
+                : Stack(
+                    fit: StackFit.loose,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 180,
+                          child: PageView(
+                            controller: _pageController,
+                            children: List.generate(
+                              adsList.length,
+                              (i) => InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouterName.sellerShop,
+                                      arguments: adsList[i].seller);
+                                },
+                                child: SizedBox(
+                                  child: CachedNetworkImage(
+                                    imageUrl: adsList[i].pic,
+                                    placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.broken_image),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 30,
-                      left: 110,
-                      child: SmoothPageIndicator(
-                          controller: _pageController, // PageController
-                          count: addList.length ?? 0,
-                          effect: ExpandingDotsEffect(
-                              activeDotColor: Color(0xffffa726),
-                              dotColor: Colors.grey,
-                              radius: 10,
-                              dotWidth: 10,
-                              dotHeight: 10), // your preferred effect
-                          onDotClicked: (index) {}),
-                    ),
-                  ],
-                ),
-
-
-
-
-
-
-
-
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.pushNamed(context, RouterName.shopkyc);
-            //   },
-            //   child: Container(
-            //       height: 150.0,
-            //       decoration: BoxDecoration(
-            //           color: Colors.black12,
-            //           borderRadius: BorderRadius.circular(15)),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Card(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               SizedBox(height: 10),
-            //               CommonButton(
-            //                 title: "UPLOAD KYC",
-            //                 buttonColor: AppColors.primaryColor,
-            //                 onTap: () {
-            //                   Navigator.pushNamed(context, RouterName.shopkyc);
-            //                 },
-            //               ),
-            //               const Text("GST",style: TextStyle(fontSize:10)),
-            //               const Text("Addhar Card",style: TextStyle(fontSize:10)),
-            //             ],
-            //           ),
-            //         ),
-            //       )),
-            // ),
-
-
-
-
-
-
+                      Positioned(
+                        bottom: 30,
+                        left: 110,
+                        child: SmoothPageIndicator(
+                            controller: _pageController, // PageController
+                            count: adsList.length ?? 0,
+                            effect: ExpandingDotsEffect(
+                                activeDotColor: Color(0xffffa726),
+                                dotColor: Colors.grey,
+                                radius: 10,
+                                dotWidth: 10,
+                                dotHeight: 10), // your preferred effect
+                            onDotClicked: (index) {}),
+                      ),
+                    ],
+                  ),
             SizedBox(height: 10),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Text('Top Ranking',
-            //         style: GoogleFonts.openSans(fontSize: 12)),
-            //     Text('Top New Arrival',
-            //         style: GoogleFonts.openSans(fontSize: 12)),
-            //   ],
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context, RouterName.sellerShop,
+                    arguments: kycPageAdd.data.seller,
+                    //arguments: homeAdvertisment.data.seller
+                  );
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                      //color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: isLoadingImage
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Image.network(
+                            kycPageAdd.data.pic,
+                            fit: BoxFit.fill,
+                          )),
+              ),
+            ),
             !isLoading
                 ? SizedBox() //_buildProductsList()
                 : Center(child: CircularProgressIndicator()),
             Divider(),
             SizedBox(height: 10),
+            // LanguageKeys.topBrand.translate(context)
             Text(
               LanguageKeys.topBrand.translate(context),
               style: GoogleFonts.openSans(
@@ -317,6 +286,7 @@ class _KycHomeState extends State<KycHome> {
                                       child: CachedNetworkImage(
                                         imageUrl: topBrands[index].image,
                                         fit: BoxFit.cover,
+                                        
                                         placeholder: (context, url) => Center(
                                             child: CircularProgressIndicator()),
                                         errorWidget: (context, url, error) =>
@@ -335,106 +305,69 @@ class _KycHomeState extends State<KycHome> {
                         }),
                   )
                 : Center(child: CircularProgressIndicator()),
-            Divider(color: Colors.grey[300], thickness: 5),
-            // Text(
-            //   LanguageKeys.topCategories.translate(context),
-            //   style: GoogleFonts.openSans(
-            //       fontWeight: FontWeight.w600, fontSize: 14),
-            // ),
-            // !isLoading
-            //     ? Container(
-            //         height: 140,
-            //         child: ListView.builder(
-            //             shrinkWrap: true,
-            //             itemCount: topCategories.length,
-            //             scrollDirection: Axis.horizontal,
-            //             primary: false,
-            //             itemBuilder: (context, index) {
-            //               // print(topCategories.image.toString());
-            //               return Padding(
-            //                 padding: const EdgeInsets.all(8.0),
-            //                 child: InkWell(
-            //                   onTap: () {
-            //                     Navigator.pushNamed(
-            //                         context, RouterName.productPage,
-            //                         arguments: topBrands[index].title);
-            //                   },
-            //                   child: Container(
-            //                     decoration: BoxDecoration(
-            //                         color: Colors.white,
-            //                         boxShadow: [
-            //                           BoxShadow(
-            //                             offset: Offset(5, 5),
-            //                             blurRadius: 10,
-            //                             color:
-            //                                 Color(0xFFE9E9E9).withOpacity(0.56),
-            //                           )
-            //                         ],
-            //                         borderRadius: BorderRadius.circular(15)),
-            //                     child: Column(
-            //                       children: [
-            //                         SizedBox(height: 10),
-            //                         SizedBox(
-            //                           height: 80,
-            //                           width: 100,
-            //                           child: CachedNetworkImage(
-            //                             imageUrl: topCategories[index].image,
-            //                             fit: BoxFit.cover,
-            //                             placeholder: (context, url) => Center(
-            //                                 child: CircularProgressIndicator()),
-            //                             errorWidget: (context, url, error) =>
-            //                                 Icon(
-            //                               Icons.broken_image,
-            //                               color: Colors.black26,
-            //                             ),
-            //                           ),
-            //                         ),
-            //                         SizedBox(height: 5),
-            //                         Text(topCategories[index].title,
-            //                             style:
-            //                                 GoogleFonts.poppins(fontSize: 12)),
-            //                         SizedBox(height: 2),
-            //                       ],
-            //                     ),
-            //                   ),
-            //                 ),
-            //               );
-            //             }),
-            //       )
-            //     : Center(child: CircularProgressIndicator()),
-            //     Divider(color: Colors.grey[300],thickness: 5),
+            Divider(),
 
-                Text(LanguageKeys.newArrival.translate(context)),
-                !isLoading
-                ?Container(
-                  height: 140,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: newArrival.length,
-                    itemBuilder: (context, index){
-                      return 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(color: Colors.white,
-                            boxShadow:  [
-                              BoxShadow(
-                                offset: Offset(5,5),
-                                blurRadius: 10,
-                                color:
-                                      Color(0xFFE9E9E9).withOpacity(0.56),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(15)
-                            
-                            ),
-                            child: Column(
-                              children: [
-                              SizedBox(height: 10,),
-                               SizedBox(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context, RouterName.sellerShop,
+                    arguments: kycPageAdd.x.seller,
+                    //arguments: homeAdvertisment.data.seller
+                  );
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                      //color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: isLoadingImage
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Image.network(
+                            kycPageAdd.x.pic,
+                            fit: BoxFit.fill,
+                          )),
+              ),
+            ),
+            Divider(), Text(LanguageKeys.newArrival.translate(context)),
+            !isLoading
+                ? Container(
+                    height: 140,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: newArrival.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouterName.productPage,
+                                      arguments: newArrival[index].title);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          offset: Offset(5, 5),
+                                          blurRadius: 10,
+                                          color: Color(0xFFE9E9E9)
+                                              .withOpacity(0.56),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Column(children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
                                       height: 80,
                                       width: 100,
                                       child: CachedNetworkImage(
@@ -454,82 +387,149 @@ class _KycHomeState extends State<KycHome> {
                                         style:
                                             GoogleFonts.poppins(fontSize: 12)),
                                     SizedBox(height: 2),
-                                  ]
+                                  ]),
+                                )),
+                          );
+                        }))
+                : Center(child: CircularProgressIndicator()),
+            Divider(color: Colors.grey[300], thickness: 5),
 
+            Divider(),
 
-                            ),
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context, RouterName.sellerShop,
+                    arguments: kycPageAdd.y.seller,
+                    //arguments: homeAdvertisment.data.seller
+                  );
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                      //color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 150,
+                    width: 80,
+                    child: isLoadingImage
+                        ? Center(
+                            child: CircularProgressIndicator(),
                           )
-                        ),
-                      );
+                        : Image.network(
+                            kycPageAdd.y.pic,
+                            fit: BoxFit.fill,
+                          )),
+              ),
+            ),
+            Divider(),
+            //Divider(),
 
-                    }
+            isLoadingImage
+                ? Center(
+                    child: SizedBox(),
                   )
-                )
-                 : Center(child: CircularProgressIndicator()),
-                Divider(color: Colors.grey[300],thickness: 5),
-
-
-
-
-
-
-             SizedBox(height: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left:10,right:10),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, RouterName.allProducts);
-                        },
-                        child: Container(
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context, RouterName.sellerShop,
+                          arguments: kycPageAdd.z.seller,
+                          //arguments: homeAdvertisment.data.seller
+                        );
+                      },
+                      child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.primaryColor,
+                            //color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                          height: 30,
-                          width: MediaQuery.of(context).size.width,
-                          child: Center(
-                            child: Text(
-                              LanguageKeys.showAllProducts.translate(context),
-                              style: GoogleFonts.openSans(
-                                color: Colors.white,
-                                  fontWeight: FontWeight.w600, fontSize: 14),
-                            ),
-                          ),
+                          height: 150,
+                          width: 120,
+                          child: Image.network(
+                            kycPageAdd.z.pic,
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                  ),
+            Divider(),
+
+            SizedBox(height: 10),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouterName.allProducts);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.primaryColor,
+                      ),
+                      height: 30,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Text(
+                          LanguageKeys.showAllProducts.translate(context),
+                          style: GoogleFonts.openSans(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14),
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
           ],
         ),
       ),
-    ));
+    );
   }
-  
+
   _buildDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          SizedBox(height: 5),
+          SizedBox(height: 30),
           isUserProfileLoading
-              ? Center(
+          ? Center(
                   child: CircularProgressIndicator(),
                 )
               : ListTile(
-                  leading: CircleAvatar(),
+                  leading: userProfile.profilePic != null
+                      ? CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(userProfile.profilePic),
+                        )
+                      : Text("upload pic"),
                   title: Text('${userProfile.name}' ?? ''),
                   subtitle: Text('+91-${userProfile.phoneNo}' ?? ""),
                   trailing: InkWell(
                       onTap: () {
-                        // Navigator.pushNamed(context, RouterName.userAccount);
+                        Navigator.pushNamed(context, RouterName.userAccount);
                       },
                       child: Icon(Icons.keyboard_arrow_right)),
                 ),
+              // ? Center(
+              //     child: CircularProgressIndicator(),
+              //   )
+              // : ListTile(
+              //     leading: CircleAvatar(),
+              //     title: Text('${userProfile.name}' ?? ''),
+              //     subtitle: Text('+91-${userProfile.phoneNo}' ?? ""),
+              //     trailing: InkWell(
+              //         onTap: () {
+              //             Navigator.pushNamed(context, RouterName.userAccount);
+              //         },
+              //         child: Icon(Icons.keyboard_arrow_right)),
+              //   ),
           Divider(color: Colors.black),
           InkWell(
             onTap: () {
@@ -550,14 +550,14 @@ class _KycHomeState extends State<KycHome> {
               )),
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, RouterName.yourReturns);
+              Navigator.pushNamed(context, RouterName.getUserreturn);
             },
             child: ListTile(
               leading: Icon(Icons.settings),
               title: Text(LanguageKeys.yourReturns.translate(context)),
             ),
           ),
-           InkWell(
+          InkWell(
             onTap: () {
               Navigator.pushNamed(context, RouterName.favourites);
             },
@@ -606,9 +606,8 @@ class _KycHomeState extends State<KycHome> {
               Navigator.pushNamed(context, RouterName.support);
             },
             child: ListTile(
-              leading: Icon(Icons.call),
-              title: Text(LanguageKeys.support.translate(context))
-            ),
+                leading: Icon(Icons.call),
+                title: Text(LanguageKeys.support.translate(context))),
           ),
           Container(
             child: ListTile(
@@ -674,7 +673,7 @@ class _KycHomeState extends State<KycHome> {
   }
 
   logout() async {
-   SharedPreferences preferences = await SharedPreferences.getInstance();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('accessToken');
 
     Navigator.pushNamedAndRemoveUntil(

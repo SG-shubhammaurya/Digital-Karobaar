@@ -7,6 +7,7 @@ import 'package:digitalkarobaar/src/models/categories.dart';
 import 'package:digitalkarobaar/src/models/get_userOrder.dart';
 import 'package:digitalkarobaar/src/models/home_adverties.dart';
 import 'package:digitalkarobaar/src/models/home_image.dart';
+import 'package:digitalkarobaar/src/models/kyc_add_page.dart';
 import 'package:digitalkarobaar/src/models/notification_in_app.dart';
 import 'package:digitalkarobaar/src/models/product_spec.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
@@ -168,9 +169,11 @@ class HomeReposiitory {
       });
 
       if (response.statusCode == 200) {
-        // var responseJson = json.decode(response.data);
-        //print(responseJson);
-      } else {}
+        showMessagess('file uploaded successfully');
+      
+      } else {
+        showMessagess('file not uploaded');
+      }
     } catch (e) {
       throw Exception(e);
     }
@@ -290,6 +293,47 @@ class HomeReposiitory {
     }
   }
 
+  // static Future<dynamic> profilePic(File profilPic) async {
+  //   try {
+  //     Dio dio = Dio();
+  //     String docfileName = profilPic.path.split('/').last;
+  //     Options options = Options(
+  //       headers: {
+  //         "Authorization": await getAccessToken(),
+  //       },
+  //       contentType: 'application/json',
+  //     );
+  //     FormData formData = FormData.fromMap({
+  //       "ProfilePic":
+  //           await MultipartFile.fromFile(profilPic.path, filename: docfileName),
+  //     });
+
+  //     final response = await dio.post(EndPoint.updateProfile,
+  //         data: formData,
+  //         options: options, onSendProgress: (int sent, int total) {
+  //       // onUploadProgressCallback(sent, total);
+  //     });
+
+  //     if (response.statusCode == 200) {
+  //       var responseJson = json.decode(response.data);
+  //       showMessagess("Profile Updated");
+  //     } else {
+  //       Fluttertoast.showToast(
+  //           backgroundColor: AppColors.primaryColor, msg: "Try Agin");
+  //     }
+  //   } on DioError catch (e) {
+  //     if (e.response.statusCode == 404) {
+  //       Fluttertoast.showToast(
+  //           backgroundColor: AppColors.primaryColor, msg: "Not Found");
+  //     }
+  //     Fluttertoast.showToast(
+  //         backgroundColor: AppColors.primaryColor, msg: "Try Agin");
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
+
+
   static Future<dynamic> profilePic(File profilPic) async {
     try {
       Dio dio = Dio();
@@ -305,15 +349,18 @@ class HomeReposiitory {
             await MultipartFile.fromFile(profilPic.path, filename: docfileName),
       });
 
-      final response = await dio.post(EndPoint.uploadDoc,
+      final response = await dio.post(EndPoint.profilePic,
           data: formData,
-          options: options, onSendProgress: (int sent, int total) {
+          options: options,
+         //  onSendProgress: (int sent, int total) {
         // onUploadProgressCallback(sent, total);
-      });
+      //}
+      );
 
       if (response.statusCode == 200) {
-        var responseJson = json.decode(response.data);
-        print(responseJson);
+        var responseJson = response.data;
+        showMessagess("Profile Pic Updated");
+        return responseJson;
       } else {
         Fluttertoast.showToast(
             backgroundColor: AppColors.primaryColor, msg: "Try Agin");
@@ -330,13 +377,17 @@ class HomeReposiitory {
     }
   }
 
+
+
+
+
   static Future<List<UserOrderGet>> getUserOrder() async {
     try {
       final response = await http.get(
         EndPoint.userAllOrder,
         headers: {
-          "Authorization":await getAccessToken(),
-            //  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NDU3MzUwLCJqdGkiOiJjYzNkZjA5NTRkMjA0N2U5OGUyOTgxOTNiZGFiM2QzNSIsInVzZXJfaWQiOjN9.CFlsZNFEk0lwC0VP5Gnz2JyC35TVP2TcyN0TYJMd5XE",
+          "Authorization": await getAccessToken(),
+          //  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NDU3MzUwLCJqdGkiOiJjYzNkZjA5NTRkMjA0N2U5OGUyOTgxOTNiZGFiM2QzNSIsInVzZXJfaWQiOjN9.CFlsZNFEk0lwC0VP5Gnz2JyC35TVP2TcyN0TYJMd5XE",
           //,
           'content-type': 'application/json',
           'Accept': 'application/json',
@@ -481,8 +532,7 @@ class HomeReposiitory {
       final response = await http.get(
         EndPoint.getUserStory,
         headers: {
-          "Authorization":await getAccessToken(),
-         
+          "Authorization": await getAccessToken(),
           'content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -504,7 +554,7 @@ class HomeReposiitory {
       final response = await http.get(
         EndPoint.getSellerStoryProducts + id,
         headers: {
-         // "Authorization": await getSellerToken(),
+          // "Authorization": await getSellerToken(),
           'content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -515,7 +565,7 @@ class HomeReposiitory {
           return Products.fromJson(res[index]);
         }).toList();
       } else {
-       //_handleResponse(response);
+        //_handleResponse(response);
       }
     } catch (e) {
       throw Exception(e);
@@ -552,50 +602,61 @@ class HomeReposiitory {
       throw Exception(e);
     }
   }
+
   static Future<List<ProductNoti>> getProductNotification() async {
-    try{
-      final response = await http.get(
-        EndPoint.getNotification,
-        headers: {
-          'Content-type':'application/json',
-          'Accept': 'application/json',
-        }
-      );
-      if(response.statusCode == 200 || response.statusCode == 201) {
-         final res = json.decode(response.body);
-         List<dynamic> data = res['product'];
-         return List.generate(data.length, (index) {
+    try {
+      final response = await http.get(EndPoint.getNotification, headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final res = json.decode(response.body);
+        List<dynamic> data = res['product'];
+        return List.generate(data.length, (index) {
           return ProductNoti.fromJson(data[index]);
         }).toList();
-      }else {
+      } else {
         print(response.statusCode.toString());
       }
-    }catch(e) {
-      throw Exception(e);
-    }
-   }
-  static Future<List<SellerNoti>> getSellerNotification() async {
-    try{
-      final response = await http.get(
-        EndPoint.getNotification,
-        headers: {
-          'Content-type':'application/json',
-          'Accept': 'application/json',
-        }
-      );
-      if(response.statusCode == 200 || response.statusCode == 201) {
-         final res = json.decode(response.body);
-         List<dynamic> data = res['seller'];
-         return List.generate(data.length, (index) {
-          return SellerNoti.fromJson(data[index]);
-        }).toList();
-      }else {
-        print(response.statusCode.toString());
-      }
-    }catch(e) {
+    } catch (e) {
       throw Exception(e);
     }
   }
 
+  static Future<List<SellerNoti>> getSellerNotification() async {
+    try {
+      final response = await http.get(EndPoint.getNotification, headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final res = json.decode(response.body);
+        List<dynamic> data = res['seller'];
+        return List.generate(data.length, (index) {
+          return SellerNoti.fromJson(data[index]);
+        }).toList();
+      } else {
+        print(response.statusCode.toString());
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 
+  static Future<KycPageAdd> getKycAdvertisment() async {
+    try {
+      final response = await http.get(
+        EndPoint.kycAdvertisment,
+        headers: {'Accept': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        final res = json.decode(response.body);
+        return KycPageAdd.fromJson(res);
+      } else {
+        print(response.statusCode.toString());
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

@@ -22,6 +22,8 @@ commonAlertBox(BuildContext context, {Function(bool fromCamera) onPressed}) {
           ],
         ),
         actions: [
+    
+
           FlatButton(
             child: Text("Cancel"),
             onPressed: () {

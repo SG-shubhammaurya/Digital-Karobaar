@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AccountInfo extends StatefulWidget {
- final id;
+  final id;
   AccountInfo({@required this.id});
   @override
   _AccountInfoState createState() => _AccountInfoState();
@@ -70,6 +70,7 @@ class _AccountInfoState extends State<AccountInfo> {
           _pincode = value;
         });
   }
+
   @override
   void initState() {
     registrationCubit = BlocProvider.of<RegistrationCubit>(context);
@@ -117,9 +118,8 @@ class _AccountInfoState extends State<AccountInfo> {
             child: Column(
               children: <Widget>[
                 Text("Register your business on ",
-                    style: TextStyle( fontSize: 18.0)),
-                Text("Digital Karobaar",
-                    style: TextStyle( fontSize: 18.0))
+                    style: TextStyle(fontSize: 18.0)),
+                Text("Digital Karobaar", style: TextStyle(fontSize: 18.0))
               ],
             ),
           ),
@@ -161,23 +161,23 @@ class _AccountInfoState extends State<AccountInfo> {
                 if (state is RegistrationLoadingSate) {
                   return Center(child: CircularProgressIndicator());
                 }
-                if (state is RegistrationSuccessfulState) {
-                 
-                
-                   Fluttertoast.showToast(
-                      backgroundColor: AppColors.primaryColor,
-                      textColor: Colors.white, msg: "Registration Successfully");
 
-                        _navigationToHome(context);
-                 
-                }
                 return SizedBox();
               },
               listener: (context, state) {
+                if (state is RegistrationSuccessfulState) {
+                  Fluttertoast.showToast(
+                      backgroundColor: AppColors.primaryColor,
+                      textColor: Colors.white,
+                      msg: "Registration Successfully");
+
+                  _navigationToHome(context);
+                }
                 if (state is RegistrationErrorState) {
                   Fluttertoast.showToast(
-                     backgroundColor: AppColors.primaryColor,
-                      textColor: Colors.white, msg: "Somthing Wrong!!");
+                      backgroundColor: AppColors.primaryColor,
+                      textColor: Colors.white,
+                      msg: "Somthing Wrong!!");
                 }
               })
         ],
@@ -185,12 +185,11 @@ class _AccountInfoState extends State<AccountInfo> {
     );
   }
 
-  _navigationToHome(BuildContext context)  async{
-    try{
-   await Navigator.pushReplacementNamed(context, RouterName.mainPage);
-    }catch(e){
-
-    }
-    
+  _navigationToHome(BuildContext context) async {
+    try {
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
+       await Navigator.pushReplacementNamed(context, RouterName.mainPage);
+     // });
+    } catch (e) {}
   }
 }

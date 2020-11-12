@@ -1,5 +1,8 @@
 class EndPoint {
-  static String baseUrl = "https://digitalkarobar.aiovu.com";
+  static String baseUrl =
+  // "https://15.207.51.141:9090/";
+  //"https://digitalkarobar.aiovu.com";
+  "http://15.207.51.141";
 
   static String registration = baseUrl + "/user/register";
   static String phoneNumber = baseUrl + "/user/number";
@@ -17,7 +20,7 @@ class EndPoint {
   static String productget = baseUrl + "/products/get";
   static String updateKyc = baseUrl + "/user/kyc/update";
   static String getKyc = baseUrl + "/user/kyc";
-  static String profilePic = baseUrl + " /user/profile/pic/update";
+  static String profilePic = baseUrl + "/user/profile/pic/update";
   static String searchProducts = baseUrl + "/products/search?search=";
   static String productsDetails = baseUrl + "/products/get?id=";
   static String productsFilter = baseUrl + "/products/filter";
@@ -52,6 +55,8 @@ class EndPoint {
   static String sellForgetPassVerify = baseUrl + "/user/seller/forget/verify";
   static String searchPinCodeBy =
       "https://pincode.saratchandra.in/api/pincode/";
+  static String searchSecondPinCodeBy = "http://postalpincode.in/api/pincode/";
+
   static String deliveryAddress = baseUrl + "/order/address";
 
   static String order = baseUrl + "/order/";
@@ -125,7 +130,10 @@ class EndPoint {
       baseUrl + "/order/return/search?search=pending";
   static String sellerApprovedReturnGet =
       baseUrl + "/order/return/search?search=approved";
-static String getNotification = baseUrl + "/notify/";
-static String getNewArrival = baseUrl + "/products/search?search=";
-      
+  static String getNotification = baseUrl + "/notify/";
+
+  static String kycAdvertisment = baseUrl + "/adv/kyc/get";
+  static String productImageUpload = baseUrl + "/products/images";
+
+  static String getNewArrival = baseUrl + "/products/search?search=";
 }

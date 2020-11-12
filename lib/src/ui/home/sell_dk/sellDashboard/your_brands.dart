@@ -14,7 +14,7 @@ class YourBrands extends StatefulWidget {
 
 class _YourBrandsState extends State<YourBrands> {
   Future<List<Brand>> _getBrands() async {
-    return await ProductRepository.getBrands();
+    return await ProductRepository.getSellerBrands();
   }
 
   @override
@@ -49,7 +49,7 @@ class _YourBrandsState extends State<YourBrands> {
                           side: BorderSide(color: Colors.blue)),
                       onPressed: () {
                         Navigator.pushNamed(context, RouterName.brandsMov,
-                            arguments: true);
+                            arguments: null);
                       },
                       child: Text(LanguageKeys.add.translate(context)))
                 ],
@@ -96,7 +96,7 @@ class _YourBrandsState extends State<YourBrands> {
                                 );
                               });
                         } else {
-                          return Text('');
+                          return Text('No Brands');
                         }
                       })
                 ],

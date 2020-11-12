@@ -1,3 +1,4 @@
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
@@ -81,7 +82,8 @@ class BankDetails extends StatelessWidget {
                   },
                   onChanged: (val) {},
                   textInputAction: TextInputAction.next,
-                  decoration: inputDecoration(hint: "Enter account holder name")),
+                  decoration:
+                      inputDecoration(hint: "Enter account holder name")),
               SizedBox(height: 20),
               Text('Bank Name'),
               const SizedBox(height: 10),
@@ -156,13 +158,20 @@ class BankDetails extends StatelessWidget {
                     CommonButton(
                       buttonColor: AppColors.primaryColor,
                       titleColor: Colors.white,
-                      title: "Svae next",
+                      title: "Save next",
                       onTap: () {
-                   //   Navigator.pushNamed(context, RouterName.brandsMov);
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
-                          SellRepository.uploadBankDetails(cancelCheque, ifsCode, acNumber, holderName, bankName,id).then((value) {
-                              Navigator.pushReplacementNamed(context, RouterName.brandsMov,arguments: value.toString());
+                          SellRepository.uploadBankDetails(cancelCheque,
+                                  ifsCode, acNumber, holderName, bankName, id)
+                              .then((value) {
+                            if (value != null) {
+                              Navigator.pushReplacementNamed(
+                                  context, RouterName.brandsMov,
+                                  arguments: value.toString());
+                            }
+                          }).catchError((e) {
+                            showMessagess('Error');
                           });
                         }
                       },

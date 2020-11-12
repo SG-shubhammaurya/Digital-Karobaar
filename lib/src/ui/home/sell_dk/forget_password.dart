@@ -84,7 +84,11 @@ class ForgetPassword extends StatelessWidget {
                             if (_form.currentState.validate()) {
                               _form.currentState.save();
                              SellRepository.sellForgetPassword(_no, _password).then((value){
-                              // Navigator.pushNamed(context, RouterName.sellOtp);
+                               if(value.statusCode ==200){
+                                   Navigator.pushNamed(context, RouterName.forgetOtp);
+
+                               }
+                            
                              } 
                              );
                             }

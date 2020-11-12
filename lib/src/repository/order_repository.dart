@@ -23,6 +23,8 @@ class ProductOrderRepository {
       if (response.statusCode == 200) {
         var res = json.decode(response.body);
         return OrderResponce.fromJson(res);
+      } else {
+        throw Exception();
       }
     } catch (e) {
       throw Exception();
@@ -87,12 +89,33 @@ class ProductOrderRepository {
 
       if (response.statusCode == 200) {
         final res = json.decode(response.body);
-        // showMessagess(res["success"]);
-        // showMessagess(res["error"]);
+
         return ProductCart.fromJson(res);
       }
-      // return _handleResponse(response);
+      if (response.statusCode == 500) {
+        showMessagess('No items in Cart');
+        throw 'No items in Cart';
+      }
+      return _handleResponse(response);
     } catch (e) {
+      Future<ProductCart> getToCart() async {
+        try {
+          final response = await http.get(EndPoint.getCartItems, headers: {
+            "Authorization": await getAccessToken(),
+            'Accept': 'Application/json'
+          });
+
+          if (response.statusCode == 200) {
+            final res = json.decode(response.body);
+
+            return ProductCart.fromJson(res);
+          }
+          // return _handleResponse(response);
+        } catch (e) {
+          throw Exception();
+        }
+      }
+
       throw Exception();
     }
   }

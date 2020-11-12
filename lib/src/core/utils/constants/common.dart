@@ -17,6 +17,11 @@ extension StringTranslator on String {
     msg: msg);
 }
 
+
+ getSellerDashToken() async{
+    final token= await PreferenceHelper.getSellerTokenDash();
+    return token;
+  }
   getSellerToken() async{
     final token= await PreferenceHelper.getSellAccessToken();
     return token;

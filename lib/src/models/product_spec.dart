@@ -1,7 +1,7 @@
 class Specification {
-  List<Specs> specs;
-  List<String> highlights;
-  List<String> features;
+  List<Specs> specs = [];
+  List<Highlights> highlights = [];
+  List<Features> features = [];
 
   Specification({this.specs, this.highlights, this.features});
 
@@ -12,8 +12,18 @@ class Specification {
         specs.add(new Specs.fromJson(v));
       });
     }
-    highlights = json['highlights'].cast<String>();
-    features = json['features'].cast<String>();
+    if (json['highlights'] != null) {
+      highlights = new List<Highlights>();
+      json['highlights'].forEach((v) {
+        highlights.add(Highlights.fromJson(v));
+      });
+    }
+    if (json['features'] != null) {
+      features = List<Features>();
+      json['features'].forEach((v) {
+        features.add(Features.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -21,8 +31,12 @@ class Specification {
     if (this.specs != null) {
       data['specs'] = this.specs.map((v) => v.toJson()).toList();
     }
-    data['highlights'] = this.highlights;
-    data['features'] = this.features;
+    if (this.highlights != null) {
+      data['highlights'] = this.highlights.map((v) => v.toJson()).toList();
+    }
+    if (this.features != null) {
+      data['features'] = this.features.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -36,6 +50,56 @@ class Specs {
   Specs({this.id, this.productId, this.title, this.description});
 
   Specs.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['Product_id'];
+    title = json['Title'];
+    description = json['Description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['Product_id'] = this.productId;
+    data['Title'] = this.title;
+    data['Description'] = this.description;
+    return data;
+  }
+}
+
+class Highlights {
+  int id;
+  int productId;
+  String title;
+  String description;
+
+  Highlights({this.id, this.productId, this.title, this.description});
+
+  Highlights.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['Product_id'];
+    title = json['Title'];
+    description = json['Description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['Product_id'] = this.productId;
+    data['Title'] = this.title;
+    data['Description'] = this.description;
+    return data;
+  }
+}
+
+class Features {
+  int id;
+  int productId;
+  String title;
+  String description;
+
+  Features({this.id, this.productId, this.title, this.description});
+
+  Features.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     productId = json['Product_id'];
     title = json['Title'];

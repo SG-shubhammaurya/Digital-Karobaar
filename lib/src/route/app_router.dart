@@ -59,7 +59,6 @@ import 'package:digitalkarobaar/src/ui/home/sell_dk/sellDashboard/post_story.dar
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellDashboard/productUpload/product_upload.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellDashboard/seller_dashboard.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellDashboard/your_brands.dart';
-import 'package:digitalkarobaar/src/ui/home/sell_dk/sellDashboard/your_finance.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sell_login.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sell_otp.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/seller/recomdede_seller.dart';
@@ -67,7 +66,6 @@ import 'package:digitalkarobaar/src/ui/home/sell_dk/seller/seller_shop.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellerprofile/Business_Profile.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellerprofile/Seller_Settings.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/sellondigitapKarobaar.dart';
-import 'package:digitalkarobaar/src/ui/home/support/Order_Form.dart';
 import 'package:digitalkarobaar/src/ui/home/support/Support.dart';
 import 'package:digitalkarobaar/src/ui/home/term_use/Term_of_use.dart';
 import 'package:digitalkarobaar/src/ui/home/yourOrder/your_seller_order.dart';
@@ -150,9 +148,9 @@ class AppRouter {
       case RouterName.yourReturns:
         return MaterialPageRoute(builder: (_) => YourReturns());
         break;
-      case RouterName.orderForms:
-        return MaterialPageRoute(builder: (_) => OrderForm());
-        break;
+     // case RouterName.orderForms:
+       // return MaterialPageRoute(builder: (_) => OrderForm());
+       // break;
       case RouterName.allReturn:
         return MaterialPageRoute(builder: (_) => AllReturn());
         break;
@@ -212,7 +210,7 @@ class AppRouter {
         break;
       case RouterName.brandsMov:
         return MaterialPageRoute(
-            builder: (_) => BrandsMov(args, isNewBrandUpdated: args));
+            builder: (_) => BrandsMov(args));
         break;
       case RouterName.submitForm:
         return MaterialPageRoute(builder: (_) => SubmitForm());
@@ -221,7 +219,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SupplierPage());
         break;
       case RouterName.checkOutConfm:
-        return MaterialPageRoute(builder: (_) => CheckOut());
+        return MaterialPageRoute(builder: (_) => CheckOut(args));
         break;
       case RouterName.addressDeliver:
         return MaterialPageRoute(builder: (_) => AddressDelivery());

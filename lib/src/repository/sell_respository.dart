@@ -4,6 +4,7 @@ import 'package:digitalkarobaar/src/core/endpoint/end_points.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/utils/preference_helper.dart';
 import 'package:digitalkarobaar/src/models/Member.dart';
+import 'package:digitalkarobaar/src/models/pincode_state.dart';
 import 'package:digitalkarobaar/src/models/premium_seller.dart';
 import 'package:digitalkarobaar/src/models/search_pincode_by.dart';
 import 'package:digitalkarobaar/src/models/seller_dash.dart';
@@ -61,8 +62,10 @@ class SellRepository {
         showMessagess('login');
 
         final jsonString = json.decode(response.body);
-        print(jsonString["access"]["access"]);
+        //  print(jsonString["access"]["access"]);
         await PreferenceHelper.setSellAccessToken(
+            jsonString["access"]["access"]);
+        await PreferenceHelper.setSellerTokenDash(
             jsonString["access"]["access"]);
 
         return response;
@@ -89,7 +92,7 @@ class SellRepository {
         final jsonString = json.decode(response.body);
         showMessagess(jsonString["success"]);
 
-        return;
+        return response ;
       } else if (response.statusCode == 404) {
         showMessagess('Seller with this number not exist');
       }
@@ -112,9 +115,10 @@ class SellRepository {
       if (response.statusCode == 200) {
         jsonres = json.decode(response.body);
         await PreferenceHelper.setSellAccessToken(jsonres["token"]['access']);
+
         showMessagess('success');
 
-        return jsonres['sucess'];
+        return response;
       }
 
       if (response.statusCode == 406) {
@@ -135,17 +139,19 @@ class SellRepository {
         "Authorization": accessSellToken,
         'Accept': 'application/json',
       });
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         jsonres = json.decode(response.body);
-          showMessagess('success');
+        showMessagess('success');
         return jsonres['id'];
       }
 
       if (response.statusCode == 406) {
-        showMessagess('enter otp is incorrect');
+        showMessagess('please provide all the details');
+        throw Exception();
       }
       if (response.statusCode == 500) {
         showMessagess('Server Error');
+        throw Exception();
       }
     } catch (e) {
       throw Exception(e);
@@ -171,9 +177,11 @@ class SellRepository {
 
       if (response.statusCode == 406) {
         showMessagess('enter otp is incorrect');
+        throw Exception();
       }
       if (response.statusCode == 500) {
         showMessagess('Server Error');
+        throw Exception();
       }
     } catch (e) {
       throw Exception(e);
@@ -211,10 +219,21 @@ class SellRepository {
       List<dynamic> result =
           jsonStr["data"].map((e) => Data.fromJson(e)).toList();
       return result;
+    } else {
+      throw Exception();
     }
-    if (res.statusCode == 404) {
-      Fluttertoast.showToast(
-          backgroundColor: AppColors.primaryColor, msg: "Not Found");
+  }
+
+  static Future<List<dynamic>> stateCity(String pincode) async {
+    final res = await http.get(EndPoint.searchSecondPinCodeBy + pincode);
+    if (res.statusCode == 200) {
+      final jsonStr = json.decode(res.body);
+
+      List<dynamic> result =
+          jsonStr["PostOffice"].map((e) => PostOffice.fromJson(e)).toList();
+      return result;
+    } else {
+      throw Exception();
     }
   }
 
@@ -238,9 +257,8 @@ class SellRepository {
         "number": no
       });
 
-      final response = await dio.post(EndPoint.uploadDoc,
-          data: formData,
-          options: options);
+      final response =
+          await dio.post(EndPoint.uploadDoc, data: formData, options: options);
 
       if (response.statusCode == 201) {
         var responseJson = response.data;
@@ -278,6 +296,7 @@ class SellRepository {
 
       if (response.statusCode == 406) {
         showMessagess('enter otp is incorrect');
+        throw Exception();
       }
     } catch (e) {
       throw Exception(e);
@@ -305,9 +324,8 @@ class SellRepository {
         "SellerDetailId": id
       });
 
-      final response = await dio.post(EndPoint.formbank,
-          data: formData,
-          options: options);
+      final response =
+          await dio.post(EndPoint.formbank, data: formData, options: options);
 
       if (response.statusCode == 201) {
         var responseJson = response.data;
@@ -315,7 +333,8 @@ class SellRepository {
 
         return responseJson["SellerDetailId"];
       } else {
-        showMessagess('Try Again');
+       
+         throw Exception();
       }
     } on DioError catch (e) {
       if (e.response.statusCode == 404) {
@@ -385,12 +404,12 @@ class SellRepository {
         jsonres = json.decode(response.body);
         Fluttertoast.showToast(
             backgroundColor: AppColors.primaryColor, msg: "success");
-        return jsonres['sucess'];
+        return response;
       }
       if (response.statusCode == 406) {
         if (response.statusCode == 406) {
-        showMessagess('enter otp is incorrect');
-      }
+          showMessagess('enter otp is incorrect');
+        }
       }
     } catch (e) {
       throw Exception(e);
@@ -480,7 +499,7 @@ class SellRepository {
         return SellerDash.fromJson(res);
       }
       if (response.statusCode == 500) {
-        showMessagess('Server Error');
+        showMessagess('Internal Server Error');
       }
       if (response.statusCode == 404) {
         showMessagess('Not Found');
@@ -679,8 +698,7 @@ class SellRepository {
       final response = await http.get(
         EndPoint.sellerProfileGet,
         headers: {
-          "Authorization":await getSellerToken(),
-         
+          "Authorization": await getSellerToken(),
           'Accept': 'application/json',
         },
       );
@@ -692,7 +710,6 @@ class SellRepository {
       }
       if (response.statusCode == 404) {
         showMessagess('Not Found');
-       
       }
     } catch (e) {
       throw Exception(e);

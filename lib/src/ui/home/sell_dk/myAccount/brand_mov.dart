@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/models/categories.dart';
@@ -12,8 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class BrandsMov extends StatefulWidget {
   final id;
-  final isNewBrandUpdated;
-  BrandsMov(this.id,{this.isNewBrandUpdated=false});
+  BrandsMov(this.id);
   @override
   _BrandsMovState createState() => _BrandsMovState();
 }
@@ -39,16 +39,19 @@ class _BrandsMovState extends State<BrandsMov> {
   TextEditingController categoriesController = TextEditingController();
   TextEditingController uploadFile = TextEditingController();
   File imageFile;
+  bool isNewBrandUpdated = false;
   @override
   void initState() {
+    if (widget.id == null) {
+      isNewBrandUpdated = true;
+    }
     _getCategories();
     super.initState();
   }
 
-  List<Categories> categories;
+  List<Categories> categories = [];
   bool isLoading = true;
   _getCategories() async {
-    categories = [];
     final getCategories = await HomeReposiitory.getCategories();
     setState(() {
       categories = getCategories;
@@ -62,7 +65,7 @@ class _BrandsMovState extends State<BrandsMov> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.isNewBrandUpdated ?   Text('Add New Brand'): Text('Brands & MOV'),
+        title: isNewBrandUpdated ? Text('Add New Brand') : Text('Brands & MOV'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -100,7 +103,7 @@ class _BrandsMovState extends State<BrandsMov> {
               const SizedBox(height: 10),
               Text('Categories', style: GoogleFonts.poppins(fontSize: 12)),
               isLoading
-                  ? SizedBox()
+                  ? Center(child: CircularProgressIndicator())
                   : DropdownButtonFormField<String>(
                       value: null,
                       autofocus: true,
@@ -143,7 +146,7 @@ class _BrandsMovState extends State<BrandsMov> {
                 onTap: () {
                   CommonAlertBox.takeImageFromCamera(context,
                       onUploadCallback: (file) {
-                    print(file.path.toString());
+                  //  print(file.path.toString());
                     setState(() {
                       imageFile = file;
                       uploadFile.text = file.path;
@@ -214,19 +217,27 @@ class _BrandsMovState extends State<BrandsMov> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  CommonButton(
+                    CommonButton(
                       buttonColor: AppColors.primaryColor,
                       titleColor: Colors.white,
-                      title: widget.isNewBrandUpdated ? 'save Update':"Svae next",
+                      title: isNewBrandUpdated ? 'save Update' : "Save next",
                       onTap: () {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           SellRepository.uploadMov(imageFile, brandName.text,
                                   categoriesController.text)
                               .then((value) {
-                           if(value?.statusCode==200){
-                             Navigator.pushReplacementNamed(context, RouterName.submitForm);
-                           }
+                            if (value?.statusCode == 200) {
+                              if(!isNewBrandUpdated){
+                                showMessagess('Brand Updated');
+                                 Navigator.pushReplacementNamed(
+                                  context, RouterName.submitForm);
+
+                              }
+                             
+                            }
+                          }).catchError((e) {
+                            showMessagess('Error');
                           });
                         }
                       },
@@ -444,20 +455,6 @@ class RegisteredType extends ChangeNotifier {
   update(String value) {
     if (value != _type) {
       _type = value;
-      notifyListeners();
-    }
-  }
-}
-
-class BrandType extends ChangeNotifier {
-  BrandType();
-  String _brandType = '';
-
-  String get brandType => _brandType;
-
-  updateBrandType(String value) {
-    if (value != _brandType) {
-      _brandType = value;
       notifyListeners();
     }
   }

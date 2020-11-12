@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/repository/product_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/route/router_name.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,7 +71,7 @@ class _ProductState extends State<ProductPage>
           centerTitle: true,
           automaticallyImplyLeading: true,
           title: Text(
-            LanguageKeys.product.translate(context),
+            'Products',
             style: TextStyle(color: Colors.white),
           ),
           leading: Builder(
@@ -96,7 +94,7 @@ class _ProductState extends State<ProductPage>
                   height: 30,
                 ),
                 Center(
-                  child: Text(LanguageKeys.filterProduct.translate(context)),
+                  child: Text("Filter the Products"),
                 ),
                 SizedBox(
                   height: 10,
@@ -109,7 +107,7 @@ class _ProductState extends State<ProductPage>
                           controller: _minOrderDigitController,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
-                            labelText: LanguageKeys.minOrder.translate(context),
+                            labelText: "Min Order <==",
                           ),
                           keyboardType: TextInputType.number),
                     ),
@@ -118,7 +116,7 @@ class _ProductState extends State<ProductPage>
                       padding: const EdgeInsets.only(left: 5.0),
                       child: Row(
                         children: <Widget>[
-                          Text(LanguageKeys.price.translate(context)),
+                          Text("Price INR"),
                         ],
                       ),
                     ),
@@ -132,7 +130,7 @@ class _ProductState extends State<ProductPage>
                               controller: _minOrderDigitController,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
-                                labelText: LanguageKeys.minimum.translate(context),
+                                labelText: "min ₹ ",
                               ),
                               keyboardType: TextInputType.number,
                             ),
@@ -144,7 +142,7 @@ class _ProductState extends State<ProductPage>
                             controller: _maxDigitController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              labelText: LanguageKeys.maximun.translate(context),
+                              labelText: "max ₹",
                             ),
                             keyboardType: TextInputType.number,
                           ),
@@ -157,14 +155,14 @@ class _ProductState extends State<ProductPage>
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: Row(children: <Widget>[
-                    Text(LanguageKeys.location.translate(context)),
+                    Text("Location"),
                     SizedBox(width: 190),
                     Container(
                       child: InkWell(
                         onTap: () {
                           showAlertDialog();
                         },
-                        child: Text(LanguageKeys.everyOne.translate(context)),
+                        child: Text("All"),
                       ),
                     )
                   ]),
@@ -175,7 +173,7 @@ class _ProductState extends State<ProductPage>
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0, left: 5.0),
                       child: Row(children: <Widget>[
-                        Text(LanguageKeys.vypaarSuraksha.translate(context)),
+                        Text("Vypar Suraksha"),
                         SizedBox(width: 120),
                         Checkbox(
                           activeColor: Color(0xffffa726),
@@ -191,7 +189,7 @@ class _ProductState extends State<ProductPage>
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0, left: 5.0),
                       child: Row(children: <Widget>[
-                        Text(LanguageKeys.verifiesSeller.translate(context)),
+                        Text("Verified Supplier"),
                         SizedBox(width: 120),
                         Checkbox(
                           activeColor: Color(0xffffa726),
@@ -219,7 +217,7 @@ class _ProductState extends State<ProductPage>
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.black12,
                         ),
-                        child: Center(child: Text(LanguageKeys.clearAll.translate(context))),
+                        child: Center(child: Text("Clear all")),
                       ),
                     ),
                   ),
@@ -237,7 +235,7 @@ class _ProductState extends State<ProductPage>
                             _filterProducts();
                             Navigator.of(context).pop();
                           },
-                          title: LanguageKeys.done.translate(context))),
+                          title: 'Done')),
                 ])
               ],
             )),
@@ -257,7 +255,7 @@ class _ProductState extends State<ProductPage>
                           Text(productItem.length.toString()),
                           SizedBox(width: 3.0),
                           Text(
-                            LanguageKeys.result.translate(context),
+                            "Result",
                             style: TextStyle(color: Colors.grey),
                           ),
                           SizedBox(
@@ -332,7 +330,7 @@ class _ProductState extends State<ProductPage>
     return GridView.count(
         shrinkWrap: true,
         crossAxisCount: 3,
-        childAspectRatio: 1,
+        childAspectRatio: 0.5,
         
         children: List.generate(productItem.length, (index) {
           return Card(
@@ -350,15 +348,10 @@ class _ProductState extends State<ProductPage>
                     errorWidget: (context, url, error) =>  Icon(Icons.broken_image),
                   ),
                 ),
-                Text(productItem[index].title),
-               Text(productItem[index].category),
-                
-                // Text(productItem.title),
-                // Text(productItem.brand),
-                // Text(productItem.category),
-                // Text(productItem.features[0].color),
-                // Text(productItem.rating),
-                // Text(productItem.shop),
+                Text(productItem[index].title,style: TextStyle(
+                  fontSize: 12
+                ),),
+              
               ],
             ),
           );
@@ -384,7 +377,7 @@ class _ProductState extends State<ProductPage>
                     productItem[position].title ,
                     style: GoogleFonts.poppins(fontSize: 10),
                   ),
-                  subtitle: Text('productItem[position].category',
+                  subtitle: Text(productItem[position].category,
                       style: GoogleFonts.poppins(fontSize: 12)),
                   leading: CachedNetworkImage(
                     imageUrl: productItem[position].image1,

@@ -1,12 +1,21 @@
+import 'dart:convert';
+import 'dart:io';
+// import 'package:path/path.dart';
+// import 'package:async/async.dart';
+
+// import 'package:http/http.dart' as http;
 import 'package:digitalkarobaar/src/bloc/productUpload/product_upload_bloc.dart';
 import 'package:digitalkarobaar/src/bloc/productUpload/product_upload_state.dart';
+import 'package:digitalkarobaar/src/core/endpoint/end_points.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
+import 'package:digitalkarobaar/src/models/image_responce.dart';
 import 'package:digitalkarobaar/src/models/sub_categories.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:digitalkarobaar/src/res/app_text_style.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,6 +42,8 @@ class _ProductUploadState extends State<ProductUpload> {
 
   var highlights1;
   var highlights2;
+  var gst;
+  var minOrder;
 
   ValueNotifier<String> _categoriesValue;
   ValueNotifier<String> _subcategoriesValue;
@@ -56,12 +67,34 @@ class _ProductUploadState extends State<ProductUpload> {
     });
   }
 
-  List<String> reportList = ["Red", "Blue", "Black", "Brown",' yellow','orange','green','white','gold','indigo','violet','silver','purple','pink','grey/gray'];
-  TextEditingController image1 = TextEditingController();
-  TextEditingController image2 = TextEditingController();
-  TextEditingController image3 = TextEditingController();
-  TextEditingController image4 = TextEditingController();
-  TextEditingController image5 = TextEditingController();
+  List<String> reportList = [
+    "Red",
+    "Blue",
+    "Black",
+    "Brown",
+    ' yellow',
+    'orange',
+    'green',
+    'white',
+    'gold',
+    'indigo',
+    'violet',
+    'silver',
+    'purple',
+    'pink',
+    'grey/gray'
+  ];
+  TextEditingController controllerImage1 = TextEditingController();
+  TextEditingController controllerImage2 = TextEditingController();
+  TextEditingController controllerImage3 = TextEditingController();
+  TextEditingController controllerImage4 = TextEditingController();
+  TextEditingController controllerImage5 = TextEditingController();
+  File image1;
+  File image2;
+  File image3;
+  File image4;
+  File image5;
+
   ProductUploadCubit uploadCubit;
   var getCategories;
   var getBrand;
@@ -73,6 +106,7 @@ class _ProductUploadState extends State<ProductUpload> {
   }
 
   var selectedSpecs = [];
+  bool isUploading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,6 +170,9 @@ class _ProductUploadState extends State<ProductUpload> {
                   BlocBuilder<ProductUploadCubit, ProductUploadState>(
                       cubit: uploadCubit..getBrands(''),
                       builder: (context, state) {
+                        if(state is LoadingStateBrand){
+                           return CircularProgressIndicator();
+                        }
                         if (state is GetBrandState) {
                           brands = state.brand;
                           return _buildBrands(state.brand);
@@ -154,12 +191,43 @@ class _ProductUploadState extends State<ProductUpload> {
                         disCount = disc;
                       },
                       keyboardType: TextInputType.text,
-                      decoration: inputDecoration(hint: "Discount")),
+                      decoration:
+                          inputDecoration(hint: "Price After Discount")),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                      validator: (val) {
+                        if (val.length == 0) {
+                          return "This is Required";
+                        }
+                      },
+                      onSaved: (onGst) {
+                        gst = onGst;
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: inputDecoration(hint: "GST")),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                      validator: (val) {
+                        if (val.length == 0) {
+                          return "This is Required";
+                        }
+                      },
+                      onSaved: (minBuy) {
+                      minOrder= minBuy;
+                      },
+                      keyboardType: TextInputType.number,
+                      
+                      decoration: inputDecoration(hint: "Minimum order")),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Note: If you want 5% GST, then please write “5” only***',
+                    style: TextStyle(color: Colors.red),
+                  ),
                   const SizedBox(height: 10),
                   TextFormField(
                     readOnly: true,
                     keyboardType: TextInputType.text,
-                    controller: image1,
+                    controller: controllerImage1,
                     validator: (val) {
                       if (val.length == 0) {
                         return "This is Required";
@@ -172,7 +240,8 @@ class _ProductUploadState extends State<ProductUpload> {
                           onUploadCallback: (file) {
                         print(file.path.toString());
                         setState(() {
-                          image1.text = file.path;
+                          image1 = file;
+                          controllerImage1.text = image1.path;
                         });
                       });
                     },
@@ -181,7 +250,7 @@ class _ProductUploadState extends State<ProductUpload> {
                   TextFormField(
                     readOnly: true,
                     keyboardType: TextInputType.text,
-                    controller: image2,
+                    controller: controllerImage2,
                     validator: (val) {
                       if (val.length == 0) {
                         return "This is Required";
@@ -194,7 +263,8 @@ class _ProductUploadState extends State<ProductUpload> {
                           onUploadCallback: (file) {
                         print(file.path.toString());
                         setState(() {
-                          image2.text = file.path;
+                          image2 = file;
+                          controllerImage2.text = image2.path;
                         });
                       });
                     },
@@ -203,7 +273,7 @@ class _ProductUploadState extends State<ProductUpload> {
                   TextFormField(
                     readOnly: true,
                     keyboardType: TextInputType.text,
-                    controller: image3,
+                    controller: controllerImage3,
                     validator: (val) {
                       if (val.length == 0) {
                         return "This is Required";
@@ -216,7 +286,8 @@ class _ProductUploadState extends State<ProductUpload> {
                           onUploadCallback: (file) {
                         print(file.path.toString());
                         setState(() {
-                          image3.text = file.path;
+                          image3 = file;
+                          controllerImage3.text = image3.path;
                         });
                       });
                     },
@@ -225,7 +296,7 @@ class _ProductUploadState extends State<ProductUpload> {
                   TextFormField(
                     readOnly: true,
                     keyboardType: TextInputType.text,
-                    controller: image4,
+                    controller: controllerImage4,
                     validator: (val) {
                       if (val.length == 0) {
                         return "This is Required";
@@ -236,9 +307,9 @@ class _ProductUploadState extends State<ProductUpload> {
                     onTap: () {
                       CommonAlertBox.takeImageFromCamera(context,
                           onUploadCallback: (file) {
-                        print(file.path.toString());
                         setState(() {
-                          image4.text = file.path;
+                          image4 = file;
+                          controllerImage4.text = image4.path;
                         });
                       });
                     },
@@ -247,7 +318,7 @@ class _ProductUploadState extends State<ProductUpload> {
                   TextFormField(
                     readOnly: true,
                     keyboardType: TextInputType.text,
-                    controller: image5,
+                    controller: controllerImage5,
                     validator: (val) {
                       if (val.length == 0) {
                         return "This is Required";
@@ -258,9 +329,9 @@ class _ProductUploadState extends State<ProductUpload> {
                     onTap: () {
                       CommonAlertBox.takeImageFromCamera(context,
                           onUploadCallback: (file) {
-                        print(file.path.toString());
                         setState(() {
-                          image5.text = file.path;
+                          image5 = file;
+                          controllerImage5.text = image5.path;
                         });
                       });
                     },
@@ -276,7 +347,7 @@ class _ProductUploadState extends State<ProductUpload> {
                         prize = name;
                       },
                       keyboardType: TextInputType.text,
-                      decoration: inputDecoration(hint: "Prize")),
+                      decoration: inputDecoration(hint: "Prize in MRP")),
                   const SizedBox(height: 10),
                   TextFormField(
                       validator: (val) {
@@ -390,50 +461,25 @@ class _ProductUploadState extends State<ProductUpload> {
                     },
                     activeColor: Colors.orange,
                   ),
+                   BlocBuilder<ProductUploadCubit, ProductUploadState>(
+                      cubit: uploadCubit,
+                      builder: (context, state) {
+                        if (state is LoadingStateProduct) {
+                          return SizedBox(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return SizedBox();
+                      }),
                   CommonButton(
                     buttonColor: AppColors.primaryColor,
                     titleColor: Colors.white,
                     title: LanguageKeys.save.translate(context),
-                    onTap: () {
+                    onTap: () async {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
-
-                        var data = {
-                          "Title": productName,
-                          "Category": categoriesName,
-                          "SubCategory": subCategoriesName,
-                          "Brand": brandsName,
-                          "Discount": disCount,
-                          "Image1": image1.text,
-                          "Image2": image2.text,
-                          "Image3": image3.text,
-                          "Image4": image4.text,
-                          "Image5": image5.text,
-                          "Prize": prize,
-                          "Description": discription,
-                          "Specs": selectedSpecs
-                              .map((e) => {
-                                    "Title": "Color",
-                                    "Description": e.toString()
-                                  })
-                              .toList(),
-                          "features": [
-                            {"Title": "Feature1", "Description": feature1},
-                            {"Title": "Feature2", "Description": feature2}
-                          ],
-                          "Highlights": [
-                            {"Title": "Color", "Description": highlights1},
-                            {"Title": "Color", "Description": highlights2}
-                          ]
-                        };
-
-                        if (_selectedRadioTile == '0') {
-                          uploadCubit.uploadProduct(data);
-                        } else if(_selectedRadioTile == '1') {
-                          uploadCubit.uploadProductAsMember(data);
-                        } else{
-                          showMessagess("Please Select");
-                        }
+                    
+                        uploadProducts();
                       }
                     },
                   ),
@@ -556,11 +602,102 @@ class _ProductUploadState extends State<ProductUpload> {
                     if (val.isEmpty) {
                       return "This is Required";
                     }
+                    return null;
                   },
                   decoration: inputDecoration(hint: ""),
                 )
               : SizedBox();
         });
+  }
+
+  uploadProducts() async {
+    try {
+      Dio dio = Dio();
+      //String docfileName = image.path.split('/').last;
+
+      Options options = Options(
+        headers: {
+          "Authorization": await getSellerToken(),
+        },
+        contentType: 'application/json',
+      );
+      FormData data = FormData.fromMap({
+        "image": await MultipartFile.fromFile(controllerImage1.text,
+            filename: image1.path.split('/').last), //image1.text,
+        "image2": await MultipartFile.fromFile(controllerImage2.text,
+            filename: image2.path.split('/').last),
+        "image3": await MultipartFile.fromFile(controllerImage3.text,
+            filename: image3.path.split('/').last),
+        "image4": await MultipartFile.fromFile(controllerImage4.text,
+            filename: image4.path.split('/').last),
+        "image5": await MultipartFile.fromFile(controllerImage5.text,
+            filename: image5.path.split('/').last),
+      });
+      print(data);
+
+      final response = await dio.post(EndPoint.productImageUpload,
+          data: data, options: options);
+
+      if (response.statusCode == 201) {
+        var responseJson = response.data;
+
+        var data = ImageResponce.fromJson(responseJson);
+        _uploadProductsDetails(data);
+
+        return response;
+      } else {
+        showMessagess('Try Again');
+      }
+    } on DioError catch (e) {
+      if (e.response.statusCode == 404) {
+        showMessagess('Not Found');
+      }
+      if (e.response.statusCode == 400) {
+        showMessagess('Brand Already Exist');
+      } else {
+        showMessagess('Try Again');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  _uploadProductsDetails(ImageResponce imageLinks) {
+    var data = {
+      "Title": productName,
+      "Category": categoriesName,
+      "SubCategory": subCategoriesName,
+      "Brand": brandsName,
+      "Discount": disCount,
+      "GST": gst,
+      "minBuy" : minOrder,
+      "Image1": imageLinks.image,
+      "Image2": imageLinks.image2,
+      "Image3": imageLinks.image3,
+      "Image4": imageLinks.image4,
+      "Image5": imageLinks.image5,
+      "Prize": prize,
+      "Description": discription,
+      "Specs": selectedSpecs
+          .map((e) => {"Title": "Color", "Description": e.toString()})
+          .toList(),
+      "features": [
+        {"Title": "Feature1", "Description": feature1},
+        {"Title": "Feature2", "Description": feature2}
+      ],
+      "Highlights": [
+        {"Title": "Highlights1", "Description": highlights1},
+        {"Title": "Highlights2", "Description": highlights2}
+      ]
+    };
+    print(data);
+    if (_selectedRadioTile == '0') {
+      uploadCubit.uploadProduct(data);
+    } else if (_selectedRadioTile == '1') {
+      uploadCubit.uploadProductAsMember(data);
+    } else {
+      showMessagess("Please Select");
+    }
   }
 }
 

@@ -55,12 +55,11 @@ var id;
             }),
             items: [
       BottomNavyBarItem(
-        icon: Icon(Icons.category),
+        icon: Icon(Icons.home),
        
        activeColor: AppColors.primaryColor,
        inactiveColor:Colors.grey,
-        title: Text(LanguageKeys.subCategories.translate(context),
-          //  LanguageKeys.kyc.translate(context),
+        title: Text("Sub Category",
           //LanguageKeys.kyc.translate(context),
          style: TextStyle(color:Colors.grey),
         ),

@@ -21,6 +21,8 @@ class Products {
   String brand;
   num numOfItems;
  var delivery;
+ var gst;
+ int   minBuy;
   Products(
       {this.id,
       this.title,
@@ -42,7 +44,7 @@ class Products {
       this.category,
       this.subCategory,
       this.brand,
-      this.delivery
+      this.delivery,this.minBuy
       });
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -67,6 +69,8 @@ class Products {
     subCategory = json['SubCategory'];
     brand = json['Brand'];
     delivery = json['Delivery'];
+    gst = json['GST'];
+      minBuy = json['minBuy'];
   }
 
   

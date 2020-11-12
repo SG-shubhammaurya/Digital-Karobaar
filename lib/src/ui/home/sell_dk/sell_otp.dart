@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
@@ -10,7 +11,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class SellOtp extends StatefulWidget {
   var phoneNumber;
-
+  
   @override
   _SellOtpState createState() => _SellOtpState();
 }
@@ -68,7 +69,6 @@ class _SellOtpState extends State<SellOtp> {
         ),
         actions: [],
       ),
-    
       body: ListView(
         children: <Widget>[
           SizedBox(
@@ -140,9 +140,15 @@ class _SellOtpState extends State<SellOtp> {
                 onTap: () {
                   if (formKey.currentState.validate()) {
                     sellRepository
-                        .otpRegister(textEditingController.text).then((value){
-                         Navigator.pushReplacementNamed(context,RouterName.sellerDetails);
-                        });
+                        .otpRegister(textEditingController.text)
+                        .then((response) {
+                      if (response.statusCode == 200) {
+                        Navigator.pushReplacementNamed(
+                            context, RouterName.sellerDetails,arguments: false);
+                      }else{
+                        showMessagess("Error");
+                      }
+                    });
                   }
                 },
               ),

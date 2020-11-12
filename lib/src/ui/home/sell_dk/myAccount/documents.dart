@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/common_upload_file_alert.dart';
 import 'package:digitalkarobaar/src/repository/sell_respository.dart';
@@ -147,7 +148,7 @@ class Documents extends StatelessWidget {
                   CommonButton(
                     buttonColor: AppColors.primaryColor,
                     titleColor: Colors.white,
-                    title: "Svae next",
+                    title: "Save next",
                     onTap: () {
                      
                     // Navigator.pushNamed(context, RouterName.pickupAddress);
@@ -173,8 +174,13 @@ class Documents extends StatelessWidget {
   }
 
   _uploadDocument(BuildContext context) async {
-    SellRepository.uploadDocuments(docFile, signFile, id.toString(), gstNumber).then((value){
-       Navigator.pushReplacementNamed(context, RouterName.pickupAddress,arguments: value.toString());
+    SellRepository.uploadDocuments(docFile, signFile, id.toString(), gstNumber).then((id){
+     if(id !=null){
+     Navigator.pushReplacementNamed(context, RouterName.pickupAddress,arguments: id.toString());
+     }
+    }).catchError((e){
+         showMessagess('Error');
+
     });
   }
 }

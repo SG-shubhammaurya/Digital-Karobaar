@@ -43,7 +43,17 @@ class CommonIconButton extends StatelessWidget {
                             style: TextStyle(color: Colors.white, fontSize: 8),
                           ))));
                 }
-                return SizedBox();
+                return Container(
+                          height: 12,
+                          width: 12,
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.red, shape: BoxShape.circle),
+                          child: Center(
+                              child: Text(
+                            '0',
+                            style: TextStyle(color: Colors.white, fontSize: 8),
+                          )));
               },
               listener: (_, s) {}),
         )

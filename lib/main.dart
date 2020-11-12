@@ -8,6 +8,7 @@ import 'package:digitalkarobaar/src/core/provider/cart_provider.dart';
 import 'package:digitalkarobaar/src/repository/auth_repository.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/supported_locales.dart';
+import 'package:digitalkarobaar/src/splace_Screen.dart';
 import 'package:digitalkarobaar/src/ui/auth/main_screen.dart';
 import 'package:digitalkarobaar/src/ui/home/sell_dk/myAccount/brand_mov.dart';
 import 'package:flutter/material.dart';
@@ -76,9 +77,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<RegisteredType>(
             create: (_) => RegisteredType(),
           ),
-          ChangeNotifierProvider<BrandType>(
-            create: (_) => BrandType(),
-          ),
+          // ChangeNotifierProvider<PaymetOptionType>(
+          //   create: (_) => PaymetOptionType(),
+          // ),
           BlocProvider(create: (contexts) => SellerCubit(SellRepository())),
           BlocProvider(
               create: (contexts) => CartCubit(ProductOrderRepository())),
@@ -134,7 +135,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
     if (prefs.getString('accessToken') != null) {
       print(prefs.getString('accessToken'));
 
-      mainPage = MainPage();
+      mainPage = AppSplaceScreen();
     } else {
       mainPage = MainScreen();
     }

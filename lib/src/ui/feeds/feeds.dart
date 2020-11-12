@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/core/widget/no_data_available.dart';
 import 'package:digitalkarobaar/src/models/products.dart';
 import 'package:digitalkarobaar/src/models/seller_dash.dart';
 import 'package:digitalkarobaar/src/models/user_story.dart';
 import 'package:digitalkarobaar/src/repository/home_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
+import 'package:digitalkarobaar/src/route/router_name.dart';
 import 'package:digitalkarobaar/src/ui/feeds/stoty_details.dart';
 import 'package:flutter/material.dart';
 
@@ -105,22 +107,27 @@ class _FeedsState extends State<Feeds> {
                               itemCount: newUserStory.length,
                               itemBuilder: (c, i) {
                                 return InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) => MoreStories(
-                                                  userStory,
-                                                  newUserStory[i]
-                                                      .sellerId
-                                                      .toString())));
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: CircleAvatar(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => MoreStories(
+                                                userStory,
+                                                newUserStory[i]
+                                                    .sellerId
+                                                    .toString())));
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: CircleAvatar(
                                         child: CachedNetworkImage(
-                                            imageUrl: newUserStory[i].file),
-                                      ),
-                                    ));
+                                            imageUrl: newUserStory[i].file,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Image.network(
+                                                      'https://azadchaiwala.pk/getImage?i=&t=course',
+                                                    ))),
+                                  ),
+                                );
                               }),
                         ),
               isLoading
@@ -139,23 +146,12 @@ class _FeedsState extends State<Feeds> {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
-                              child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xffffffff),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Color(0x14657786),
-                                            offset: Offset(0, 8),
-                                            blurRadius: 16.0,
-                                            spreadRadius: 0)
-                                      ]),
-                                  child: Column(
-                                    //  crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(height: 10),
-                                      Container(
+                              child: Card(
+                                child: Column(
+                                  //  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Container(
                                         width: 310,
                                         height: 180,
                                         color: Colors.grey[300],
@@ -164,60 +160,113 @@ class _FeedsState extends State<Feeds> {
                                         //   color: Colors.black12,
                                         // ),
                                         child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
-                                            height: 40,
-                                            width: 40,
-                                            imageUrl: sellerProducts[i].image1),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: ConstrainedBox(
-                                              constraints: BoxConstraints(
-                                                  maxHeight:
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .height),
-                                              child: Text(
-                                                  sellerProducts[i].title,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto',
-                                                    color: Color(0xff657786),
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontStyle: FontStyle.normal,
-                                                  ))),
+                                            imageUrl: sellerProducts[i].image1,
+                                            placeholder: (context, url) =>
+                                                Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                  backgroundColor:
+                                                      AppColors.primaryColor,
+                                                )),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Image.network(
+                                                      'https://azadchaiwala.pk/getImage?i=&t=course',
+                                                    ))),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        maxHeight:
+                                                            MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height),
+                                                    child: Text(
+                                                        sellerProducts[i].title,
+                                                        style: TextStyle(
+                                                          fontFamily: 'Roboto',
+                                                          color:
+                                                              Color(0xff657786),
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        ))),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: ConstrainedBox(
+                                                    constraints: BoxConstraints(
+                                                        maxHeight:
+                                                            MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height),
+                                                    child: Text(
+                                                        sellerProducts[i]
+                                                            .description,
+                                                        style: TextStyle(
+                                                          fontFamily: 'Roboto',
+                                                          color:
+                                                              Color(0xff657786),
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        ))),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: ConstrainedBox(
-                                              constraints: BoxConstraints(
-                                                  maxHeight:
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .height),
-                                              child: Text(
-                                                  sellerProducts[i].description,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Roboto',
-                                                    color: Color(0xff657786),
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontStyle: FontStyle.normal,
-                                                  ))),
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                    ],
-                                  )),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                RouterName.productDetails,
+                                                arguments:
+                                                    sellerProducts[i].id);
+                                          },
+                                          child: Container(
+                                            height: 25,
+                                            width: 60,
+                                            child: Center(
+                                                child: Text('Buy Now',
+                                                    style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: AppColors
+                                                            .primaryColor))),
+                                            decoration: BoxDecoration(
+                                                color: Colors.orange[200],
+                                                shape: BoxShape.rectangle,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
                             );
                           })
             ],

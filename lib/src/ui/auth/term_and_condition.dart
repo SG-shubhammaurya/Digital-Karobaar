@@ -46,188 +46,180 @@ class _TermAndConditionState extends State<TermAndCondition> {
             SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30.0),
-                    )),
-                width: MediaQuery.of(context).size.width,
-                height: 400,
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 25.0, left: 15.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Checkbox(
-                                value: termVal,
-                                checkColor: Colors.white,
-                                activeColor: AppColors.primaryColor,
-                                focusColor:AppColors.primaryColor ,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    termVal = value;
-                                  });
-                                }),
-                           Text(
-                             "Term of use",
-                             style: TextStyle(
+              child: Card(
+                elevation: 1.0,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25.0, left: 15.0),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Checkbox(
+                              value: termVal,
+                              checkColor: Colors.white,
+                              activeColor: AppColors.primaryColor,
+                              focusColor:AppColors.primaryColor ,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  termVal = value;
+                                });
+                              }),
+                         Text(
+                           "Term of use",
+                           style: TextStyle(
+                              fontSize: 20.0),
+                         )
+                        ],
+                      ),
+                      SizedBox(height: 15.0),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        Text(
+                            "By cliking 'Accept', you agree to Digital Karobaar's",
+                            style: TextStyle(fontSize: 9.0)),
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        InkWell(
+                          onTap: (){
+                            if (_termAndCondition != null) {
+                              showAlertDialog(
+                                  context,
+                                  _termAndCondition.privacy,
+                                  'Term of use');
+                             } },
+                          child: Text("Term of USe",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 9.0)),
+                        ),
+                        SizedBox(width: 4.0),
+                        Text("and", style: TextStyle(fontSize: 9.0)),
+                        SizedBox(width: 4.0),
+                        InkWell(
+                          onTap: (){
+                            if (_termAndCondition != null) {
+                              showAlertDialog(
+                                  context,
+                                  _termAndCondition.privacy,
+                                  'Privacy Policy');
+                             } },
+                          child: Text("Privacy Policy",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 9.0)),
+                        ),
+                      ]),
+                      SizedBox(height: 20.0),
+                      Row(
+                        children: <Widget>[
+                          Checkbox(
+                              value: condVal,
+                               checkColor: Colors.white,
+                              activeColor: AppColors.primaryColor,
+                              focusColor:AppColors.primaryColor ,
+                              hoverColor: AppColors.primaryColor,
+                             
+                              onChanged: (bool value) {
+                                setState(() {
+                                  condVal = value;
+                                });
+                              }),
+                          Text(
+                            "Term and condition  ",
+                            style: TextStyle(
                                 fontSize: 20.0),
-                           )
-                          ],
+                          ),
+                        ],
+                      ),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        Text(
+                          "for Logistics Services",
+                          style:
+                              TextStyle(fontSize: 20.0),
                         ),
-                        SizedBox(height: 15.0),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          Text(
-                              "By cliking 'Accept', you agree to Digital Karobaar's",
-                              style: TextStyle(fontSize: 9.0)),
-                        ]),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          InkWell(
-                            onTap: (){
-                              if (_termAndCondition != null) {
-                                showAlertDialog(
-                                    context,
-                                    _termAndCondition.privacy,
-                                    'Term of use');
-                               } },
-                            child: Text("Term of USe",
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 9.0)),
-                          ),
-                          SizedBox(width: 4.0),
-                          Text("and", style: TextStyle(fontSize: 9.0)),
-                          SizedBox(width: 4.0),
-                          InkWell(
-                            onTap: (){
-                              if (_termAndCondition != null) {
-                                showAlertDialog(
-                                    context,
-                                    _termAndCondition.privacy,
-                                    'Privacy Policy');
-                               } },
-                            child: Text("Privacy Policy",
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 9.0)),
-                          ),
-                        ]),
-                        SizedBox(height: 20.0),
-                        Row(
+                      ]),
+                      SizedBox(height: 10.0),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        Text(
+                          "and Payment Services",
+                          style:
+                              TextStyle(fontSize: 20.0),
+                        ),
+                      ]),
+                      SizedBox(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 35.0),
+                        child: Column(
                           children: <Widget>[
-                            Checkbox(
-                                value: condVal,
-                                 checkColor: Colors.white,
-                                activeColor: AppColors.primaryColor,
-                                focusColor:AppColors.primaryColor ,
-                                hoverColor: AppColors.primaryColor,
-                               
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    condVal = value;
-                                  });
-                                }),
                             Text(
-                              "Term and condition  ",
-                              style: TextStyle(
-                                  fontSize: 20.0),
-                            ),
+                                "By cliking 'Accept', you agree to Digital Karobaar's",
+                                style: TextStyle(fontSize: 9.0)),
                           ],
                         ),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          Text(
-                            "for Logistics Services",
-                            style:
-                                TextStyle(fontSize: 20.0),
-                          ),
-                        ]),
-                        SizedBox(height: 10.0),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          Text(
-                            "and Payment Services",
-                            style:
-                                TextStyle(fontSize: 20.0),
-                          ),
-                        ]),
-                        SizedBox(height: 20.0),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 35.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                  "By cliking 'Accept', you agree to Digital Karobaar's",
-                                  style: TextStyle(fontSize: 9.0)),
-                            ],
-                          ),
-                        ),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          InkWell(
-                              onTap: () async {
-                                if (_termAndCondition != null) {
-                                  showAlertDialog(context,
-                                      _termAndCondition.terms, 'Term of Use');
-                                }
-                              },
-                              child: Text("Term of USe",
-                                  style: TextStyle(
-                                      color: Colors.blue, fontSize: 9.0))),
-                          SizedBox(width: 4.0),
-                          Text("and", style: TextStyle(fontSize: 9.0)),
-                          SizedBox(width: 4.0),
-                          InkWell(
+                      ),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        InkWell(
                             onTap: () async {
                               if (_termAndCondition != null) {
-                                showAlertDialog(
-                                    context,
-                                    _termAndCondition.privacy,
-                                    'Privacy Policy');
+                                showAlertDialog(context,
+                                    _termAndCondition.terms, 'Term of Use');
                               }
                             },
-                            child: Text("Privacy Policy",
+                            child: Text("Term of USe",
                                 style: TextStyle(
-                                    color: Colors.blue, fontSize: 9.0)),
-                          ),
-                          SizedBox(width: 4.0),
-                          Text("for avalling the",
-                              style: TextStyle(fontSize: 9.0)),
-                        ]),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40.0),
-                          child: Column(children: <Widget>[
-                            //Padding(padding: const EdgeInsets.only(left: 50.0)),
-                            Text(
-                              "Logistics Services and Payment Services from XYZ",
-                              style: TextStyle(fontSize: 9.0),
-                            ),
-                          ]),
-                        ),
-                        Row(children: <Widget>[
-                          Padding(padding: const EdgeInsets.only(left: 50.0)),
-                          Text("Logistics Private Limited",
-                              style: TextStyle(fontSize: 9.0)),
-                        ]),
-                        SizedBox(height: 40.0),
-
-                        CommonButton(
-                          title: "Accept & Continue",
-                          buttonColor: AppColors.primaryColor,
-                          onTap: () {
-                           if(termVal && condVal){
-                            
-                             Navigator.of(context).pushReplacementNamed(RouterName.otp);
-                             
-                           }
+                                    color: Colors.blue, fontSize: 9.0))),
+                        SizedBox(width: 4.0),
+                        Text("and", style: TextStyle(fontSize: 9.0)),
+                        SizedBox(width: 4.0),
+                        InkWell(
+                          onTap: () async {
+                            if (_termAndCondition != null) {
+                              showAlertDialog(
+                                  context,
+                                  _termAndCondition.privacy,
+                                  'Privacy Policy');
+                            }
                           },
-                        )
-                       
-                      ],
-                    ),
+                          child: Text("Privacy Policy",
+                              style: TextStyle(
+                                  color: Colors.blue, fontSize: 9.0)),
+                        ),
+                        SizedBox(width: 4.0),
+                        Text("for avalling the",
+                            style: TextStyle(fontSize: 9.0)),
+                      ]),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40.0),
+                        child: Column(children: <Widget>[
+                          //Padding(padding: const EdgeInsets.only(left: 50.0)),
+                          Text(
+                            "Logistics Services and Payment Services from XYZ",
+                            style: TextStyle(fontSize: 9.0),
+                          ),
+                        ]),
+                      ),
+                      Row(children: <Widget>[
+                        Padding(padding: const EdgeInsets.only(left: 50.0)),
+                        Text("Logistics Private Limited",
+                            style: TextStyle(fontSize: 9.0)),
+                      ]),
+                      SizedBox(height: 40.0),
+
+                      CommonButton(
+                        title: "Accept & Continue",
+                        buttonColor: AppColors.primaryColor,
+                        onTap: () {
+                         if(termVal && condVal){
+                          
+                           Navigator.of(context).pushReplacementNamed(RouterName.otp);
+                           
+                         }
+                        },
+                      ),
+                     SizedBox(height: 10),
+                    ],
                   ),
                 ),
               ),

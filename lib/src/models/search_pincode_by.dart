@@ -1,6 +1,6 @@
 class SearcPinCodeBY {
   //int status;
-  List<Data> data;
+  List<Data> data = [];
 
   SearcPinCodeBY({this.data});
 

@@ -124,12 +124,12 @@ class _SellLoginState extends State<SellLogin> {
                       title: LanguageKeys.login.translate(context),
                       buttonColor: AppColors.primaryColor,
                       onTap: () {
-                     //   Navigator.pushNamed(context, RouterName.sellerDetails);
+       
                         if (_form.currentState.validate()) {
                           _form.currentState.save();
                           sellRepository.sellLogin(_no, _password).then((value) {
 
-                            if(value.statusCode == 200){
+                            if(value?.statusCode == 200){
                                Navigator.pushReplacementNamed(context, RouterName.sellerDash);
 
                             }

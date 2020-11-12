@@ -97,7 +97,7 @@ class _ProductPaymentState extends State<ProductPayment> {
         "Txn_Amount": widget.totalAmount.toString(),
         "created_on":  DateTime.now().toString(),
         "email": "a@gmail.com",
-        "Orderid": 10,//orderId,
+        "Orderid":orderId,
         "contact": "123478"
       };
        print(data.toString());

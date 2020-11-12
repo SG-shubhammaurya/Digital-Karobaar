@@ -108,7 +108,7 @@ class _AdminState extends State<Admin> {
   }
 
   shareNumber() async {
-    return "join my tean in Digital Karobaar to speed up your Business..9935020063".toString();
+    return "join my tean in Digital Karobaar to speed up your Business..Null".toString();
     //Text('9935020063').toString();
     // Container(
     //   child: Text("9935020063".toString())

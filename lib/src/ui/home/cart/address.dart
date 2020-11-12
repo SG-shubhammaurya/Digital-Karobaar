@@ -1,9 +1,8 @@
-import 'package:digitalkarobaar/src/core/utils/constants/language_keys.dart';
+import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 import 'package:digitalkarobaar/src/core/widget/common_button.dart';
 import 'package:digitalkarobaar/src/repository/cart_repository.dart';
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
 
 class AddressDelivery extends StatefulWidget {
   @override
@@ -152,9 +151,11 @@ class _AddressDeliveryState extends State<AddressDelivery> {
                   _buildCity(),
                   _buildState(),
                   _buildAlternameNo(),
-                  SizedBox(height: 50),
+                  SizedBox(height: 20),
+                     isLoading ? CircularProgressIndicator() : SizedBox(),
+                              SizedBox(height: 10),
                   CommonButton(
-                      title: LanguageKeys.save.translate(context),
+                      title: "Save Address",
                       buttonColor: AppColors.primaryColor,
                       height: 40,
                       onTap: () {
@@ -173,7 +174,10 @@ class _AddressDeliveryState extends State<AddressDelivery> {
                                     _city,
                                     _state,
                                     _number)
-                                .then((value) {});
+                                .then((value) {}).catchError((e){
+                                  showMessagess(e.toString());
+
+                                });
                           } finally {
                             setState(() {
                               isLoading = false;
@@ -181,7 +185,7 @@ class _AddressDeliveryState extends State<AddressDelivery> {
                           }
                         }
                       }),
-                  isLoading ? CircularProgressIndicator() : SizedBox()
+               
                 ]),
               ),
             ),

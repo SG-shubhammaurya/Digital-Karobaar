@@ -12,7 +12,10 @@ class SellerCubit extends Cubit<SellerDetail> {
       final state = await sellRepository.getAllState();
 
       emit(SellerDetailLoadedState(state));
-    } catch (e) {}
+    } catch (e) {
+       emit(SellerDetailErrorState());
+       
+    }
   }
 
   getAllCities(String state) async {
@@ -21,7 +24,9 @@ class SellerCubit extends Cubit<SellerDetail> {
       final cities = await sellRepository.getCities(state);
 
       emit(LoadedCities(cities));
-    } catch (e) {}
+    } catch (e) {
+       emit(SellerDetailErrorState());
+    }
   }
 
   fillDetails(Map data) async {
@@ -29,13 +34,17 @@ class SellerCubit extends Cubit<SellerDetail> {
     try {
      final id = await sellRepository.fillForm(data);
       emit(Success(id));
-    } catch (e) {}
+    } catch (e) {
+       emit(SellerDetailErrorState());
+    }
   }
    updateDetails(Map data) async {
      emit(SellerDetailLoadingSate());
     try {
      final id = await sellRepository.updateFormDetails(data);
       emit(SellerDetailUpdateState());
-    } catch (e) {}
+    } catch (e) {
+       emit(SellerDetailErrorState());
+    }
   }
 }

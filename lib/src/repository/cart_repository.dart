@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:digitalkarobaar/src/core/endpoint/end_points.dart';
 import 'package:digitalkarobaar/src/core/utils/constants/common.dart';
-import 'package:digitalkarobaar/src/core/utils/preference_helper.dart';
-import 'package:digitalkarobaar/src/models/order_address.dart';
+
 import 'package:digitalkarobaar/src/res/app_colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
