@@ -160,7 +160,7 @@ class EndPoint {
   static String productget = baseUrl + "/products/get";
   static String updateKyc = baseUrl + "/user/kyc/update";
   static String getKyc = baseUrl + "/user/kyc";
-  static String profilePic = baseUrl + " /user/profile/pic/update";
+  static String profilePic = baseUrl + "/user/profile/pic/update";
   static String searchProducts = baseUrl + "/products/search?search=";
   static String productsDetails = baseUrl + "/products/get?id=";
   static String productsFilter = baseUrl + "/products/filter";
