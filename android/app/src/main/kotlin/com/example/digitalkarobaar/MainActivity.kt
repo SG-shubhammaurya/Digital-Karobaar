@@ -1,4 +1,4 @@
-package com.example.digitalkarobaar
+package com.karobaar.digitalkarobaar
 
 import io.flutter.embedding.android.FlutterActivity
 
